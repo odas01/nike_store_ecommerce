@@ -1,0 +1,82 @@
+{
+   "title": {
+      "product": "Products",
+      "category": "Categories",
+      "color": "Colors",
+      "size": "Sizes",
+      "customer": "Customers",
+      "admin": "Admins",
+      "overview": "Overview",
+      "createProuct": "Create product",
+      "editProduct": "Edit product"
+   },
+   "aside": {
+      "list": "List",
+      "size": "Sizes",
+      "admin": "Admins",
+      "color": "Colors",
+      "product": "Products",
+      "overview": "Overview",
+      "customer": "Customers",
+      "category": "Categories"
+   },
+   "placeholderSearch": {
+      "searchByName": "Search by name...",
+      "searchByNamePhoneEmail": "Search by name phone number or email..."
+   },
+   "table": {
+      "name": "Name",
+      "date": "Date",
+      "store": "Store",
+      "productColors": "Product color",
+      "price": "Price",
+      "category": "Category",
+      "colorHex": "Color hex",
+      "phoneNumber": "Phone number"
+   },
+   "role": {
+      "root": "Root",
+      "admin": "Admin",
+      "customer": "Customer"
+   },
+   "action": {
+      "showing": "Showing",
+      "previous": "Previous",
+      "next": "Next",
+      "edit": "Edit",
+      "delete": "Delete",
+      "block": "Block",
+      "unblock": "Unblock",
+      "create": "Create",
+      "cancel": "Cancel",
+      "save": "Save",
+      "logOut": "Log out",
+      "profileSetting": "Profile setting",
+      "login": "Log in",
+      "signup": "Sign up"
+   },
+   "form": {
+      "addNew": "Add new",
+      "addMoreColor": "Add more color",
+      "addMoreSize": "Add more size",
+      "chooesColor": "Chooes color",
+      "changePassword": "Change password",
+      "genders": "Genders",
+      "description": "Description",
+      "stock": "Stock",
+      "images": "Images",
+      "thumbnail": "Thumbnail",
+      "imageList": "Image list",
+      "address": "Address",
+      "passwordDefault": "Password default",
+      "details": "Details"
+   },
+   "status": {
+      "status": "Status",
+      "active": "Active",
+      "deleted": "Deleted",
+      "hide": "Hide",
+      "show": "Show",
+      "blocked": "Blocked"
+   }
+}

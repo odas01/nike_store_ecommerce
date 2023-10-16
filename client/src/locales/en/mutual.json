@@ -1,0 +1,42 @@
+{
+   "action": {
+      "showing": "Showing",
+      "previous": "Previous",
+      "next": "Next",
+      "edit": "Edit",
+      "delete": "Delete",
+      "block": "Block",
+      "unblock": "Unblock",
+      "create": "Create",
+      "back": "Back",
+      "cancel": "Cancel",
+      "save": "Save",
+      "apply": "Apply",
+      "logOut": "Log out",
+      "profileSetting": "Profile setting",
+      "login": "Log in",
+      "signup": "Sign up",
+      "buyNow": "Buy now",
+      "addToCart": "Add to cart",
+      "deleteAll": "Delete all"
+   },
+   "status": {
+      "status": "Status",
+      "active": "Active",
+      "deleted": "Deleted",
+      "hide": "Hide",
+      "show": "Show",
+      "blocked": "Blocked"
+   },
+   "label": {
+      "total": "Total",
+      "sold": "sold",
+      "quantity": "Quantity",
+      "name": "Name",
+      "price": "Price",
+      "size": "Size",
+      "color": "Color",
+      "phone": "Phone number",
+      "address": "Address"
+   }
+}

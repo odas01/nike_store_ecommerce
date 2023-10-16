@@ -1,0 +1,23 @@
+.dark.ant-modal-content {
+   background-color: red !important;
+}
+
+.ant-select-selector {
+   background-color: inherit !important;
+   color: inherit !important;
+   height: inherit !important;
+   border-color: rgb(156, 163, 175) !important;
+}
+
+.ant-modal-content {
+   border-radius: 4px !important;
+}
+
+.ant-modal-content{
+   background-color: inherit !important;
+   box-shadow: none !important;
+}
+
+.anticon{
+   display: inline-flex !important;
+}

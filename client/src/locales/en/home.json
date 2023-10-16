@@ -1,0 +1,78 @@
+{
+   "orders": "Order",
+   "myAccount": "My account",
+   "placeHolder": {
+      "typeYourName": "Type your name",
+      "typePasswordAgain": "Type password again",
+      "typeEmail": "Type your email",
+      "typePassword": "Type your password",
+      "searchHere": "Search here...",
+      "enterCouponCode": "Enter your coupon code"
+   },
+   "orLoginWith": "Or login with",
+   "dontaccount?": "Don't have account?",
+   "haveAccount?": "Already have an account?",
+   "navbar": {
+      "home": "Home",
+      "about": "About",
+      "contact": "Contact"
+   },
+   "cart": {
+      "cart": "Cart",
+      "productName": "Product name",
+      "variations": "Variations",
+      "unitPrice": "Unit price",
+      "totalPrice": "Total price"
+   },
+   "category": {
+      "filter": {
+         "under": "Under",
+         "over": "Over"
+      },
+      "sort": {
+         "sortBy": "Sort by",
+         "lowHigh": "Low to High",
+         "highLow": "High to Low",
+         "latest": "Latest"
+      }
+   },
+   "home": {
+      "trenyP": "Trendy products",
+      "topP": "Top products",
+      "bestSeller": "Best sellers"
+   },
+   "rating": {
+      "productRatings": "Product ratings",
+      "noRatings": "No ratings",
+      "rating": "rating",
+      "ratings": "ratings"
+   },
+   "allProducts": "All products",
+   "noProductsMatch": "No products match",
+   "comments": "Comments",
+   "share": "Share",
+   "sold": "sold",
+   "total": "Total",
+   "saved": "Saved",
+   "items": "items",
+   "item": "item",
+   "checkout": {
+      "personalDetails": "Personal details",
+      "shippingDetails": "Shipping details",
+      "paymentMethod": "Payment method",
+      "cashPayment": "Cash payment",
+      "paypalPayment": "Paypal payment",
+      "express": "Express",
+      "fash": "Fash",
+      "normal": "Normal",
+      "message": "Message",
+      "orderSummery": "Order summery",
+      "couponApplied": "Coupon applied",
+      "subTotal": "Sub total",
+      "shippingFee": "Shipping fee",
+      "discount": "Discount",
+      "total": "Total",
+      "pay": "Pay",
+      "thanksForShop": "Thanks for shopping at NikeShose"
+   }
+}

@@ -1,0 +1,79 @@
+{
+   "orders": "Đơn hàng",
+   "myAccount": "Tài khoản của tôi",
+   "placeHolder": {
+      "typeYourName": "Nhập tên của bạn",
+      "typePasswordAgain": "Nhập lại mật khẩu",
+      "typeEmail": "Nhập email của bạn",
+      "typePassword": "Nhập mật khẩu của bạn",
+      "searchHere": "Tìm kiếm sản phẩm...",
+      "messForStore": "Lời nhắn cho cửa hàng",
+      "enterCouponCode": "Nhập mã giảm giá của bạn"
+   },
+   "orLoginWith": "Hoặc đăng nhập với",
+   "dontaccount?": "Không có tài khoản?",
+   "haveAccount?": "Đã có tài khoản?",
+   "navbar": {
+      "home": "Trang chủ",
+      "about": "Tổng quan",
+      "contact": "Liên hệ"
+   },
+   "cart": {
+      "cart": "Giỏ hàng",
+      "productName": "Tên sản phẩm",
+      "variations": "Phân loại",
+      "unitPrice": "Đơn giá",
+      "totalPrice": "Tổng giá"
+   },
+   "category": {
+      "filter": {
+         "under": "Dưới",
+         "over": "Trên"
+      },
+      "sort": {
+         "sortBy": "Sắp xếp theo",
+         "lowHigh": "Thấp đến cao",
+         "highLow": "Cao đến thấp",
+         "latest": "Mới nhất"
+      }
+   },
+   "home": {
+      "trenyP": "Sản phẩm nổi bật",
+      "topP": "Sản phẩm mới nhất",
+      "bestSeller": "Bán chạy"
+   },
+   "allProducts": "Tất cả sản phẩm",
+   "noProductsMatch": "Không có sản phẩm phù hợp",
+   "rating": {
+      "productRatings": "Đánh giá sản phẩm",
+      "noRatings": "Không có đánh giá",
+      "rating": "lượt đánh giá",
+      "ratings": "lượt đánh giá"
+   },
+   "comments": "Phản hồi",
+   "share": "Chia sẻ",
+   "sold": "đã bán",
+   "total": "Tổng",
+   "saved": "Tiết kiệm",
+   "items": "sản phẩm",
+   "item": "sản phẩm",
+   "checkout": {
+      "personalDetails": "Thông tin cá nhân",
+      "shippingDetails": "Thông tin giao hàng",
+      "paymentMethod": "Phương thức thanh toán",
+      "cashPayment": "Thanh toán tiền mặt",
+      "paypalPayment": "Thanh toán qua Payal",
+      "express": "Hỏa tốc",
+      "fash": "Nhanh",
+      "normal": "Bình thường",
+      "message": "Lời nhắn",
+      "orderSummery": "Tóm tắt thông tin",
+      "couponApplied": "Đã áp mã giảm giá",
+      "subTotal": "Tổng tiền hàng",
+      "shippingFee": "Phí vận chuyển",
+      "discount": "Giảm giá",
+      "total": "Tổng thanh toán",
+      "pay": "Thanh toán",
+      "thanksForShop": "Cảm ơn đã mua hàng ở NikeStore"
+   }
+}

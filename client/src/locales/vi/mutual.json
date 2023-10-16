@@ -1,0 +1,42 @@
+{
+   "action": {
+      "showing": "Showing",
+      "previous": "Trở về",
+      "next": "Tiếp",
+      "edit": "Chỉnh sửa",
+      "delete": "Xóa",
+      "block": "Khóa tài khoản",
+      "unblock": "Gỡ khóa",
+      "back": "Trở về",
+      "apply": "Áp dụng",
+      "create": "Thêm",
+      "cancel": "Trở về",
+      "save": "Lưu",
+      "logOut": "Đăng xuất",
+      "profileSetting": "Cài đặt hồ sơ",
+      "login": "Đăng nhập",
+      "signup": "Đăng kí",
+      "buyNow": "Thanh toán ngay",
+      "addToCart": "Thêm vào giỏ hàng",
+      "deleteAll": "Xóa tất cả"
+   },
+   "status": {
+      "status": "Trạng thái",
+      "active": "Hoạt động",
+      "deleted": "Đã xóa",
+      "hide": "Ẩn",
+      "show": "Hiện",
+      "blocked": "Đã khóa"
+   },
+   "label": {
+      "total": "Tổng",
+      "sold": "đã bán",
+      "quantity": "Số lượng",
+      "name": "Tên",
+      "price": "Giá",
+      "size": "Kích thước",
+      "color": "Màu sắc",
+      "phoneNumber": "Số điện thoại",
+      "address": "Địa chỉ"
+   }
+}

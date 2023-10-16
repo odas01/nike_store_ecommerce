@@ -1,0 +1,85 @@
+{
+   "title": {
+      "overview": "Tổng quan",
+      "color": "Danh sách màu sắc",
+      "size": "Danh sách kích thước",
+      "product": "Danh sách sản phẩm",
+      "category": "Danh sách danh mục",
+      "customer": "Danh sách khách hàng",
+      "admin": "Danh sách quản trị viên",
+      "createProuct": "Thêm sản phẩm",
+      "editProduct": "Chỉnh sửa sản phẩm"
+   },
+   "aside": {
+      "color": "Màu sắc",
+      "list": "Danh sách",
+      "size": "Kích thước",
+      "product": "Sản phẩm",
+      "category": "Danh mục",
+      "overview": "Tổng quan",
+      "admin": "Quản trị viên",
+      "customer": "Khách hàng"
+   },
+   "placeholderSearch": {
+      "searchByName": "Tìm kiếm...",
+      "searchByNamePhoneEmail": "Tìm kiếm tên, số điện thoại hoặc email...",
+      "colorName": "Color name",
+      "chooesColorBelow": "Choose color hex below"
+   },
+   "table": {
+      "name": "Tên",
+      "price": "Giá",
+      "productColors": "Màu",
+      "store": "Loại",
+      "date": "Ngày tạo",
+      "colorHex": "Mã màu",
+      "category": "Danh mục",
+      "phoneNumber": "Số điện thoại"
+   },
+   "role": {
+      "root": "Root",
+      "admin": "Quản trị viên",
+      "customer": "Khách hàng"
+   },
+   "action": {
+      "showing": "Showing",
+      "previous": "Trở về",
+      "next": "Tiếp",
+      "edit": "Chỉnh sửa",
+      "delete": "Xóa",
+      "block": "Khóa tài khoản",
+      "unblock": "Gỡ khóa",
+      "create": "Thêm",
+      "cancel": "Trở về",
+      "save": "Lưu",
+      "logOut": "Đăng xuất",
+      "profileSetting": "Cài đặt hồ sơ",
+      "login": "Đăng nhập",
+      "signup": "Đăng kí"
+   },
+   "form": {
+      "addNew": "Thêm mới",
+      "addMoreColor": "Thêm màu",
+      "chooesColor": "Chọn màu",
+      "addMoreSize": "Thêm kích thước",
+      "changePassword": "Đổi mật khẩu",
+      "genders": "Giới tính",
+      "description": "Mô tả",
+      "details": "Thông tin chi tiết",
+      "stock": "Tồn kho",
+      "images": "Danh sách hình ảnh",
+      "thumbnail": "Ảnh ",
+      "imageList": "Ảnh con",
+      "address": "Địa chỉ",
+
+      "passwordDefault": "Mật khẩu mặc định"
+   },
+   "status": {
+      "status": "Trạng thái",
+      "active": "Hoạt động",
+      "deleted": "Đã xóa",
+      "hide": "Ẩn",
+      "show": "Hiện",
+      "blocked": "Đã khóa"
+   }
+}
