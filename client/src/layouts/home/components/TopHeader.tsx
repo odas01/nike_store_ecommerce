@@ -34,7 +34,7 @@ const TopHeader = () => {
                      {
                         label: (
                            <div
-                              className='flex items-center space-x-2 cursor-pointer'
+                              className='flex items-center pr-5 py-0.5 pl-0.5 space-x-2 cursor-pointer'
                               onClick={() => changeLng('vi')}
                            >
                               <img
@@ -49,7 +49,7 @@ const TopHeader = () => {
                      {
                         label: (
                            <div
-                              className='flex items-center space-x-2 cursor-pointer'
+                              className='flex items-center pr-5 py-0.5 pl-0.5 space-x-2 cursor-pointer'
                               onClick={() => changeLng('en')}
                            >
                               <img

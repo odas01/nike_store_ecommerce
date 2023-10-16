@@ -22,7 +22,8 @@
       "productName": "Product name",
       "variations": "Variations",
       "unitPrice": "Unit price",
-      "totalPrice": "Total price"
+      "totalPrice": "Total price",
+      "proceedCheckOut": "Proceed to checkout"
    },
    "category": {
       "filter": {

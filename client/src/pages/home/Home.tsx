@@ -28,7 +28,7 @@ const Home = () => {
    });
    return (
       <>
-         <div className='relative banner'>
+         <div className='relative -mt-5 banner'>
             <img
                src={images.bannerr}
                alt=''

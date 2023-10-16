@@ -23,7 +23,8 @@
       "productName": "Tên sản phẩm",
       "variations": "Phân loại",
       "unitPrice": "Đơn giá",
-      "totalPrice": "Tổng giá"
+      "totalPrice": "Tổng giá",
+      "proceedCheckOut": "Tiến hành thanh toán"
    },
    "category": {
       "filter": {

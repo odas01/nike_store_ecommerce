@@ -13,7 +13,7 @@ const Header = () => {
       <div className='container'>
          <div className='flex items-center justify-between h-20'>
             <Link to='/'>
-               <Logo width={250} />
+               <Logo width={100} />
             </Link>
 
             <div className='flex items-center justify-center space-x-8 font-semibold'>

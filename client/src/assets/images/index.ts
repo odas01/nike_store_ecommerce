@@ -1,6 +1,7 @@
 const images = {
    avatar: new URL('./avatar.jpg', import.meta.url).href,
    logo: new URL('./logo/logo.png', import.meta.url).href,
+   logo_new: new URL('./logo/logo_new.png', import.meta.url).href,
    logo_dark: new URL('./logo/logo_dark.png', import.meta.url).href,
    logo_home: new URL('./logo/logo_home.png', import.meta.url).href,
    auth_db: new URL('./background/auth_db.jpg', import.meta.url).href,

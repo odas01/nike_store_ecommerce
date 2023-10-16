@@ -315,7 +315,7 @@ const Cart = () => {
                         <div className='h-14 w-60 rounded flex-center bg-[#3085C3] text-white duration-150 hover:-translate-y-[2px] hover:shadow-[0_8px_8px_-6px_#3085C3]'>
                            <Link to='/checkout'>
                               <button className='w-full h-full text-base font-bold cursor-pointer text-inherit'>
-                                 {t('checkout')}
+                                 {t('cart.proceedCheckOut')}
                                  {/* {t('action.addToCart')} */}
                               </button>
                            </Link>

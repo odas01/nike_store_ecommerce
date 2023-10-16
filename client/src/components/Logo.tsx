@@ -13,13 +13,10 @@ const Logo: React.FC<LogoProps> = ({ width }) => {
       <div
          style={{
             width: width,
-            height: width / 5,
+            height: width * (11 / 20),
          }}
       >
-         <img
-            src={isDarkMode ? images.logo_dark : images.logo_home}
-            alt='logo'
-         />
+         <img src={images.logo_new} alt='logo' className='w-full h-full' />
       </div>
    );
 };
