@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 
-import Coupon from '../models/Coupon';
+import Coupon from '../models/coupon.model';
 import responseHandler from '../handlers/response.handler';
 
 export const create = async (req: Request, res: Response) => {
@@ -14,7 +14,11 @@ export const create = async (req: Request, res: Response) => {
 };
 
 export const getAll = async (req: Request, res: Response) => {
-   const { skip, limit, name }: any = req.query;
+   const { name }: any = req.query;
+
+   const skip = res.locals.skip;
+   const limit = res.locals.limit;
+
    const filter = name
       ? {
            name: { $regex: new RegExp(String(name)), $options: 'i' },
@@ -58,9 +62,7 @@ export const deleteOne = async (req: Request, res: Response) => {
    const id = req.params.id;
    try {
       const coupon = await Coupon.findByIdAndDelete(id);
-      setTimeout(() => {
-         responseHandler.ok(res, coupon);
-      }, 2000);
+      responseHandler.ok(res, coupon);
    } catch {
       responseHandler.error(res);
    }

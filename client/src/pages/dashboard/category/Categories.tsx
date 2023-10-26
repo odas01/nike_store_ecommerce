@@ -1,5 +1,5 @@
 import { twMerge } from 'tailwind-merge';
-import ReactDrawer from 'react-modern-drawer';
+import { Drawer } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { useState, KeyboardEvent } from 'react';
 import { useMutation, useQuery } from '@tanstack/react-query';
@@ -41,7 +41,7 @@ function Categories() {
    const [openDrawer, setOpenDrawer] = useState<boolean>(false);
    const [openModal, setOpenModal] = useState<boolean>(false);
 
-   const { t } = useTranslation('dashboard');
+   const { t, i18n } = useTranslation('dashboard');
 
    const { data, isLoading, refetch } = useQuery({
       queryKey: ['categories', skip, params],
@@ -107,13 +107,14 @@ function Categories() {
                   heading={
                      <tr className='[&>*:not(:last-child)]:px-4 [&>*]:py-3'>
                         <td className='w-[5%]'></td>
-                        <td className='w-[30%]'>{t('table.name')}</td>
-                        <td className='w-[30%]'>{t('table.store')}</td>
-                        <td className='w-[15%]'>{t('table.date')}</td>
-                        <td className='w-[10%] text-center'>
+                        <td className='w-[25%]'>{t('table.name')}</td>
+                        <td className='w-[25%]'>{t('table.name')}</td>
+                        <td className='w-[25%]'>{t('table.store')}</td>
+                        <td className='w-[20%]'>{t('table.date')}</td>
+                        {/* <td className='w-[15%] text-center'>
                            {t('status.status')}
-                        </td>
-                        <td className='w-[10%]'></td>
+                        </td> */}
+                        <td className='w-[5%]'></td>
                      </tr>
                   }
                   pagination={
@@ -153,13 +154,18 @@ function Categories() {
                            </td>
                            <td>
                               <span className='capitalize'>
+                                 {category.vnName}
+                              </span>
+                           </td>
+                           <td>
+                              <span className='capitalize'>
                                  {category.store}
                               </span>
                            </td>
                            <td>
                               <span>{dateFormat(category.createdAt)}</span>
                            </td>
-                           <td className='flex justify-center'>
+                           {/* <td className='flex justify-center'>
                               {category.status === 'show' ? (
                                  <Tag title={t('status.show')} />
                               ) : (
@@ -168,7 +174,7 @@ function Categories() {
                                     className='bg-red-400'
                                  />
                               )}
-                           </td>
+                           </td> */}
                            <td>
                               <Dropdown
                                  items={[
@@ -218,14 +224,21 @@ function Categories() {
             )}
          </div>
 
-         <ReactDrawer
+         <Drawer
             open={openDrawer}
             onClose={closeDrawer}
-            direction='right'
-            size='40%'
+            width='40%'
+            title={null}
+            headerStyle={{
+               display: 'none',
+            }}
+            bodyStyle={{
+               padding: 0,
+            }}
+            className='dark:text-white'
          >
             <CategoryForm data={categoryActive} closeDrawer={closeDrawer} />
-         </ReactDrawer>
+         </Drawer>
 
          <Modal
             title='Change password'

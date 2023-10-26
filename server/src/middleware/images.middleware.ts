@@ -15,11 +15,9 @@ export const uploadSingle = async (file: string, folder = 'product') => {
 
 export const uploadMultiple = async (files: string[]) => {
    try {
-      const results = [];
-      for (const file of files) {
-         const result = await uploadSingle(file);
-         results.push(result);
-      }
+      const results = await Promise.all(
+         files.map((file) => uploadSingle(file))
+      );
       return results;
    } catch (err) {
       console.log(err);
@@ -37,9 +35,7 @@ export const destroySingle = async (public_id: string) => {
 
 export const destroyMultiple = async (public_ids: string[]) => {
    try {
-      for (const public_id of public_ids) {
-         await destroySingle(public_id);
-      }
+      await Promise.all(public_ids.map((public_id) => uploadSingle(public_id)));
    } catch (err) {
       console.log(err);
    }

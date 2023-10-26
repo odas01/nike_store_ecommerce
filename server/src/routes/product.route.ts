@@ -5,12 +5,14 @@ import * as productColor from '../controllers/variant.controller';
 import { checkAuth, verifyAdminRoot } from '../middleware/verify.middleware';
 import filterProduct from '../middleware/filterProduct.mdw';
 import sortProduct from '../middleware/sortProduct.middleware';
+import { skip } from 'node:test';
+import skipLimit from '../middleware/skipLimit.middleware';
 
 const router = express.Router();
 
 router
    .route('/')
-   .get(sortProduct, filterProduct, product.getAll)
+   .get(skipLimit, sortProduct, filterProduct, product.getAll)
    .post(checkAuth, verifyAdminRoot, product.create);
 
 // d: detail
@@ -19,6 +21,10 @@ router
    .get(product.getOne)
    .put(checkAuth, verifyAdminRoot, product.updateOne)
    .delete(checkAuth, verifyAdminRoot, product.deleteOne);
+
+router
+   .route('/d/:slug/similar')
+   .get(sortProduct, filterProduct, product.similar, product.getAll);
 
 router.route('/color').post(checkAuth, verifyAdminRoot, productColor.create);
 
@@ -41,6 +47,5 @@ router
    .get(product.getOne)
    .put(checkAuth, verifyAdminRoot, product.updateOne)
    .delete(checkAuth, verifyAdminRoot, product.deleteOne);
-router.route('/related').get(product.related);
 
 export default router;

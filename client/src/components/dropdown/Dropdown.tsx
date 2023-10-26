@@ -40,7 +40,7 @@ const Dropdown: React.FC<DropDownProps> = ({
             items: items.map((item, index) => ({
                key: index,
                label: (
-                  <div key={index} className='dark:!text-white p-1 text-[13px]'>
+                  <div key={index} className='dark:!text-white p-0 text-[13px]'>
                      {item.label}
                   </div>
                ),

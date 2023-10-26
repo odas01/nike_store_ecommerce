@@ -77,7 +77,7 @@ function Customers() {
                <Input
                   type='text'
                   placeholder={t('placeholderSearch.searchByNamePhoneEmail')}
-                  className='w-full h-full'
+                  className='w-full h-full px-4'
                   onKeyDown={(e) => e.key === 'Enter' && searchUser(e)}
                />
             </div>
@@ -86,12 +86,12 @@ function Customers() {
             ) : (
                <Table
                   heading={
-                     <tr className='[&>*:not(:last-child)]:px-4 [&>*]:py-3'>
+                     <tr className='[&>*:not(:last-child)]:p-4'>
                         <td className='w-[5%]'></td>
-                        <td className='w-[20%]'>{t('table.date')}</td>
-                        <td className='w-[15%]'>{t('table.name')}</td>
-                        <td className='w-[20%]'>Email</td>
-                        <td className='w-[20%]'>{t('table.phoneNumber')}</td>
+                        <td className='w-[15%]'>{t('table.date')}</td>
+                        <td className='w-[20%]'>{t('table.name')}</td>
+                        <td className='w-[25%]'>Email</td>
+                        <td className='w-[15%]'>{t('table.phoneNumber')}</td>
                         <td className='w-[10%] text-center'>
                            {t('status.status')}
                         </td>
@@ -127,10 +127,10 @@ function Customers() {
                               <span>{dateFormat(user.createdAt)}</span>
                            </td>
                            <td>
-                              <span>{user.name}</span>
+                              <span className='line-clamp-1'>{user.name}</span>
                            </td>
                            <td>
-                              <span>{user.email}</span>
+                              <span className='line-clamp-1'>{user.email}</span>
                            </td>
                            <td>
                               <span>{user.phone}</span>

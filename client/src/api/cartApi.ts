@@ -13,5 +13,3 @@ export const cartApi = {
    deleteItems: async (listId: string[]) =>
       await privateClient.delete(`cart`, { data: { listId } }),
 };
-
-export default cartApi;

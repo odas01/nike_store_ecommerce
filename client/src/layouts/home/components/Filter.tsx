@@ -5,14 +5,14 @@ import { FaCheck } from 'react-icons/fa';
 import { Collapse } from 'antd';
 import { AiOutlinePlus, AiOutlineMinus } from 'react-icons/ai';
 import { CheckboxValueType } from 'antd/es/checkbox/Group';
-import { useQueries, useQuery } from '@tanstack/react-query';
+import { useQueries } from '@tanstack/react-query';
 import { categoryApi, colorApi, sizeApi } from '@/api';
-import { twMerge } from 'tailwind-merge';
 import { IColor } from '@/types';
 import { Filter } from '@/pages/home/Shop';
 import { store } from '@/constants';
 import { useTranslation } from 'react-i18next';
 import { Spinner } from '@/components';
+import { priceFormat } from '@/helpers';
 
 type Props = {
    setFilter: React.Dispatch<React.SetStateAction<Partial<Filter>>>;
@@ -23,25 +23,35 @@ const Filter: React.FC<Props> = ({ setFilter }) => {
    const [sizeOptions, setSizeOptions] = useState<string[]>([]);
    const [colorOptions, setColorOptions] = useState<string[]>([]);
 
-   const { t } = useTranslation(['home', 'mutual']);
+   const { t, i18n } = useTranslation(['home', 'mutual']);
+   const isVn = i18n.language === 'vi';
 
    const params = useParams();
    const results = useQueries({
       queries: [
          {
             queryKey: ['colors'],
-            queryFn: () => colorApi.getAll(),
-            staleTime: 1000 * 60 * 5,
+            queryFn: () =>
+               colorApi.getAll({
+                  skip: 0,
+                  limit: 100,
+               }),
          },
          {
             queryKey: ['sizes'],
-            queryFn: () => sizeApi.getAll(),
-            staleTime: 1000 * 60 * 5,
+            queryFn: () =>
+               sizeApi.getAll({
+                  skip: 0,
+                  limit: 100,
+               }),
          },
          {
             queryKey: ['categories'],
-            queryFn: () => categoryApi.getAll(),
-            staleTime: 1000 * 60 * 5,
+            queryFn: () =>
+               categoryApi.getAll({
+                  skip: 0,
+                  limit: 100,
+               }),
          },
       ],
    });
@@ -103,7 +113,7 @@ const Filter: React.FC<Props> = ({ setFilter }) => {
             categoryData && (
                <div className='space-y-1 '>
                   <Link to={`/shop`} className='capitalize text-[15px]'>
-                     All products
+                     {t('allProducts')}
                   </Link>
                   {store.map((storeItem, index) => (
                      <div key={index} className='space-y-1'>
@@ -111,7 +121,7 @@ const Filter: React.FC<Props> = ({ setFilter }) => {
                            to={`/shop/${storeItem}`}
                            className=' capitalize text-[15px]'
                         >
-                           {storeItem}
+                           {t(`store.${storeItem}`, { ns: 'mutual' })}
                         </Link>
                         {storeItem === params.store && (
                            <div className='flex pl-6 flex-column'>
@@ -129,7 +139,7 @@ const Filter: React.FC<Props> = ({ setFilter }) => {
                                           }`
                                        }
                                     >
-                                       {item.name}
+                                       {isVn ? item.vnName : item.name}
                                     </NavLink>
                                  ))}
                            </div>
@@ -162,31 +172,43 @@ const Filter: React.FC<Props> = ({ setFilter }) => {
                         options={[
                            {
                               label: (
-                                 <>
+                                 <div className='space-x-1'>
                                     <span className='text-xs'>
                                        {t('category.filter.under')}
                                     </span>
-                                    1.000.000đ
-                                 </>
+                                    <span>{priceFormat(1000000, isVn)}</span>
+                                 </div>
                               ),
                               value: '0:1000000',
                            },
                            {
-                              label: '1.000.000đ - 2.999.999đ',
+                              label: (
+                                 <div className='space-x-1'>
+                                    <span>{priceFormat(1000000, isVn)}</span>
+                                    <span>-</span>
+                                    <span>{priceFormat(2999999, isVn)}</span>
+                                 </div>
+                              ),
                               value: '1000000:2999999',
                            },
                            {
-                              label: '3.000.000đ - 4.999.999đ',
+                              label: (
+                                 <div className='space-x-1'>
+                                    <span>{priceFormat(3000000, isVn)}</span>
+                                    <span>-</span>
+                                    <span>{priceFormat(4999999, isVn)}</span>
+                                 </div>
+                              ),
                               value: '3000000:4999999',
                            },
                            {
                               label: (
-                                 <>
+                                 <div className='space-x-1'>
                                     <span className='text-xs'>
                                        {t('category.filter.over')}
                                     </span>
-                                    5.000.000đ
-                                 </>
+                                    <span>{priceFormat(5000000, isVn)}</span>
+                                 </div>
                               ),
                               value: '5000000',
                            },
@@ -299,7 +321,7 @@ const Filter: React.FC<Props> = ({ setFilter }) => {
                                           )}
                                        </div>
                                        <span className='text-xs font-semibold capitalize'>
-                                          {item.name}
+                                          {isVn ? item.vnName : item.name}
                                        </span>
                                     </div>
                                  </Col>

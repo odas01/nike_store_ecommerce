@@ -11,10 +11,10 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
          <input
             ref={ref}
             className={twMerge(
-               'px-3 h-10 text-sm text-[#3e3e3e] rounded-[3px] border border-solid cursor-pointer dark:text-[#d5d6d7]',
+               'px-3 h-10 text-sm text-[#3e3e3e] rounded-md border border-solid cursor-pointer duration-150 dark:text-[#d5d6d7]',
                isError
                   ? 'border-red-500'
-                  : 'border-gray-400 dark:border-[#3f4244] focus:cursor-text focus:border-gray-500 dark:focus:border-gray-500',
+                  : 'border-gray-300 dark:border-[#3f4244] focus:cursor-text focus:border-gray-500 dark:focus:border-gray-500',
                className
             )}
             {...props}

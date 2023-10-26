@@ -1,6 +1,7 @@
 // FORM
 export { default as Input } from './form/Input';
 export { default as Error } from './form/Error';
+export { default as Image } from './form/Image';
 export { default as Select } from './form/Select';
 export { default as TextArea } from './form/TextArea';
 export { default as SelectGroup } from './form/SelectGroup';

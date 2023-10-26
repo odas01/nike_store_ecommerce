@@ -15,9 +15,7 @@ function Aside() {
          className='flex flex-col h-full p-5 border-r border-[rgb(232,232,232)] dark:border-none
       space-y-8 text-[#393939] bg-[#FAFAFA] dark:text-[rgb(157,157,157)] dark:bg-aside_db'
       >
-         <div className='flex justify-center'>
-            <Logo width={200} />
-         </div>
+         <h2 className='p-2 text-lg'>DASHBOARD</h2>
          <div className='flex-1 overflow-y-auto scrollbar-hide'>
             <Menu />
          </div>

@@ -1,5 +1,4 @@
 import { privateClient } from '@/api/config';
-
 import { AllUsers, IUser, UserFormUpdate } from '@/types';
 
 export const userApi = {

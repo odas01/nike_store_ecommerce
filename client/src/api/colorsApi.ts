@@ -1,6 +1,5 @@
 import { privateClient, publicClient } from '@/api/config';
-import { AllColors, IColor } from '@/types';
-import { ColorFormValues } from '@/types';
+import { AllColors, IColor, ColorFormValues } from '@/types';
 
 export const colorApi = {
    getAll: async (params?: any) =>

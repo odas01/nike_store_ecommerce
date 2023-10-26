@@ -37,6 +37,12 @@
       "size": "Size",
       "color": "Color",
       "phone": "Phone number",
-      "address": "Address"
+      "address": "Address",
+      "password": "Password"
+   },
+   "store": {
+      "shoes": "Shoes",
+      "clothing": "Clothing",
+      "gear": "Gear"
    }
 }

@@ -37,6 +37,12 @@
       "size": "Kích thước",
       "color": "Màu sắc",
       "phoneNumber": "Số điện thoại",
-      "address": "Địa chỉ"
+      "address": "Địa chỉ",
+      "password": "Mật khẩu"
+   },
+   "store": {
+      "shoes": "Giày",
+      "clothing": "Quần áo",
+      "gear": "Phụ kiện"
    }
 }

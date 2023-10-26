@@ -1,7 +1,11 @@
 import { productApi } from '@/api';
 import images from '@/assets/images';
 import ProductCard from '@/layouts/home/components/ProductCard';
-import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
+import {
+   useInfiniteQuery,
+   useQuery,
+   useQueryClient,
+} from '@tanstack/react-query';
 import { Breadcrumb, Col, Row } from 'antd';
 import { KeyboardEvent, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -13,6 +17,7 @@ import Filter from '@/layouts/home/components/Filter';
 import Sort from '@/layouts/home/components/Sort';
 import { twMerge } from 'tailwind-merge';
 import { FiSearch } from 'react-icons/fi';
+import TitleShop from '@/layouts/home/components/TitleShop';
 
 export interface Filter {
    category: string;
@@ -22,7 +27,6 @@ export interface Filter {
 
 const Shop = () => {
    const [sort, setSort] = useState<string>('');
-   const [title, setTitle] = useState<string>('');
    const [filter, setFilter] = useState<Partial<Filter>>({});
 
    const params = useParams();
@@ -36,9 +40,10 @@ const Shop = () => {
          queryKey: ['products', params, sort, filter, convertParamsTitle],
          queryFn: ({ pageParam = 0 }) => {
             return productApi.getAll({
-               skip: pageParam * 15,
-               limit: 15,
+               skip: pageParam * 6,
+               limit: 6,
                sort,
+               status: 'show',
                name: convertParamsTitle,
                ...filter,
                ...params,
@@ -49,15 +54,9 @@ const Shop = () => {
                return page;
             }
          },
+         staleTime: 0,
          keepPreviousData: true,
       });
-
-   useEffect(() => {
-      const { store, category } = params;
-      if (store) {
-         setTitle(category ? `${category} ${store}` : `All ${store}`);
-      } else setTitle('All product');
-   }, [params]);
 
    const products = data?.pages.reduce(
       (cur, item) => [...cur, ...item.products],
@@ -91,9 +90,7 @@ const Shop = () => {
                                  </span>
                               </h2>
                            ) : (
-                              <h2 className='text-xl font-medium capitalize'>
-                                 {title} ({data?.pages[0].total})
-                              </h2>
+                              <TitleShop qty={data?.pages[0].total!} />
                            )}
 
                            <div
@@ -115,7 +112,7 @@ const Shop = () => {
                            >
                               <Row gutter={[12, 32]}>
                                  {products?.map((item, index) => (
-                                    <Col span={6} key={index}>
+                                    <Col span={8} key={index}>
                                        <ProductCard data={item} />
                                     </Col>
                                  ))}

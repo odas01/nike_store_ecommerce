@@ -1,10 +1,9 @@
 const images = {
    avatar: new URL('./avatar.jpg', import.meta.url).href,
-   logo: new URL('./logo/logo.png', import.meta.url).href,
-   logo_new: new URL('./logo/logo_new.png', import.meta.url).href,
-   logo_dark: new URL('./logo/logo_dark.png', import.meta.url).href,
-   logo_home: new URL('./logo/logo_home.png', import.meta.url).href,
+   logo2: new URL('./logo/logo2.png', import.meta.url).href,
+   auth_logo: new URL('./logo/auth_logo.png', import.meta.url).href,
    auth_db: new URL('./background/auth_db.jpg', import.meta.url).href,
+   auth_bg: new URL('./background/auth.jpg', import.meta.url).href,
    appearance: new URL('./appearance.svg', import.meta.url).href,
    flag: {
       vi: new URL('./flag/vi.png', import.meta.url).href,
@@ -23,8 +22,14 @@ const images = {
       kids: new URL('./banner/kids.jpg', import.meta.url).href,
       men: new URL('./banner/men.jpg', import.meta.url).href,
    },
+   social: {
+      instagram: new URL('./social/instagram.png', import.meta.url).href,
+      facebook: new URL('./social/facebook.png', import.meta.url).href,
+      google: new URL('./social/google.png', import.meta.url).href,
+   },
    empty_cart: new URL('./cart/emptyCart.png', import.meta.url).href,
    thank: new URL('./checkout/thanks.png', import.meta.url).href,
+   user: new URL('./avatar/user.png', import.meta.url).href,
 };
 
 export default images;

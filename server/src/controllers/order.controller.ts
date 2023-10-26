@@ -1,42 +1,14 @@
-import Order from '../models/Order';
+import Order from '../models/order.model';
 
 import responseHandler from '../handlers/response.handler';
 import { Request, Response } from 'express';
-import CartItem from '../models/CartItem';
-import Product from '../models/Product';
-import Variant from '../models/Variant';
-
-export const getOne = async (req: Request, res: Response) => {
-   // try {
-   //    await Order.findById(req.params.id).then(async (order) => {
-   //       order._doc.details = await OrderDetail.find({ order: order._id })
-   //          .sort({ product: 1, size: 1 })
-   //          .populate('product', 'title thumbnail price');
-   //       responseHandler.ok(res, { order });
-   //    });
-   // } catch {
-   //    responseHandler.error(res);
-   // }
-};
-
-export const getByUser = async (req: Request, res: Response) => {
-   // try {
-   //    await Order.find({ user: req.params.userId }).then(async (orders) => {
-   //       for await (let order of orders) {
-   //          const orderDetails = await OrderDetail.find({
-   //             order: order._id,
-   //          }).populate('product', 'title thumbnail price');
-   //          order.details = orderDetails;
-   //       }
-   //       responseHandler.ok(res, { orders, total: orders.length });
-   //    });
-   // } catch {
-   //    responseHandler.error(res);
-   // }
-};
+import CartItem from '../models/cartItem.model';
+import Product from '../models/product.model';
+import Variant from '../models/variant.model';
+import { sendMailOrder } from '../config/sendMail';
 
 export const create = async (req: Request, res: Response) => {
-   const { _id } = res.locals.user;
+   const { _id, email } = res.locals.user;
 
    try {
       const order = await Order.create({ ...req.body, user: _id });
@@ -58,6 +30,7 @@ export const create = async (req: Request, res: Response) => {
          }),
       ]);
       await CartItem.deleteMany({ user: _id });
+      await sendMailOrder(email);
 
       responseHandler.created(res, order);
    } catch {
@@ -66,15 +39,26 @@ export const create = async (req: Request, res: Response) => {
 };
 
 export const getAll = async (req: Request, res: Response) => {
-   const { skip, limit } = req.query;
+   const { user } = req.query;
+   const filter: any = {};
+   if (user) {
+      filter.user = user;
+   }
+
+   const skip = res.locals.skip;
+   const limit = res.locals.limit;
+
    try {
-      const total = await Order.countDocuments({});
+      const total = await Order.countDocuments(filter);
 
       const page = Number(skip) / Number(limit) + 1 || 1;
       const lastPage = Math.ceil(total / Number(limit)) || 1;
 
-      const orders = await Order.find({})
+      const orders = await Order.find(filter)
          .lean()
+         .sort({ createdAt: -1 })
+         .skip(Number(skip))
+         .limit(Number(limit))
          .populate([
             {
                path: 'user',

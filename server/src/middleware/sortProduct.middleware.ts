@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
-import Category from '../models/Category';
-import ProductColor from '../models/Variant';
+import Category from '../models/category.model';
+import ProductColor from '../models/variant.model';
 
 type Sort = {
    name: number | string;

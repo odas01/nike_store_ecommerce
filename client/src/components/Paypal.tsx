@@ -16,17 +16,10 @@ const initialOptions = {
 
 interface PaypalProps {
    amount: string;
-   handleSaveOrder: () => Promise<void>;
+   handleSaveOrder: (paid: boolean) => void;
 }
 
 const Paypal: FC<PaypalProps> = ({ amount, handleSaveOrder }) => {
-   // useEffect(() => {
-   //    dispatch({
-   //       type: 'resetOptions',
-   //       value: { ...options, currency },
-   //    });
-   // }, [currency]);
-
    return (
       <PayPalScriptProvider options={initialOptions}>
          <PayPalButtons
@@ -37,6 +30,7 @@ const Paypal: FC<PaypalProps> = ({ amount, handleSaveOrder }) => {
                tagline: false,
                shape: 'pill',
             }}
+            forceReRender={[amount, handleSaveOrder]}
             createOrder={(_, actions) =>
                actions.order
                   .create({
@@ -51,7 +45,7 @@ const Paypal: FC<PaypalProps> = ({ amount, handleSaveOrder }) => {
             onApprove={(_, actions) => {
                return actions.order!.capture().then((details) => {
                   if (details.status === 'COMPLETED') {
-                     handleSaveOrder();
+                     handleSaveOrder(true);
                   }
                });
             }}

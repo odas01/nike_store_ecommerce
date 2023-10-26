@@ -1,5 +1,5 @@
 import { twMerge } from 'tailwind-merge';
-import ReactDrawer from 'react-modern-drawer';
+import { Drawer } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { useState, KeyboardEvent } from 'react';
 import { useMutation, useQuery } from '@tanstack/react-query';
@@ -38,7 +38,7 @@ function Sizes() {
 
    const [openDrawer, setOpenDrawer] = useState<boolean>(false);
 
-   const { t } = useTranslation('dashboard');
+   const { t } = useTranslation(['dashboard', 'mutual']);
 
    const { isLoading, data, refetch } = useQuery({
       queryKey: ['sizes', skip, params],
@@ -111,8 +111,8 @@ function Sizes() {
                         <td className='w-[5%]'></td>
                         <td className='w-[30%]'>{t('table.name')}</td>
                         <td className='w-[30%]'>{t('table.store')}</td>
-                        <td className='w-[25%]'>{t('table.date')}</td>
-                        <td className='w-[10%]'></td>
+                        <td className='w-[30%]'>{t('table.date')}</td>
+                        <td className='w-[5%]'></td>
                      </tr>
                   }
                   pagination={
@@ -152,7 +152,7 @@ function Sizes() {
                            </td>
                            <td>
                               <span className='capitalize line-clamp-1'>
-                                 {size.store}
+                                 {t(`store.${size.store}`, { ns: 'mutual' })}
                               </span>
                            </td>
                            <td>
@@ -207,14 +207,21 @@ function Sizes() {
             )}
          </div>
 
-         <ReactDrawer
+         <Drawer
             open={openDrawer}
             onClose={closeDrawer}
-            direction='right'
-            size='40%'
+            width='40%'
+            title={null}
+            headerStyle={{
+               display: 'none',
+            }}
+            bodyStyle={{
+               padding: 0,
+            }}
+            className='dark:text-white'
          >
             <SizeForm data={sizeActive} closeDrawer={closeDrawer} />
-         </ReactDrawer>
+         </Drawer>
       </>
    );
 }

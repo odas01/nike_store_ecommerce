@@ -7,14 +7,18 @@
       "customer": "Customers",
       "admin": "Admins",
       "overview": "Overview",
+      "order": "Orders",
+      "coupon": "Coupons",
       "createProuct": "Create product",
       "editProduct": "Edit product"
    },
    "aside": {
       "list": "List",
       "size": "Sizes",
+      "order": "Orders",
       "admin": "Admins",
       "color": "Colors",
+      "coupon": "Coupons",
       "product": "Products",
       "overview": "Overview",
       "customer": "Customers",
@@ -32,7 +36,10 @@
       "price": "Price",
       "category": "Category",
       "colorHex": "Color hex",
-      "phoneNumber": "Phone number"
+      "phoneNumber": "Phone number",
+      "payment": "Payment",
+      "actions": "Actions",
+      "totalAmout": "Total amount"
    },
    "role": {
       "root": "Root",
@@ -78,5 +85,9 @@
       "hide": "Hide",
       "show": "Show",
       "blocked": "Blocked"
-   }
+   },
+   "invoice": "Invoice",
+   "value": "Value",
+   "code": "Code",
+   "expirationDate": "Exp date"
 }

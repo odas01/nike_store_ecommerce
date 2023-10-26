@@ -36,6 +36,12 @@ module.exports = {
          aspectRatio: {
             product: '4 / 5',
          },
+         fontSize: {
+            10: '10px',
+            11: '11px',
+            13: '13px',
+            15: '15px',
+         },
       },
    },
 };

@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
-import Category from '../models/Category';
-import Variant from '../models/Variant';
+import Category from '../models/category.model';
+import Variant from '../models/variant.model';
 
 // type FilterCate = {
 //    name?: string;
@@ -17,6 +17,7 @@ type Query = {
    price: string[];
    color: string[];
    size: string[];
+   status: string;
 };
 
 type FilterCate = {
@@ -31,7 +32,7 @@ const filterProduct = async (
 ) => {
    let filter: any = {};
 
-   const { name, store, category, price, color, size }: Partial<Query> =
+   const { name, store, category, price, color, size, status }: Partial<Query> =
       req.query;
 
    if (name) {
@@ -39,6 +40,10 @@ const filterProduct = async (
          $regex: new RegExp(String(name)),
          $options: 'i',
       };
+   }
+
+   if (status) {
+      filter.status = status;
    }
 
    if (price) {
@@ -100,7 +105,6 @@ const filterProduct = async (
          $gte: 1,
       };
    }
-   console.log(filter);
 
    res.locals.filter = filter;
 

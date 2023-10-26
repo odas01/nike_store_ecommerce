@@ -16,8 +16,9 @@ import { CheckboxChangeEvent } from 'antd/es/checkbox';
 import { Button } from '@/components';
 
 const Cart = () => {
-   const { t } = useTranslation(['home', 'mutual']);
-   const { qty, cart, updateCart, getCart } = cartStore();
+   const { t, i18n } = useTranslation(['home', 'mutual']);
+   const isVn = i18n.language === 'vi';
+   const { qty, cart, updateCart, getCart, subTotal } = cartStore();
    const navigate = useNavigate();
 
    const [isCheckAll, setIsCheckAll] = useState<boolean>(false);
@@ -86,28 +87,15 @@ const Cart = () => {
       }
    };
 
-   const total = cart.reduce(
-      (cur, item) => cur + item.qty * item.product.prices.price,
-      0
-   );
-
-   const originalTotal = cart.reduce(
-      (cur, item) => cur + item.qty * item.product.prices.originalPrice,
-      0
-   );
+   const originTotal = cart.reduce((cur, item) => {
+      if (item.product) {
+         return cur + item.qty * item.product.prices.originalPrice;
+      }
+      return cur;
+   }, 0);
 
    return (
       <div className='container space-y-4'>
-         {/* <Breadcrumb
-            items={[
-               {
-                  title: <Link to='/'>{t('navbar.home', { ns: 'home' })}</Link>,
-               },
-               {
-                  title: t('cart'),
-               },
-            ]}
-         /> */}
          <div>
             <h2 className='text-2xl font-semibold text-center uppercase'>
                {t('cart.cart')}
@@ -141,132 +129,143 @@ const Cart = () => {
                   </div>
 
                   <div>
-                     {cart.map((item, index) => (
-                        <div
-                           className={twMerge(
-                              'py-4 border-b border-gray-300',
-                              deleteItemMutation.isLoading &&
-                                 deleteItemMutation.variables?.includes(
-                                    item._id
-                                 ) &&
-                                 'pointer-events-none opacity-60'
-                           )}
-                           key={index}
-                        >
-                           <Row>
-                              <Col span={1} className='flex items-center'>
-                                 <Checkbox
-                                    onChange={(e) => handleCheck(e, item._id)}
-                                    checked={isCheck.includes(item._id)}
-                                 />
-                              </Col>
-                              <Col span={8}>
-                                 <Link
-                                    to={'/d/' + item.product.slug}
-                                    className='flex pr-6 hover:text-inherit'
+                     {cart
+                        .filter((item) => item.product)
+                        .map((item, index) => (
+                           <div
+                              className={twMerge(
+                                 'py-4 border-b border-gray-300',
+                                 deleteItemMutation.isLoading &&
+                                    deleteItemMutation.variables?.includes(
+                                       item._id
+                                    ) &&
+                                    'pointer-events-none opacity-60'
+                              )}
+                              key={index}
+                           >
+                              <Row>
+                                 <Col span={1} className='flex items-center'>
+                                    <Checkbox
+                                       onChange={(e) =>
+                                          handleCheck(e, item._id)
+                                       }
+                                       checked={isCheck.includes(item._id)}
+                                    />
+                                 </Col>
+                                 <Col span={8}>
+                                    <Link
+                                       to={'/d/' + item.product.slug}
+                                       className='flex pr-6 hover:text-inherit'
+                                    >
+                                       <div className='w-20 overflow-hidden rounded aspect-square'>
+                                          <img
+                                             src={item.variant.thumbnail.url}
+                                             className=''
+                                             alt={item.product.name}
+                                          />
+                                       </div>
+                                       <div className='flex-1 pt-2 pl-4'>
+                                          <span className='text-base font-medium '>
+                                             {item.product.name}
+                                          </span>
+                                       </div>
+                                    </Link>
+                                 </Col>
+                                 <Col span={3}>
+                                    <div className='flex flex-col items-center justify-center h-full'>
+                                       <div className='flex items-center'>
+                                          <span className='capitalize'>
+                                             {item.variant.color.name}
+                                          </span>
+                                          {'  - Size'}
+                                          <span className='ml-1 mr-2 uppercase'>
+                                             {item.size}
+                                          </span>
+                                          <AiFillCaretDown />
+                                       </div>
+                                    </div>
+                                 </Col>
+                                 <Col
+                                    span={4}
+                                    className='flex flex-col items-center justify-center'
                                  >
-                                    <div className='w-20 overflow-hidden rounded aspect-square'>
-                                       <img
-                                          src={item.variant.thumbnail.url}
-                                          className=''
-                                          alt={item.product.name}
-                                       />
-                                    </div>
-                                    <div className='flex-1 pt-2 pl-4'>
-                                       <span className='text-base font-medium '>
-                                          {item.product.name}
-                                       </span>
-                                    </div>
-                                 </Link>
-                              </Col>
-                              <Col span={3}>
-                                 <div className='flex flex-col items-center justify-center h-full'>
-                                    <div className='flex items-center'>
-                                       <span className='capitalize'>
-                                          {item.variant.color.name}
-                                       </span>
-                                       {'  - Size'}
-                                       <span className='ml-1 mr-2 uppercase'>
-                                          {item.size}
-                                       </span>
-                                       <AiFillCaretDown />
-                                    </div>
-                                 </div>
-                              </Col>
-                              <Col
-                                 span={4}
-                                 className='flex items-center justify-center'
-                              >
-                                 <div>
-                                    <p className='line-through italic text-[rgba(0,0,0,0.5)]'>
-                                       {priceFormat(
-                                          item.product.prices.originalPrice
-                                       )}
-                                    </p>
-                                    <p className='text-base font-semibold'>
-                                       {priceFormat(item.product.prices.price)}
-                                    </p>
-                                 </div>
-                              </Col>
-                              <Col
-                                 span={3}
-                                 className='flex items-center justify-center'
-                              >
-                                 <div
-                                    className={twMerge(
-                                       'flex items-center justify-center select-none',
-                                       updateItemMutation.isLoading &&
-                                          updateItemMutation.variables?.id ===
-                                             item._id &&
-                                          'pointer-events-none opacity-60'
+                                    {item.product.discount !== 0 && (
+                                       <p className='line-through italic text-[rgba(0,0,0,0.5)]'>
+                                          {priceFormat(
+                                             item.product.prices.originalPrice,
+                                             isVn
+                                          )}
+                                       </p>
                                     )}
-                                 >
-                                    <button
-                                       className={twMerge(
-                                          'flex items-center justify-center w-10 text-sm rounded-full aspect-square shadow-db',
-                                          item.qty === 1 && 'opacity-60'
+                                    <p className='text-base font-semibold'>
+                                       {priceFormat(
+                                          item.product.prices.price,
+                                          isVn
                                        )}
+                                    </p>
+                                 </Col>
+                                 <Col
+                                    span={3}
+                                    className='flex items-center justify-center'
+                                 >
+                                    <div
+                                       className={twMerge(
+                                          'flex items-center justify-center select-none',
+                                          updateItemMutation.isLoading &&
+                                             updateItemMutation.variables
+                                                ?.id === item._id &&
+                                             'pointer-events-none opacity-60'
+                                       )}
+                                    >
+                                       <button
+                                          className={twMerge(
+                                             'flex items-center justify-center w-10 text-sm rounded-full aspect-square shadow-db',
+                                             item.qty === 1 && 'opacity-60'
+                                          )}
+                                          onClick={() =>
+                                             item.qty > 1 &&
+                                             changeQty(item, 'minus')
+                                          }
+                                       >
+                                          <AiOutlineMinus size={16} />
+                                       </button>
+                                       <input
+                                          type='number'
+                                          value={item.qty}
+                                          className='text-base font-medium text-center w-14'
+                                          readOnly
+                                       />
+                                       <button
+                                          className='flex items-center justify-center w-10 text-sm rounded-full aspect-square shadow-db'
+                                          onClick={() =>
+                                             changeQty(item, 'plus')
+                                          }
+                                       >
+                                          <AiOutlinePlus size={16} />
+                                       </button>
+                                    </div>
+                                 </Col>
+                                 <Col span={4} className='flex justify-end'>
+                                    <span className='m-auto text-base font-semibold text-red-500'>
+                                       {priceFormat(
+                                          item.product.prices.price * item.qty,
+                                          isVn
+                                       )}
+                                    </span>
+                                 </Col>
+                                 <Col span={1} className='flex justify-end'>
+                                    <button
+                                       className='cursor-pointer flex-center'
                                        onClick={() =>
-                                          item.qty > 1 &&
-                                          changeQty(item, 'minus')
+                                          deleteItemMutation.mutate([item._id])
                                        }
                                     >
-                                       <AiOutlineMinus size={16} />
+                                       <RiDeleteBin5Line size={18} />
                                     </button>
-                                    <input
-                                       type='number'
-                                       value={item.qty}
-                                       className='text-base font-medium text-center w-14'
-                                       readOnly
-                                    />
-                                    <button
-                                       className='flex items-center justify-center w-10 text-sm rounded-full aspect-square shadow-db'
-                                       onClick={() => changeQty(item, 'plus')}
-                                    >
-                                       <AiOutlinePlus size={16} />
-                                    </button>
-                                 </div>
-                              </Col>
-                              <Col span={4} className='flex justify-end'>
-                                 <span className='m-auto text-base font-semibold text-red-500'>
-                                    {priceFormat(
-                                       item.product.prices.price * item.qty
-                                    )}
-                                 </span>
-                              </Col>
-                              <Col span={1} className='flex justify-end'>
-                                 <button
-                                    className='cursor-pointer flex-center'
-                                    onClick={() =>
-                                       deleteItemMutation.mutate([item._id])
-                                    }
-                                 >
-                                    <RiDeleteBin5Line size={18} />
-                                 </button>
-                              </Col>
-                           </Row>
-                        </div>
-                     ))}
+                                 </Col>
+                              </Row>
+                           </div>
+                        ))}
                   </div>
 
                   <div className='flex justify-between mt-12'>
@@ -302,13 +301,13 @@ const Cart = () => {
                                  {qty > 1 ? t('items') : t('item')}):
                               </span>
                               <span className='text-lg font-semibold text-red-500'>
-                                 {priceFormat(total)}
+                                 {priceFormat(subTotal, isVn)}
                               </span>
                            </div>
                            <div className='space-x-2 text-sm'>
                               <span>{t('saved')}:</span>
                               <span className='font-semibold text-red-500'>
-                                 {priceFormat(originalTotal - total)}
+                                 {priceFormat(originTotal - subTotal, isVn)}
                               </span>
                            </div>
                         </div>
@@ -316,7 +315,6 @@ const Cart = () => {
                            <Link to='/checkout'>
                               <button className='w-full h-full text-base font-bold cursor-pointer text-inherit'>
                                  {t('cart.proceedCheckOut')}
-                                 {/* {t('action.addToCart')} */}
                               </button>
                            </Link>
                         </div>
@@ -373,7 +371,7 @@ const Cart = () => {
          </div>
          <Modal
             open={openModal}
-            className='!rounded'
+            className='!rounded bg-white'
             onCancel={() => setOpenModal(false)}
             footer={
                <div className='flex justify-end mb-2 space-x-2'>

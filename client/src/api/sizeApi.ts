@@ -1,5 +1,4 @@
 import { privateClient } from '@/api/config';
-
 import { AllSizes, ISize, SizeFormValues } from '@/types';
 
 export const sizeApi = {

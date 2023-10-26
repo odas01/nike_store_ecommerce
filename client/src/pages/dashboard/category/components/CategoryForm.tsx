@@ -17,12 +17,14 @@ import { categoryApi } from '@/api';
 import { CagtegoryFormValue, ErrorResponse, ICategory } from '@/types';
 
 const formSchema = zod.object({
-   name: zod.string().nonempty('Category name is required!'),
+   name: zod.string().nonempty('Name is required!'),
+   vnName: zod.string().nonempty('Vietnamese name is required!'),
    store: zod.string().nonempty('Please chooes one store!'),
 });
 
 const initialForm = {
    name: '',
+   vnName: '',
    store: '',
 };
 
@@ -112,6 +114,15 @@ const CategoryForm: FC<CategoryFormProps> = ({ data, closeDrawer }) => {
                      placeholder='Admin name'
                      isError={!!errors?.name}
                      {...register('name')}
+                  />
+                  {errors?.name && <Error message={errors.name.message} />}
+               </div>
+               <div className='flex flex-col space-y-2'>
+                  <label htmlFor='vnName'>Tên việt</label>
+                  <Input
+                     placeholder='Admin vnName'
+                     isError={!!errors?.vnName}
+                     {...register('vnName')}
                   />
                   {errors?.name && <Error message={errors.name.message} />}
                </div>

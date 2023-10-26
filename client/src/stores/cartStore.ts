@@ -19,14 +19,14 @@ type Store = {
 type Actions = {
    addItem: (data: CartUpload) => void;
    updateCart: (id: string, item: ICartItem) => void;
-   getCart: () => void;
+   getCart: () => Promise<void>;
    deleteCart: () => void;
 };
 
 const initialState = {
    qty: 0,
-   subTotal: 0,
    cart: [],
+   subTotal: 0,
 };
 
 const cartStore = create<Store & Actions>()(
@@ -56,16 +56,23 @@ const cartStore = create<Store & Actions>()(
          getCart: async () => {
             try {
                const { items, total } = await cartApi.get();
+
                set({
                   cart: items,
                   qty: total,
-                  subTotal: items.reduce(
-                     (cur, item) => cur + item.qty * item.product.prices.price,
-                     0
-                  ),
+                  subTotal: items.reduce((cur, item) => {
+                     if (item.product) {
+                        return cur + item.product.prices.price * item.qty;
+                     }
+                     return cur;
+                  }, 0),
                });
             } catch (err) {
-               console.log(err);
+               set({
+                  cart: [],
+                  qty: 0,
+                  subTotal: 0,
+               });
             }
          },
          deleteCart: () => {

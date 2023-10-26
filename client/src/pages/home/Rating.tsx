@@ -114,7 +114,10 @@ const Rating: FC<RatingProps> = ({ productId }) => {
                         {Array(5)
                            .fill(5)
                            .map((_, index) => (
-                              <div className='flex items-center h-5'>
+                              <div
+                                 className='flex items-center h-5'
+                                 key={index}
+                              >
                                  {Array(5 - index)
                                     .fill(0)
                                     .map((_, index2) => (
@@ -283,6 +286,7 @@ const Rating: FC<RatingProps> = ({ productId }) => {
                                           {
                                              label: (
                                                 <span
+                                                   className='p-2'
                                                    onClick={() =>
                                                       deleteRatingMutation.mutate(
                                                          item._id

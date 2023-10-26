@@ -5,6 +5,8 @@
       "size": "Danh sách kích thước",
       "product": "Danh sách sản phẩm",
       "category": "Danh sách danh mục",
+      "order": "Danh sách đơn hàng",
+      "coupon": "Phiếu giảm giá",
       "customer": "Danh sách khách hàng",
       "admin": "Danh sách quản trị viên",
       "createProuct": "Thêm sản phẩm",
@@ -13,8 +15,10 @@
    "aside": {
       "color": "Màu sắc",
       "list": "Danh sách",
+      "order": "Đơn hàng",
       "size": "Kích thước",
       "product": "Sản phẩm",
+      "coupon": "Phiếu giảm",
       "category": "Danh mục",
       "overview": "Tổng quan",
       "admin": "Quản trị viên",
@@ -34,7 +38,11 @@
       "date": "Ngày tạo",
       "colorHex": "Mã màu",
       "category": "Danh mục",
-      "phoneNumber": "Số điện thoại"
+      "customerName": "Tên khách hàng",
+      "phoneNumber": "Số điện thoại",
+      "payment": "Thanh toán",
+      "totalAmout": "Tổng tiền",
+      "actions": "Hành động"
    },
    "role": {
       "root": "Root",
@@ -81,5 +89,9 @@
       "hide": "Ẩn",
       "show": "Hiện",
       "blocked": "Đã khóa"
-   }
+   },
+   "invoice": "Hóa đơn",
+   "value": "Giá trị",
+   "code": "Mã giảm",
+   "expirationDate": "Ngày hết hạn"
 }

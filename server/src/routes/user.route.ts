@@ -6,10 +6,11 @@ import {
    checkAuth,
    verifyRoot,
 } from '../middleware/verify.middleware';
+import skipLimit from '../middleware/skipLimit.middleware';
 
 const router = express.Router();
 
-router.route('/').get(checkAuth, verifyAdminRoot, user.getAll);
+router.route('/').get(skipLimit, checkAuth, verifyAdminRoot, user.getAll);
 
 // CRUD USER
 router.route('/:id/block').put(checkAuth, verifyAdminRoot, user.blockOne);

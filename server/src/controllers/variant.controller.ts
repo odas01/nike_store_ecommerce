@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 
-import Product from '../models/Product';
+import Product from '../models/product.model';
 import responseHandler from '../handlers/response.handler';
 import {
    uploadMultiple,
@@ -9,7 +9,8 @@ import {
    destroyMultiple,
 } from '../middleware/images.middleware';
 import { IProduct, IVariant, Image } from '../types/product.type';
-import Variant from '../models/Variant';
+import Variant from '../models/variant.model';
+import Order from '../models/order.model';
 
 export const create = async (req: Request, res: Response) => {
    const { product_id, ...value } = req.body;
@@ -23,7 +24,7 @@ export const create = async (req: Request, res: Response) => {
          await Variant.create({ ...value, thumbnail, images })
       ).populate({
          path: 'color',
-         select: '-_id name value',
+         select: '-_id name vnName value',
          options: {
             lean: true,
          },
@@ -77,6 +78,14 @@ export const updateOne = async (req: Request, res: Response) => {
 export const deleteOne = async (req: Request, res: Response) => {
    const _id = req.params.id;
    try {
+      const order = await Order.find({ 'products.variant': _id });
+      if (order.length > 0) {
+         return responseHandler.badrequest(
+            res,
+            'Paid product variations cannot be deleted'
+         );
+      }
+
       await Variant.deleteOne({ _id });
       await Product.findOneAndUpdate(
          { variants: _id },

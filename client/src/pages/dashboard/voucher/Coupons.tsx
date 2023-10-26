@@ -1,5 +1,5 @@
 import { twMerge } from 'tailwind-merge';
-import ReactDrawer from 'react-modern-drawer';
+import { Drawer } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { useState, KeyboardEvent } from 'react';
 import { useMutation, useQuery } from '@tanstack/react-query';
@@ -18,11 +18,13 @@ import {
    Skeleton,
    PageTitle,
    Pagination,
+   Tag,
 } from '@/components';
 
 import { dateFormat, notify, priceFormat } from '@/helpers';
 import { ErrorResponse, ICoupon } from '@/types';
 import { couponApi } from '@/api';
+import moment from 'moment';
 
 const DEFAULT_LIMIT = import.meta.env.VITE_APP_LIMIT || 15;
 
@@ -85,7 +87,7 @@ function Coupons() {
    return (
       <>
          <PageTitle title='Coupons' />
-         <Title title='Danh sách mã giảm giá' />
+         <Title title={t('title.coupon')} />
          <div className='flex flex-col mt-6'>
             <div className='flex justify-between mb-4 space-x-4 h-11'>
                <Input
@@ -108,10 +110,11 @@ function Coupons() {
                   heading={
                      <tr className='[&>*:not(:last-child)]:px-4 [&>*]:py-3'>
                         <td className='w-[5%]'></td>
-                        <td className='w-[20%]'>Tên</td>
-                        <td className='w-[20%]'>Mã giảm giá</td>
-                        <td className='w-[15%]'>Giá trị </td>
-                        <td className='w-[20%]'>Ngày hết hạn</td>
+                        <td className='w-[20%]'>{t('table.name')}</td>
+                        <td className='w-[15%]'>{t('code')}</td>
+                        <td className='w-[15%]'>{t('value')}</td>
+                        <td className='w-[15%]'>{t('expirationDate')}</td>
+                        <td className='w-[10%]'>{t('status.status')}</td>
                         <td className='w-[5%]'></td>
                      </tr>
                   }
@@ -167,6 +170,13 @@ function Coupons() {
                               <span>{dateFormat(coupon.expirationDate)}</span>
                            </td>
                            <td>
+                              {moment().isAfter(coupon.expirationDate) ? (
+                                 <Tag title='Expired' className='bg-red-500' />
+                              ) : (
+                                 <Tag title='Active' className='bg-green-500' />
+                              )}
+                           </td>
+                           <td>
                               {' '}
                               <Dropdown
                                  items={[
@@ -216,14 +226,21 @@ function Coupons() {
             )}
          </div>
 
-         <ReactDrawer
+         <Drawer
             open={openDrawer}
             onClose={closeDrawer}
-            direction='right'
-            size='40%'
+            width='40%'
+            title={null}
+            headerStyle={{
+               display: 'none',
+            }}
+            bodyStyle={{
+               padding: 0,
+            }}
+            className='dark:text-white'
          >
             <CouponForm data={couponActive} closeDrawer={closeDrawer} />
-         </ReactDrawer>
+         </Drawer>
       </>
    );
 }

@@ -17,7 +17,6 @@ const LoginForm = () => {
       register,
       handleSubmit,
       formState: { errors },
-      reset,
    } = useForm<LoginFormValues>({
       resolver: zodResolver(formSchema),
       mode: 'onChange',
@@ -30,7 +29,7 @@ const LoginForm = () => {
    });
 
    return (
-      <form onSubmit={onSubmit} className='h-full flex flex-col'>
+      <form onSubmit={onSubmit} className='flex flex-col h-full'>
          <div className='[&_label]:text-sm [&_label]:font-normal [&>div]:space-y-1'>
             <div className='flex flex-col'>
                <label htmlFor='email'>Email</label>
@@ -52,23 +51,6 @@ const LoginForm = () => {
             </div>
          </div>
          <Button className='w-full py-3 mt-4'>Log in</Button>
-         {/* <p className='text-center text-xs font-normal text-gray-800 mt-4'>
-            Or Sign Up with
-         </p>
-         <div className='flex justify-center mt-2'>
-            <div className='p-2 bg-red-400 rounded-full'>
-               <BsGoogle color='#fff' />
-            </div>
-         </div> */}
-         {/* <div className='text-center text-sm mt-auto space-x-1'>
-            <span className='text-[#7e7e7e]'>Don't have an account?</span>
-            <span
-               className='text-[#4f4f4f] font-semibold duration-150 hover:text-[#3c3c3c] cursor-pointer'
-               onClick={() => setIsLoginForm(false)}
-            >
-               Sign Up
-            </span>
-         </div> */}
       </form>
    );
 };

@@ -1,48 +1,95 @@
+import images from '@/assets/images';
 import { Col, Row } from 'antd';
 import React from 'react';
+import { AiOutlineMail, AiOutlinePhone } from 'react-icons/ai';
+import { MdOutlinePlace } from 'react-icons/md';
 
 const Footer = () => {
    return (
-      <>
-         <div className='bg-red-500 banner !h-[30vh] text-white'>
-            {/* <div className='container mx-auto 2xl:max-w-[1340px] border py-4'>
-               <Row>
+      <div className='border-t border-[#e7e7e7] mt-auto'>
+         <div className='container pt-4 pb-2'>
+            <div className='mt-4 mb-10'>
+               <Row gutter={24}>
                   <Col span={6}>
-                     <h2 className='mb-4 text-base font-medium'>Company</h2>
-                     <div className='flex flex-col space-y-1'>
-                        <span>About us</span>
-                        <span>Press</span>
-                        <span>Contact</span>
+                     <h2 className='text-lg'>Follow our Socials</h2>
+                     <div className='flex pt-4'>
+                        <div
+                           className='w-10 h-10 shadow-[0px_2px_12px_0px_#006fff87] rounded-full flex-center transition-all 
+                              duration-300 cursor-pointer hover:bg-[rgba(0,0,0,0.8)] hover:-translate-y-1'
+                        >
+                           <img
+                              className='w-4 h-4'
+                              src={images.social.facebook}
+                              alt='facebook'
+                           />
+                        </div>
+                        <div
+                           className='w-10 h-10 shadow-[0px_2px_12px_0px_#006fff87] rounded-full flex-center ml-4 transition-all 
+                              duration-300 cursor-pointer hover:bg-[rgba(0,0,0,0.8)] hover:-translate-y-1'
+                        >
+                           <img
+                              className='w-4 h-4'
+                              src={images.social.instagram}
+                              alt='instagram'
+                           />
+                        </div>
+                        <div
+                           className='w-10 h-10 shadow-[0px_2px_12px_0px_#006fff87] rounded-full flex-center ml-4 transition-all 
+                              duration-300 cursor-pointer hover:bg-[rgba(0,0,0,0.8)] hover:-translate-y-1'
+                        >
+                           <img
+                              className='w-4 h-4'
+                              src={images.social.google}
+                              alt='google'
+                           />
+                        </div>
                      </div>
                   </Col>
                   <Col span={6}>
-                     <h2>Introduce</h2>
-                     <div className='flex flex-col space-y-1'>
-                        <span>0123789456</span>
-                        <span>lntthanh3317@gmail.com</span>
-                        <span>
-                           Đường 3/2, phường Xuân Khánh, quận Ninh Kiều, thành
-                           phố Cần Thơ
-                        </span>
+                     <h2 className='text-lg'>Company</h2>
+                     <div className='pt-2 font-normal space-y-1'>
+                        <p>About Us</p>
+                        <p>Press</p>
+                        <p>Contact</p>
                      </div>
                   </Col>
                   <Col span={6}>
-                     <h2>Company</h2>
-                     <div className='flex flex-col space-y-1'>
-                        <span>About us</span>
-                        <span>Press</span>
-                        <span>Contact</span>
+                     <h2 className='text-lg'>Introduce</h2>
+                     <div className='pt-2 pr-6 font-normal space-y-1'>
+                        <p className='flex items-center '>
+                           <AiOutlinePhone className='mr-2' /> 0123789456
+                        </p>
+                        <p className='flex items-center '>
+                           <AiOutlineMail className='mr-2' />{' '}
+                           lntthanh3317@gmail.com
+                        </p>
+                        <p className='flex '>
+                           <MdOutlinePlace className='mr-2 relative top-[2px]' />
+                           Đường 3/2, phường Xuân Khánh,
+                           <br /> quận Ninh Kiều, thành phố Cần Thơ
+                        </p>
+                     </div>
+                  </Col>
+                  <Col span={6}>
+                     <h2 className='text-lg'>Support</h2>
+                     <div className='pt-2 font-normal space-y-1'>
+                        <p>Submit a warranty claim</p>
+                        <p>Submit a return request</p>
+                        <p>
+                           Customer support:{' '}
+                           <span className='text-gray-800 '>
+                              lntthanh3317@gmail.com
+                           </span>
+                        </p>
                      </div>
                   </Col>
                </Row>
-            </div> */}
-         </div>
-         <div className='bg-[#0f0f0f] text-white'>
-            <div className='container mx-auto 2xl:max-w-[1340px] text-xs py-1'>
-               © Copyright 2023 By lntthanh3317
             </div>
+            <span className='pt-2 text-xs border-t border-gray-500'>
+               © Copyright 2022 By lntthanh3317
+            </span>
          </div>
-      </>
+      </div>
    );
 };
 

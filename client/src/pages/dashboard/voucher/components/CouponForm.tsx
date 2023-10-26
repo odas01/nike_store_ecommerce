@@ -109,7 +109,7 @@ const ColorForm: FC<ColorFormProps> = ({ data, closeDrawer }) => {
                <div className='flex flex-col space-y-1'>
                   <label htmlFor='value'>Mã coupon</label>
                   <Input
-                     placeholder='Please chooes color'
+                     placeholder='Coupon code'
                      isError={!!errors?.code}
                      {...register('code')}
                   />
@@ -118,7 +118,7 @@ const ColorForm: FC<ColorFormProps> = ({ data, closeDrawer }) => {
                <div className='flex flex-col space-y-1'>
                   <label htmlFor='value'>Loại giảm giá</label>
                   <Input
-                     placeholder='Please chooes color'
+                     placeholder='Coupon type'
                      isError={!!errors?.type}
                      {...register('type')}
                   />
@@ -127,7 +127,7 @@ const ColorForm: FC<ColorFormProps> = ({ data, closeDrawer }) => {
                <div className='flex flex-col space-y-1'>
                   <label htmlFor='value'>Giá trị</label>
                   <Input
-                     placeholder='Please chooes color'
+                     placeholder='Coupon value'
                      isError={!!errors?.value}
                      {...register('value')}
                   />
@@ -136,7 +136,7 @@ const ColorForm: FC<ColorFormProps> = ({ data, closeDrawer }) => {
                <div className='flex flex-col space-y-1'>
                   <label htmlFor='value'>Số lượng</label>
                   <Input
-                     placeholder='Please chooes color'
+                     placeholder='Coupon quantity'
                      isError={!!errors?.quantity}
                      {...register('quantity')}
                   />
@@ -146,7 +146,6 @@ const ColorForm: FC<ColorFormProps> = ({ data, closeDrawer }) => {
                   <label htmlFor='value'>Ngày bắt đầu</label>
                   <Input
                      type='date'
-                     placeholder='Please chooes color'
                      isError={!!errors?.expirationDate}
                      {...register('expirationDate')}
                   />

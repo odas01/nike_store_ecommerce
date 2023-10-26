@@ -1,45 +1,12 @@
 import { NextFunction, Request, Response } from 'express';
 
-import Product from '../models/Product';
+import Product from '../models/product.model';
 import responseHandler from '../handlers/response.handler';
-import { IVariant, Image } from '../types/product.type';
+import { IVariant } from '../types/product.type';
 import { uploadMultiple, uploadSingle } from '../middleware/images.middleware';
-import Variant from '../models/Variant';
-import slugify from 'slugify';
-import Order from '../models/Order';
+import Variant from '../models/variant.model';
+import Order from '../models/order.model';
 
-const formatPrice = (data: any) => {
-   const { price, originalPrice } = data.prices;
-   let prices = { price, originalPrice };
-
-   if (data.discount.type === 'percent') {
-      prices.price =
-         originalPrice - (originalPrice * data.discount.value) / 100;
-   } else {
-      prices.price = originalPrice - data.discount.value;
-   }
-   data.prices = prices;
-
-   return data.price;
-};
-
-const createVariants = async (variants: IVariant[]): Promise<string[]> => {
-   const variants_id = variants.map(async (item) => {
-      const thumbnail = await uploadSingle(item.thumbnail.url);
-
-      const images = await uploadMultiple(
-         item.images.map((image) => image.url)
-      );
-
-      const color = await Variant.create({
-         ...item,
-         thumbnail,
-         images,
-      });
-      return color._id;
-   });
-   return Promise.all(variants_id);
-};
 const createVariant = async (variants: IVariant) => {
    const thumbnail = await uploadSingle(variants.thumbnail.url);
 
@@ -56,7 +23,13 @@ const createVariant = async (variants: IVariant) => {
 
 export const create = async (req: Request, res: Response) => {
    const { color, sizes, thumbnail, price, images, ...value } = req.body;
+
    try {
+      const foundProduct = await Product.findOne({ name: value.name });
+      if (foundProduct) {
+         return responseHandler.badrequest(res, 'Product name already exists');
+      }
+
       const variant = await createVariant({
          color,
          sizes,
@@ -76,7 +49,8 @@ export const create = async (req: Request, res: Response) => {
 };
 
 export const getAll = async (req: Request, res: Response) => {
-   const { skip, limit }: any = req.query;
+   const skip = res.locals.skip;
+   const limit = res.locals.limit;
 
    try {
       const total = await Product.countDocuments(res.locals.filter);
@@ -88,7 +62,7 @@ export const getAll = async (req: Request, res: Response) => {
          .populate([
             {
                path: 'category',
-               select: '-_id name store',
+               select: 'name vnName store',
                options: { lean: true },
             },
             {
@@ -96,7 +70,7 @@ export const getAll = async (req: Request, res: Response) => {
                options: { lean: true },
                populate: {
                   path: 'color',
-                  select: '-_id name value',
+                  select: 'name vnName value',
                   options: { lean: true },
                },
             },
@@ -118,13 +92,13 @@ export const getOne = async (req: Request, res: Response) => {
       const product = await Product.findOne({ slug })
          .populate({
             path: 'category',
-            select: '-_id name store',
+            select: '-_id name vnName store',
          })
          .populate({
             path: 'variants',
             populate: {
                path: 'color',
-               select: '-_id name value',
+               select: '-_id name vnName value',
             },
          });
 
@@ -137,147 +111,45 @@ export const getOne = async (req: Request, res: Response) => {
 export const updateOne = async (req: Request, res: Response) => {
    const { slug } = req.params;
    try {
-      console.log(req.body);
-
-      const product = await Product.findOne({ slug });
-      if (product) {
-         if (req.body.thumbnail.public_id.slice(0, 8) !== 'nikeshop') {
-            const thumbnail = await uploadSingle(req.body.thumbnail.url);
-            if (thumbnail) {
-               req.body.thumbnail = thumbnail;
-            }
-         }
-
-         const newImage = await Promise.all(
-            req.body.images
-               .map(async (item: Image) => {
-                  if (item.public_id.slice(0, 8) !== 'nikeshop') {
-                     const res = await uploadSingle(item.url);
-                     if (res) return res;
-                  }
-                  return item;
-               })
-               .filter((item: Image) => item)
-         );
-         if (newImage) {
-            req.body.images = newImage;
-         }
-
-         req.body.slug = slugify(req.body.name, { lower: true });
-
-         // const newImage = await Promise.all(
-         //    item.images
-         //       .map(async (item) => {
-         //          if (item.public_id.slice(0, 8) !== 'nikeshop') {
-         //             const res = await uploadSingle(item.url);
-         //             if (res) return res;
-         //          }
-         //          return item;
-         //       })
-         //       .filter((item) => item)
-         // );
-         // if (newImage) {
-         //    item.images = newImage;
-         // }
-
-         // const images = product?.images;
-         // const colors = product.variants.map(String);
-         // const idList: string[] = req.body.variants.map(
-         //    (item: IVariant) => item._id
-         // );
-         // const deleteList = colors.filter((item) => !idList.includes(item));
-         // const newList: IVariant[] = req.body.variants.filter(
-         //    (item: IVariant) => !item._id
-         // );
-
-         // const editList = req.body.variants.filter(
-         //    (item: IVariant) => item._id
-         // );
-
-         // await Promise.all(
-         //    deleteList.map(async (item) => {
-         //       await Variant.deleteOne({ _id: item });
-         //    })
-         // );
-
-         // const newListId = await Promise.all([
-         //    ...(await createVariant(newList)),
-         //    ...(await Promise.all(
-         //       editList.map(async (item: IVariant) => {
-         //          if (item.thumbnail.public_id.slice(0, 8) !== 'nikeshop') {
-         //             const thumbnail = await uploadSingle(item.thumbnail.url);
-         //             if (thumbnail) {
-         //                item.thumbnail = thumbnail;
-         //             }
-         //          }
-
-         //          const newImage = await Promise.all(
-         //             item.images
-         //                .map(async (item) => {
-         //                   if (item.public_id.slice(0, 8) !== 'nikeshop') {
-         //                      const res = await uploadSingle(item.url);
-         //                      if (res) return res;
-         //                   }
-         //                   return item;
-         //                })
-         //                .filter((item) => item)
-         //          );
-         //          if (newImage) {
-         //             item.images = newImage;
-         //          }
-         //          console.log(newImage);
-
-         //          await Variant.findByIdAndUpdate(item._id, item);
-         //          return item._id;
-         //       })
-         //    )),
-         // ]);
-
-         // if (req.body.name !== product.name) {
-         //    const randomChar = Math.random().toString(36).substring(4, 10);
-         //    req.body.slug = slugify(req.body.name + ' ' + randomChar, {
-         //       lower: true,
-         //    });
-         // }
-
-         // const isNewPrice =
-         //    req.body.name !== product.prices.originalPrice ||
-         //    req.body.discount.type !== product.discount.type ||
-         //    req.body.discount.value !== product.discount.value;
-         // if (isNewPrice) {
-         //    req.body.prices = formatPrice(req.body);
-         // }
-
-         const product = await Product.findOneAndUpdate({ slug }, req.body, {
-            new: true,
-         });
-         return responseHandler.ok(res, product);
-      }
-
-      responseHandler.ok(res, {});
+      const product = await Product.findOneAndUpdate({ slug }, req.body, {
+         new: true,
+      });
+      return responseHandler.ok(res, product);
    } catch (err) {
       responseHandler.error(res);
    }
 };
 
 export const deleteOne = async (req: Request, res: Response) => {
-   const { slug } = req.params;
+   const _id = req.params.slug;
    try {
-      // const product = await Product.findOne({ slug });
-      // responseHandler.ok(res, { product });
-      // const product = await Product.findOneAndDelete({ slug });
-      // if (product) {
-      //    await destroySingle(product.image.public_id);
-      //    await destroyMultiple(
-      //       product.images.map((item: any) => item.public_id)
-      //    );
-      //    responseHandler.ok(res, { msg: 'Delete successfully.' });
-      // } else {
-      //    responseHandler.notfound(res);
-      // }
+      const order = await Order.find({ 'products.product': _id });
+      if (order.length > 0) {
+         return responseHandler.badrequest(
+            res,
+            'Paid products cannot be deleted'
+         );
+      }
+
+      const product = await Product.findByIdAndDelete({ _id });
+      await Variant.deleteMany({
+         _id: {
+            $in: product?.variants,
+         },
+      });
+      responseHandler.ok(res, {});
    } catch (err) {
       console.log(err);
    }
 };
 
-export const related = async (req: Request, res: Response) => {};
+export const similar = async (
+   req: Request,
+   res: Response,
+   next: NextFunction
+) => {
+   const { slug } = req.params;
+   res.locals.filter.slug = { $ne: slug };
+
+   next();
+};

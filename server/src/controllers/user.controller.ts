@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 
-import User from '../models/User';
+import User from '../models/user.model';
 import responseHandler from '../handlers/response.handler';
 import { uploadSingle, destroySingle } from '../middleware/images.middleware';
 
@@ -21,9 +21,11 @@ const filterUser = (query: any): any => {
 };
 
 export const getAll = async (req: Request, res: Response) => {
-   const { skip, limit, role }: any = req.query;
+   const { role }: any = req.query;
    const filter = filterUser(req.query);
-   console.log(filter);
+
+   const skip = res.locals.skip;
+   const limit = res.locals.limit;
 
    try {
       const total = await User.countDocuments(role ? { role } : {});
@@ -55,26 +57,36 @@ export const getOne = async (req: Request, res: Response) => {
 };
 
 export const updateOne = async (req: Request, res: Response) => {
-   const values = req.body;
+   const { role, email, avatar, ...values } = req.body;
+   const currentUser = res.locals.user;
+
    try {
-      const currentUser: any = await User.findById(req.params.id);
-      if (values.avatar) {
-         if (currentUser.avatar.public_id) {
-            await destroySingle(currentUser.avatar?.public_id);
-         }
-         const avatarRes: any = await uploadSingle(values.avatar);
-         values.avatar = {
-            public_id: avatarRes.public_id,
-            url: avatarRes.url,
-         };
+      const foundUser = await User.findOne({
+         _id: { $ne: req.params.id },
+         email,
+         role,
+      });
+
+      if (foundUser) {
+         return responseHandler.badrequest(res, 'Email already exists');
       }
 
-      User.findByIdAndUpdate(req.params.id, values, {
-         new: true,
-         update: true,
-      })
-         .select('-password ')
-         .then((user) => responseHandler.ok(res, user));
+      if (avatar && avatar.slice(0, 4) !== 'http') {
+         if (currentUser.avatar) {
+            await destroySingle(currentUser.avatar.public_id);
+         }
+         values.avatar = await uploadSingle(avatar, 'account');
+      }
+      const user = await User.findByIdAndUpdate(
+         req.params.id,
+         {
+            ...values,
+            email,
+         },
+         { new: true }
+      );
+
+      responseHandler.ok(res, user);
    } catch {
       responseHandler.error(res);
    }

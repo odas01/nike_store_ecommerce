@@ -2,12 +2,14 @@ import { Document } from 'mongoose';
 
 export interface ICategory extends Document {
    name: string;
+   vnName: string;
    store: string;
-   status: 'show' | 'hide';
+   status: string;
 }
 
 export interface IColor extends Document {
    name: string;
+   vnName: string;
    value: string;
 }
 

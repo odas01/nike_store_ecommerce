@@ -1,7 +1,7 @@
 import responseHandler from '../handlers/response.handler';
-import CartItem from '../models/CartItem';
+import CartItem from '../models/cartItem.model';
 import { Request, Response } from 'express';
-import Variant from '../models/Variant';
+import Variant from '../models/variant.model';
 
 export const getOne = async (req: Request, res: Response) => {
    const { _id: user } = res.locals.user;
@@ -149,9 +149,8 @@ export const deleteItems = async (req: Request, res: Response) => {
       } else {
          await CartItem.deleteMany({ user: user._id });
       }
-      setTimeout(() => {
-         responseHandler.ok(res, { msg: 'Delete successfully' });
-      }, 1000);
+
+      responseHandler.ok(res, { msg: 'Delete successfully' });
    } catch {
       responseHandler.error(res);
    }

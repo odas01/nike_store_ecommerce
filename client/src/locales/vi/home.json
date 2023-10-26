@@ -40,8 +40,9 @@
    },
    "home": {
       "trenyP": "Sản phẩm nổi bật",
-      "topP": "Sản phẩm mới nhất",
-      "bestSeller": "Bán chạy"
+      "topP": "Mới nhất",
+      "bestSeller": "Sản phẩm Bán chạy",
+      "uLike": "Có thể bạn quan tâm"
    },
    "allProducts": "Tất cả sản phẩm",
    "noProductsMatch": "Không có sản phẩm phù hợp",
@@ -53,7 +54,7 @@
    },
    "comments": "Phản hồi",
    "share": "Chia sẻ",
-   "sold": "đã bán",
+   "sold": "Đã bán",
    "total": "Tổng",
    "saved": "Tiết kiệm",
    "items": "sản phẩm",
@@ -65,7 +66,7 @@
       "cashPayment": "Thanh toán tiền mặt",
       "paypalPayment": "Thanh toán qua Payal",
       "express": "Hỏa tốc",
-      "fash": "Nhanh",
+      "fast": "Nhanh",
       "normal": "Bình thường",
       "message": "Lời nhắn",
       "orderSummery": "Tóm tắt thông tin",
@@ -76,5 +77,16 @@
       "total": "Tổng thanh toán",
       "pay": "Thanh toán",
       "thanksForShop": "Cảm ơn đã mua hàng ở NikeStore"
-   }
+   },
+   "method": "Phương thức",
+   "profile": "Hồ sơ",
+   "updateProfile": "Cập nhật hồ sơ",
+   "avatar": "Ảnh đại diện",
+   "changePass": "Đổi mật khẩu",
+   "currentPass": "Mật khẩu hiện tại",
+   "newPass": "Mật khẩu khới",
+   "confirmPass": "Nhập lại mật khẩu",
+   "dontOrder": "Bạn chưa có đơn hàng nào",
+   "enterNewPass": "Nhập mật khẩu mới",
+   "enterConfirmPass": "Nhập lại mật khẩu"
 }

@@ -1,5 +1,6 @@
 import { privateClient, publicClient } from '@/api/config';
 import { AllCoupons, ICoupon, CouponForm } from '@/types';
+
 export const couponApi = {
    getAll: async (params?: any) =>
       (await publicClient.get<AllCoupons>('coupons', { params })).data,

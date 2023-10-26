@@ -13,9 +13,11 @@ import Heading from '@/components/drawer/Header';
 import { notify } from '@/helpers';
 import { ErrorResponse, IColor, ColorFormValues } from '@/types';
 import { colorApi } from '@/api';
+import { ColorPicker } from 'antd';
 
 const formSchema = zod.object({
-   name: zod.string().nonempty('Color name is required'),
+   name: zod.string().nonempty('Name is required'),
+   vnName: zod.string().nonempty('Vietnamese name is required'),
    value: zod
       .string()
       .nonempty('Color name is required')
@@ -26,6 +28,7 @@ const formSchema = zod.object({
 
 const initialForm = {
    name: '',
+   vnName: '',
    value: '',
 };
 
@@ -41,6 +44,7 @@ const ColorForm: FC<ColorFormProps> = ({ data, closeDrawer }) => {
       handleSubmit,
       formState: { errors },
       setValue,
+      watch,
       reset,
    } = useForm<ColorFormValues>({
       resolver: zodResolver(formSchema),
@@ -112,34 +116,30 @@ const ColorForm: FC<ColorFormProps> = ({ data, closeDrawer }) => {
                   <Error message={errors.name?.message} />
                </div>
                <div className='flex flex-col space-y-1'>
-                  <label htmlFor='value'>{t('table.colorHex')}</label>
+                  <label htmlFor='vnName'>Tên tiếng việt</label>
                   <Input
-                     placeholder='Please chooes color'
-                     isError={!!errors?.value}
-                     disabled={true}
-                     {...register('value')}
+                     placeholder='Color vnName'
+                     isError={!!errors?.vnName}
+                     {...register('vnName')}
                   />
-                  <Error message={errors.value?.message} />
+                  <Error message={errors.vnName?.message} />
                </div>
-               <div className='flex items-center space-x-2'>
+               <div className='flex flex-col space-y-2'>
                   <span>{t('form.chooesColor')}</span>
-                  <div
-                     className='relative w-8 border rounded-sm cursor-pointer aspect-square group'
-                     style={{
-                        backgroundColor: color,
-                     }}
-                  >
-                     <div className='absolute left-[30px] bg-transparent w-full h-full'></div>
-                     <div className='absolute left-[40px] hidden group-hover:block'>
-                        <ChromePicker
-                           color={color}
-                           onChange={(color) => {
-                              setColor(color.hex);
-                              setValue('value', color.hex);
-                           }}
-                        />
-                     </div>
-                  </div>
+                  <span>
+                     <ColorPicker
+                        format='hex'
+                        showText={(color) => (
+                           <span className='dark:text-white'>
+                              {color.toHexString()}
+                           </span>
+                        )}
+                        value={watch('value')}
+                        onChange={(_, hex) => setValue('value', hex)}
+                        className='bg-transparent'
+                     />
+                  </span>
+                  <Error message={errors.value?.message} />
                </div>
             </form>
          </div>

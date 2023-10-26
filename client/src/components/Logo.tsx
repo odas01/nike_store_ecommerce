@@ -1,5 +1,5 @@
 import images from '@/assets/images';
-import { ThemeContext } from '@/providers/ThemeProvider';
+import { ThemeContext } from '@/route/ThemeRoute';
 import React, { useContext } from 'react';
 
 type LogoProps = {
@@ -13,10 +13,10 @@ const Logo: React.FC<LogoProps> = ({ width }) => {
       <div
          style={{
             width: width,
-            height: width * (11 / 20),
+            height: width * (1 / 4),
          }}
       >
-         <img src={images.logo_new} alt='logo' className='w-full h-full' />
+         <img src={images.logo2} alt='logo' className='w-full h-full' />
       </div>
    );
 };

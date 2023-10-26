@@ -9,6 +9,7 @@ type Props = {
    skip: number;
    setSkip: (value: React.SetStateAction<number>) => void;
    limit?: number;
+   className?: string;
 };
 
 const Pagination: React.FC<Props> = ({
@@ -19,6 +20,7 @@ const Pagination: React.FC<Props> = ({
    skip,
    setSkip,
    limit = 15,
+   className,
 }) => {
    const isFirstPage = page === 1;
    const isLastPage = page === lastPage;
@@ -26,8 +28,10 @@ const Pagination: React.FC<Props> = ({
    const { t } = useTranslation('dashboard', { keyPrefix: 'action' });
    return (
       <div
-         className='flex justify-between items-center font-normal py-2 px-4 text-xs dark:text-gray-400 text-gray-700  border-t border-gray-400 
-             dark:border-[#343434] rounded-br-lg rounded-bl-lg bg-db-wrap dark:bg-gray-bg'
+         className={twMerge(
+            'flex justify-between items-center font-normal py-2 px-4 text-xs dark:text-gray-400 text-gray-700  border-t dark:border-[#343434] rounded-br-lg rounded-bl-lg bg-db-wrap dark:bg-gray-bg',
+            className
+         )}
       >
          <div>
             SHOWING{' '}

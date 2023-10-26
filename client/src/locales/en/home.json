@@ -7,7 +7,8 @@
       "typeEmail": "Type your email",
       "typePassword": "Type your password",
       "searchHere": "Search here...",
-      "enterCouponCode": "Enter your coupon code"
+      "enterCouponCode": "Enter your coupon code",
+      "messForStore": "Message for store"
    },
    "orLoginWith": "Or login with",
    "dontaccount?": "Don't have account?",
@@ -40,7 +41,8 @@
    "home": {
       "trenyP": "Trendy products",
       "topP": "Top products",
-      "bestSeller": "Best sellers"
+      "bestSeller": "Best sellers",
+      "uLike": "You might also like"
    },
    "rating": {
       "productRatings": "Product ratings",
@@ -52,7 +54,7 @@
    "noProductsMatch": "No products match",
    "comments": "Comments",
    "share": "Share",
-   "sold": "sold",
+   "sold": "Sold",
    "total": "Total",
    "saved": "Saved",
    "items": "items",
@@ -64,7 +66,7 @@
       "cashPayment": "Cash payment",
       "paypalPayment": "Paypal payment",
       "express": "Express",
-      "fash": "Fash",
+      "fast": "Fast",
       "normal": "Normal",
       "message": "Message",
       "orderSummery": "Order summery",
@@ -75,5 +77,16 @@
       "total": "Total",
       "pay": "Pay",
       "thanksForShop": "Thanks for shopping at NikeShose"
-   }
+   },
+   "method": "Method",
+   "profile": "Profile",
+   "updateProfile": "Update profile",
+   "avatar": "Avatar",
+   "changePass": "Change password",
+   "currentPass": "Current password",
+   "newPass": "New password",
+   "confirmPass": "Confirm password",
+   "dontOrder": "You don't have any orders yet",
+   "enterNewPass": "Enter new password",
+   "enterConfirmPass": "Enter confirm password"
 }

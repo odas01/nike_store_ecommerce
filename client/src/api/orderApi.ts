@@ -1,5 +1,5 @@
 import { privateClient } from '@/api/config';
-import { AllOrders, IOrder, OrderUpload } from '@/types/order';
+import { AllOrders, IOrder, OrderUpload } from '@/types/orderType';
 
 export const orderApi = {
    get: async (id: string) => (await privateClient.get(`orders/${id}`)).data,

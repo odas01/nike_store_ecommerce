@@ -16,32 +16,42 @@ function Menu() {
    const { currentUser } = authStore();
    const { t } = useTranslation('dashboard', { keyPrefix: 'aside' });
    return (
-      <div className='flex flex-col space-y-2 text-sm font-medium'>
+      <div className='flex flex-col space-y-2 text-xs font-medium'>
          <MenuItem title={t('overview')} path='' icon={<LuLayoutDashboard />} />
 
-         <MenuItem title={t('list')} path='products' icon={<GiSonicShoes />} />
-         <MenuItem
-            title={t('color')}
-            path='colors'
-            icon={<IoColorPaletteOutline />}
-         />
-         <MenuItem
-            title={t('size')}
-            path='sizes'
-            icon={<IoColorPaletteOutline />}
-         />
+         <MenuItemHasChild title='Catalog' icon={<IoColorPaletteOutline />}>
+            <MenuItem
+               title={t('product')}
+               path='products'
+               icon={<GiSonicShoes />}
+            />
+            <MenuItem
+               title={t('category')}
+               path='categories'
+               icon={<BiCategoryAlt />}
+            />
+            <MenuItem
+               title={t('color')}
+               path='colors'
+               icon={<IoColorPaletteOutline />}
+            />
+            <MenuItem
+               title={t('size')}
+               path='sizes'
+               icon={<IoColorPaletteOutline />}
+            />
+            <MenuItem
+               title={t('coupon')}
+               path='coupons'
+               icon={<BsCartCheck />}
+            />
+         </MenuItemHasChild>
 
-         <MenuItem
-            title={t('category')}
-            path='categories'
-            icon={<BiCategoryAlt />}
-         />
          <MenuItem title={t('customer')} path='customers' icon={<FiUsers />} />
          {currentUser && currentUser.role === 'root' && (
             <MenuItem title={t('admin')} path='admins' icon={<RiAdminLine />} />
          )}
-         <MenuItem title='Orders' path='orders' icon={<BsCartCheck />} />
-         <MenuItem title='Coupon' path='coupons' icon={<BsCartCheck />} />
+         <MenuItem title={t('order')} path='orders' icon={<BsCartCheck />} />
          {/* <MenuItem title='Coupons' path='coupons' icon={<RiCoupon3Line />} /> */}
       </div>
    );
@@ -82,14 +92,15 @@ const MenuItemHasChild: FC<MenuItemHasChildProps> = ({
    icon,
    children,
 }) => {
-   const [show, setShow] = useState<boolean>(false);
+   const [show, setShow] = useState<boolean>(true);
    return (
       <div className='flex flex-col'>
          <div
             className='flex items-center p-3 duration-200 rounded-md cursor-pointer'
             onClick={() => setShow(!show)}
          >
-            <span>{title}</span>
+            {icon}
+            <span className='ml-2'>{title}</span>
             <div className='ml-auto scale-75'>
                {!show ? <BsChevronDown /> : <BsChevronRight />}
             </div>

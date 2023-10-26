@@ -55,7 +55,6 @@ const authStore = create<Store & Actions>()(
          },
          updateInfo: (values) => {
             const user = get().currentUser;
-            console.log(values);
 
             if (user) {
                set((state) => ({
@@ -69,6 +68,7 @@ const authStore = create<Store & Actions>()(
          adminLogin: async (value) => {
             try {
                const { user, token } = await authApi.adminLogin(value);
+               console.log(user, token);
 
                get().saveToken(token);
 

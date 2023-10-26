@@ -1,4 +1,4 @@
-import Category from '../models/Category';
+import Category from '../models/category.model';
 import responseHandler from '../handlers/response.handler';
 
 import { Request, Response } from 'express';
@@ -22,40 +22,40 @@ export const create = async (req: Request, res: Response) => {
 };
 
 export const getAll = async (req: Request, res: Response) => {
-   let filter = filterCategory(req.query);
-   const { skip, limit }: any = req.query;
+   let filter = filterCategory(req.query.name as string);
+   const skip = res.locals.skip;
+   const limit = res.locals.limit;
 
    try {
-      if (skip && limit) {
-         const total = await Category.countDocuments(filter);
-         const page = skip / limit + 1 || 1;
-         const lastPage = Math.ceil(total / limit) || 1;
+      const total = await Category.countDocuments(filter);
+      const page = skip / limit + 1 || 1;
+      const lastPage = Math.ceil(total / limit) || 1;
 
-         const categories = await Category.find(filter)
-            .sort({ createdAt: -1 })
-            .skip(skip)
-            .limit(limit);
+      const categories = await Category.find(filter)
+         .sort({ createdAt: -1 })
+         .skip(skip)
+         .limit(limit);
 
-         responseHandler.ok(res, { categories, page, lastPage, total });
-      } else {
-         const categories = await Category.find(filter);
-         responseHandler.ok(res, { categories, total: categories.length });
-      }
+      responseHandler.ok(res, { categories, page, lastPage, total });
    } catch {
       responseHandler.error(res);
    }
 };
 
-const filterCategory = (value: any) => {
-   let filter = {
-      ...value,
-      name: { $regex: new RegExp(String(value.name)), $options: 'i' },
-   };
-
-   !value.name && delete filter.name;
-   !value.parentCate && delete filter.parentCate;
-   delete filter.skip;
-   delete filter.limit;
+const filterCategory = (name?: string) => {
+   let filter = {};
+   if (name) {
+      filter = {
+         $or: [
+            {
+               name: { $regex: new RegExp(name), $options: 'i' },
+            },
+            {
+               vnName: { $regex: new RegExp(name), $options: 'i' },
+            },
+         ],
+      };
+   }
 
    return filter;
 };

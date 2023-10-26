@@ -8,15 +8,16 @@ import { Link, useNavigate } from 'react-router-dom';
 const Header = () => {
    const { t } = useTranslation('home');
    const { qty } = cartStore();
+
    const navigate = useNavigate();
    return (
       <div className='container'>
          <div className='flex items-center justify-between h-20'>
             <Link to='/'>
-               <Logo width={100} />
+               <Logo width={120} />
             </Link>
 
-            <div className='flex items-center justify-center space-x-8 font-semibold'>
+            <div className='flex items-center justify-center space-x-8'>
                <Link to='/'>
                   <span>{t('navbar.home')}</span>
                </Link>

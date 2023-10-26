@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { MdOutlineLocalShipping } from 'react-icons/md';
 import { Row, Col, Breadcrumb } from 'antd';
@@ -12,7 +12,7 @@ import authStore from '@/stores/authStore';
 import { Button, Error, Input, Paypal } from '@/components';
 import { useForm } from 'react-hook-form';
 import { ErrorResponse } from '@/types';
-import { OrderUpload } from '@/types/order';
+import { OrderUpload } from '@/types/orderType';
 import { twMerge } from 'tailwind-merge';
 import { ImPaypal } from 'react-icons/im';
 import { BsCheck } from 'react-icons/bs';
@@ -24,6 +24,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import { RiEBike2Line } from 'react-icons/ri';
 import { IoRocketOutline } from 'react-icons/io5';
+import moment from 'moment';
 
 const infoSchema = z.object({
    phone: z.string().nonempty('Phone cannot be empty'),
@@ -52,7 +53,8 @@ const CheckOut = () => {
    );
    const [isSuccess, setIsSuccess] = useState<boolean>(false);
 
-   const { t } = useTranslation(['home', 'mutual', 'dashboard']);
+   const { t, i18n } = useTranslation(['home', 'mutual', 'dashboard']);
+   const isVnLang = i18n.language === 'vi';
    const navigate = useNavigate();
 
    const {
@@ -75,15 +77,11 @@ const CheckOut = () => {
 
    const checkCouponMutation = useMutation({
       mutationFn: () => couponApi.check(coupon),
-      onSuccess: ({ _id, type, value, quantity, code }) => {
-         // if (data.quantity === 100) {
-         //    setCoupon('');
-         //    notify('error', 'Coupon has expired');
-         // }
-         // console.log(data);
-         setCoupon(_id);
-         setCouponCode(code);
-         if (quantity > 0) {
+      onSuccess: ({ _id, type, value, quantity, code, expirationDate }) => {
+         const isExpire = moment().isAfter(expirationDate);
+         if (quantity === 0 || isExpire) {
+            notify('error', 'Coupon has expired');
+         } else {
             let discountValue;
             if (type === 'percent') {
                discountValue = (subTotal * value) / 100;
@@ -100,6 +98,8 @@ const CheckOut = () => {
                   price: discountValue,
                });
             }
+            setCoupon(_id);
+            setCouponCode(code);
          }
       },
       onError: (err: ErrorResponse) => {
@@ -110,7 +110,6 @@ const CheckOut = () => {
    const createOrderMutation = useMutation({
       mutationFn: (values: OrderUpload) => orderApi.create(values),
       onSuccess: () => {
-         deleteCart();
          setIsSuccess(true);
       },
       onError: (err: ErrorResponse) => {
@@ -137,27 +136,20 @@ const CheckOut = () => {
          discount: discount.price,
          subTotal: subTotal,
          total: subTotal + shipCost - discount.price,
-         coupon: coupon,
          message: message,
          paymentMethod: paymentMethod,
          paid,
       };
+      if (discount.price !== 0) {
+         orderPayload.coupon = coupon;
+      }
+
       await updateUser(currentUser?._id!, getValues());
       createOrderMutation.mutate(orderPayload);
    };
 
    return (
-      <div className='container space-y-4'>
-         <Breadcrumb
-            items={[
-               {
-                  title: <Link to='/'>{t('navbar.home', { ns: 'home' })}</Link>,
-               },
-               {
-                  title: 'Checkout',
-               },
-            ]}
-         />
+      <div className='container'>
          <Confetti
             width={window.innerWidth}
             height={window.innerHeight}
@@ -171,9 +163,16 @@ const CheckOut = () => {
             imageWidth={400}
             imageHeight={200}
             showConfirmButton={isSuccess}
-            onConfirm={() => navigate('/')}
+            onConfirm={() => {
+               navigate('/account/my-orders');
+               deleteCart();
+            }}
+            onResolve={() => {
+               navigate('/account/my-orders');
+               deleteCart();
+            }}
          />
-         <Row gutter={16}>
+         <Row gutter={32}>
             <Col span={14} className='space-y-4 '>
                <div className='flex flex-col h-full pt-6 pb-12'>
                   <div className='flex flex-col space-y-1'>
@@ -184,7 +183,7 @@ const CheckOut = () => {
                      <div className='flex space-x-3'>
                         <div className='flex flex-col flex-1'>
                            <label htmlFor='phone'>
-                              {t('label.phoneNumber', { ns: 'mutual' })}
+                              {t('table.phoneNumber', { ns: 'dashboard' })}
                            </label>
 
                            <Input
@@ -228,11 +227,13 @@ const CheckOut = () => {
                               <RiEBike2Line size={28} />
                               <div className='flex flex-col'>
                                  <span>{t('checkout.normal')}</span>
-                                 <span>~7days: {priceFormat(20000)}</span>
+                                 <span>
+                                    ~7days: {priceFormat(20000, isVnLang)}
+                                 </span>
                               </div>
                               <div
                                  className={twMerge(
-                                    'absolute w-4 -translate-y-1/2 border border-gray-300 rounded-full right-3 top-1/2 aspect-square  duration-100',
+                                    'absolute w-4 -translate-y-1/2 border border-gray-300 rounded-full right-3 top-1/2 aspect-square duration-100',
                                     shipCost === 20000 && 'bg-[#3085C3]'
                                  )}
                               />
@@ -253,8 +254,10 @@ const CheckOut = () => {
                            >
                               <MdOutlineLocalShipping size={28} />
                               <div className='flex flex-col'>
-                                 <span>{t('checkout.fash')}</span>
-                                 <span>4-5days: {priceFormat(30000)}</span>
+                                 <span>{t('checkout.fast')}</span>
+                                 <span>
+                                    4-5days: {priceFormat(30000, isVnLang)}
+                                 </span>
                               </div>
                               <div
                                  className={twMerge(
@@ -280,7 +283,9 @@ const CheckOut = () => {
                               <IoRocketOutline size={28} />
                               <div className='flex flex-col'>
                                  <span>{t('checkout.express')}</span>
-                                 <span>1-2days: {priceFormat(50000)}</span>
+                                 <span>
+                                    1-2days: {priceFormat(50000, isVnLang)}
+                                 </span>
                               </div>
                               <div
                                  className={twMerge(
@@ -395,7 +400,8 @@ const CheckOut = () => {
                            <Col span={6}>
                               <p className='font-semibold text-red-500 text-end'>
                                  {priceFormat(
-                                    item.product.prices.price * item.qty
+                                    item.product.prices.price * item.qty,
+                                    isVnLang
                                  )}
                               </p>
                            </Col>
@@ -406,13 +412,13 @@ const CheckOut = () => {
                      {discount.price === 0 ? (
                         <>
                            <Input
-                              className='w-[80%]'
+                              className='flex-1'
                               placeholder={t('placeHolder.enterCouponCode')}
                               value={coupon}
                               onChange={(e) => setCoupon(e.currentTarget.value)}
                            />
                            <Button
-                              className='flex-1 rounded'
+                              className='w-fit'
                               onClick={() => checkCouponMutation.mutate()}
                            >
                               {t('action.apply', { ns: 'mutual' })}
@@ -431,22 +437,25 @@ const CheckOut = () => {
                   <div className='flex flex-col py-3 space-y-2 border-b border-gray-300'>
                      <div className='flex justify-between text-base'>
                         <span>{t('checkout.subTotal')}: </span>
-                        <span>{priceFormat(subTotal)}</span>
+                        <span>{priceFormat(subTotal, isVnLang)}</span>
                      </div>
                      <div className='flex justify-between text-base'>
                         <span>{t('checkout.shippingFee')}: </span>
-                        <span>+ {priceFormat(shipCost)}</span>
+                        <span>+ {priceFormat(shipCost, isVnLang)}</span>
                      </div>
                      <div className='flex justify-between text-base'>
                         <span>{t('checkout.discount')}: </span>
                         <span>
-                           -
-                           {discount
+                           {discount.price
                               ? discount?.type === 'percent'
-                                 ? `${priceFormat(discount.price)} ( ${
-                                      discount.value
-                                   }%)`
-                                 : priceFormat(discount?.value!)
+                                 ? `- ${priceFormat(
+                                      discount.price,
+                                      isVnLang
+                                   )} ( ${discount.value}%)`
+                                 : `- ${priceFormat(
+                                      discount?.value!,
+                                      isVnLang
+                                   )}`
                               : ' 0đ'}
                         </span>
                      </div>
@@ -455,7 +464,10 @@ const CheckOut = () => {
                      <div className='flex items-center justify-between text-xl font-semibold'>
                         <span>{t('checkout.total')}: </span>
                         <span className='text-2xl text-red-500'>
-                           {priceFormat(subTotal + shipCost - discount.price)}
+                           {priceFormat(
+                              subTotal + shipCost - discount.price,
+                              isVnLang
+                           )}
                         </span>
                      </div>
                   </div>
@@ -463,12 +475,12 @@ const CheckOut = () => {
                <div className='mt-4 space-y-5'>
                   <div className='ml-auto mr-2 space-y-4'>
                      <div className='flex w-full h-12 space-x-2 '>
-                        <Button className='flex-1 h-full text-black bg-white border border-gray-300 rounded hover:bg-white'>
+                        <Button className='flex-1 h-full text-black bg-white border border-gray-300 hover:bg-white'>
                            {t('action.back', { ns: 'mutual' })}
                         </Button>
                         <Button
                            className={twMerge(
-                              'w-2/3 rounded h-full',
+                              'w-2/3 h-full',
                               paymentMethod === 'paypal' &&
                                  'pointer-events-none'
                            )}
@@ -484,9 +496,9 @@ const CheckOut = () => {
                   {paymentMethod === 'paypal' && (
                      <div className='relative'>
                         <Paypal
-                           handleSaveOrder={() => handleSaveOrder(true)}
-                           amount={Math.round(
-                              (subTotal + shipCost - discount.price) / 23500
+                           handleSaveOrder={handleSaveOrder}
+                           amount={Math.ceil(
+                              (subTotal + shipCost - discount.price) / 24500
                            ).toString()}
                         />
                         <div

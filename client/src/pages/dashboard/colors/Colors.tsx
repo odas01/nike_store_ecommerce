@@ -1,5 +1,5 @@
 import { twMerge } from 'tailwind-merge';
-import ReactDrawer from 'react-modern-drawer';
+import { Drawer } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { useState, KeyboardEvent } from 'react';
 import { useMutation, useQuery } from '@tanstack/react-query';
@@ -108,10 +108,11 @@ function Colors() {
                   heading={
                      <tr className='[&>*:not(:last-child)]:px-4 [&>*]:py-3'>
                         <td className='w-[5%]'></td>
-                        <td className='w-[30%]'>{t('table.name')} </td>
-                        <td className='w-[30%]'>{t('table.date')} </td>
-                        <td className='w-[25%]'>{t('table.date')} </td>
-                        <td className='w-[10%]'></td>
+                        <td className='w-[25%]'>{t('table.name')} </td>
+                        <td className='w-[25%]'>{t('table.name')} </td>
+                        <td className='w-[20%]'>{t('table.date')} </td>
+                        <td className='w-[20%]'>{t('table.date')} </td>
+                        <td className='w-[5%]'></td>
                      </tr>
                   }
                   pagination={
@@ -151,13 +152,18 @@ function Colors() {
                               </span>
                            </td>
                            <td>
+                              <span className='capitalize line-clamp-1'>
+                                 {color.vnName}
+                              </span>
+                           </td>
+                           <td>
                               <div className='flex items-center space-x-2 uppercase'>
                                  <span
                                     className='h-5 rounded-full aspect-square'
                                     style={{
                                        backgroundColor: color.value,
                                     }}
-                                 ></span>
+                                 />
                                  <span>{color.value}</span>
                               </div>
                            </td>
@@ -213,14 +219,21 @@ function Colors() {
             )}
          </div>
 
-         <ReactDrawer
+         <Drawer
             open={openDrawer}
             onClose={closeDrawer}
-            direction='right'
-            size='40%'
+            width='40%'
+            title={null}
+            headerStyle={{
+               display: 'none',
+            }}
+            bodyStyle={{
+               padding: 0,
+            }}
+            className='dark:text-white'
          >
             <ColorForm data={colorActive} closeDrawer={closeDrawer} />
-         </ReactDrawer>
+         </Drawer>
       </>
    );
 }

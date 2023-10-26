@@ -1,28 +1,25 @@
 import images from '@/assets/images';
-import { Button, Dropdown, Error, Input } from '@/components';
+import { Dropdown } from '@/components';
 import authStore from '@/stores/authStore';
 import { useTranslation } from 'react-i18next';
 import { TfiWorld } from 'react-icons/tfi';
 import { FiChevronDown, FiUser } from 'react-icons/fi';
 import { BiLogIn } from 'react-icons/bi';
-import { useState } from 'react';
-import { Modal } from 'antd';
-import { BsGoogle } from 'react-icons/bs';
-import AuthForm from './auth';
+import { Link, useNavigate } from 'react-router-dom';
+import cartStore from '@/stores/cartStore';
 
 const TopHeader = () => {
-   const [open, setOpen] = useState<boolean>(true);
-
+   const navigate = useNavigate();
    const { t, i18n } = useTranslation(['dashboard', 'home']);
    const { currentUser, logOut } = authStore();
-
+   const { deleteCart } = cartStore();
    const changeLng = (lng: 'vi' | 'en') => {
       i18n.changeLanguage(lng);
    };
    const lng = i18n.language === 'vi' ? 'Tiếng việt' : 'English';
 
    return (
-      <div className='text-[13px] bg-[#E5E7EB]'>
+      <div className='text-xs bg-[#E5E7EB]'>
          <div className='container'>
             <div className='flex items-center justify-end space-x-5 h-9'>
                <Dropdown
@@ -34,7 +31,7 @@ const TopHeader = () => {
                      {
                         label: (
                            <div
-                              className='flex items-center pr-5 py-0.5 pl-0.5 space-x-2 cursor-pointer'
+                              className='flex items-center px-2 py-1 space-x-2 cursor-pointer'
                               onClick={() => changeLng('vi')}
                            >
                               <img
@@ -49,7 +46,7 @@ const TopHeader = () => {
                      {
                         label: (
                            <div
-                              className='flex items-center pr-5 py-0.5 pl-0.5 space-x-2 cursor-pointer'
+                              className='flex items-center px-2 py-1 space-x-2 cursor-pointer'
                               onClick={() => changeLng('en')}
                            >
                               <img
@@ -64,47 +61,46 @@ const TopHeader = () => {
                   ]}
                >
                   <div className='flex items-center space-x-1 cursor-pointer'>
-                     <TfiWorld size={16} />
+                     <TfiWorld size={14} />
                      <span>{lng}</span>
-                     <FiChevronDown size={16} />
+                     <FiChevronDown size={14} />
                   </div>
                </Dropdown>
                {currentUser ? (
                   <Dropdown
                      arrow={true}
                      border={false}
-                     trigger={['click']}
+                     trigger={['hover']}
                      placement='bottomRight'
                      items={[
                         {
                            label: (
-                              <span
-                                 className='px-2 space-x-2 text-sm cursor-pointer'
-                                 onClick={() => {
-                                    console.log('to my account');
-                                 }}
+                              <Link
+                                 to='/account/profile'
+                                 className='inline-block py-2 pl-3 space-x-2 text-sm cursor-pointer pr-7'
                               >
                                  {t('myAccount', { ns: 'home' })}
-                              </span>
+                              </Link>
                            ),
                         },
                         {
                            label: (
-                              <span
-                                 className='px-2 space-x-2 text-sm cursor-pointer'
-                                 onClick={() => {
-                                    console.log('to my orders');
-                                 }}
+                              <Link
+                                 to='/account/my-orders'
+                                 className='inline-block py-2 pl-3 space-x-2 text-sm cursor-pointer pr-7'
                               >
                                  {t('orders', { ns: 'home' })}
-                              </span>
+                              </Link>
                            ),
                         },
                         {
                            label: (
                               <span
-                                 className='px-2 space-x-2 text-sm cursor-pointer'
-                                 onClick={() => logOut()}
+                                 className='inline-block py-2 pl-3 space-x-2 text-sm cursor-pointer pr-7'
+                                 onClick={() => {
+                                    logOut();
+                                    deleteCart();
+                                 }}
                               >
                                  {t('action.logOut')}
                               </span>
@@ -131,20 +127,11 @@ const TopHeader = () => {
                   <>
                      <div
                         className='flex items-center space-x-1 cursor-pointer'
-                        onClick={() => setOpen(true)}
+                        onClick={() => navigate('/login')}
                      >
                         <BiLogIn size={18} />
                         <span>{t('action.login')}</span>
                      </div>
-                     <Modal
-                        centered
-                        open={open}
-                        footer={null}
-                        onCancel={() => setOpen(false)}
-                        className='bg-white rounded'
-                     >
-                        <AuthForm />
-                     </Modal>
                   </>
                )}
             </div>

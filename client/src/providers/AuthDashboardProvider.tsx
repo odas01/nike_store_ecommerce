@@ -1,8 +1,7 @@
 import authStore from '@/stores/authStore';
-import { FC, ReactNode, useState } from 'react';
+import { FC, ReactNode } from 'react';
 import images from '@/assets/images';
 import LoginForm from '@/pages/dashboard/auth/LoginForm';
-import SignupForm from '@/pages/dashboard/auth/SignupForm';
 
 interface AuthDashboardProviderProps {
    children: ReactNode;

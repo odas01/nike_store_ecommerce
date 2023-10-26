@@ -6,7 +6,7 @@ import { LuLayoutDashboard } from 'react-icons/lu';
 import { CiLogout, CiSettings } from 'react-icons/ci';
 import { GiWorld } from 'react-icons/gi';
 
-import { ThemeContext } from '@/providers/ThemeProvider';
+import { ThemeContext } from '@/route/ThemeRoute';
 import images from '@/assets/images';
 import authStore from '@/stores/authStore';
 
@@ -31,7 +31,7 @@ function Header() {
                      {
                         label: (
                            <div
-                              className='flex items-center space-x-2 cursor-pointer'
+                              className='flex items-center px-2 py-1 space-x-2 cursor-pointer'
                               onClick={() => changeLng('vi')}
                            >
                               <img
@@ -46,7 +46,7 @@ function Header() {
                      {
                         label: (
                            <div
-                              className='flex items-center space-x-2 cursor-pointer'
+                              className='flex items-center px-2 py-1 space-x-2 cursor-pointer'
                               onClick={() => changeLng('en')}
                            >
                               <img
@@ -79,7 +79,7 @@ function Header() {
                   items={[
                      {
                         label: (
-                           <div className='flex items-center space-x-2 '>
+                           <div className='flex items-center p-1 space-x-2'>
                               <LuLayoutDashboard />
                               <span>Dashboard</span>
                            </div>
@@ -87,7 +87,7 @@ function Header() {
                      },
                      {
                         label: (
-                           <div className='flex items-center space-x-2 '>
+                           <div className='flex items-center p-1 space-x-2'>
                               <CiSettings />
                               <span>{t('action.profileSetting')}</span>
                            </div>
@@ -96,7 +96,7 @@ function Header() {
                      {
                         label: (
                            <div
-                              className='flex items-center space-x-2 '
+                              className='flex items-center p-1 space-x-2'
                               onClick={logOut}
                            >
                               <CiLogout />

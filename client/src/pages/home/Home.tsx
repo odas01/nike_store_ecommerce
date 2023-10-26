@@ -9,31 +9,47 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { BsArrowRight } from 'react-icons/bs';
 import { Link } from 'react-router-dom';
+import { Swiper, SwiperSlide } from 'swiper/react';
 import { twMerge } from 'tailwind-merge';
+import 'swiper/css/scrollbar';
+import { Scrollbar } from 'swiper/modules';
 
 const Home = () => {
    const [isTop, setIsTop] = useState<boolean>(true);
 
    const { t } = useTranslation('home');
 
+   const newProduct = useQuery({
+      queryKey: ['product'],
+      queryFn: () =>
+         productApi.getAll({
+            skip: 0,
+            limit: 20,
+            sort: 'sold:-1',
+            status: 'show',
+         }),
+   });
+
    const { data, isLoading } = useQuery({
       queryKey: ['products', isTop],
       queryFn: () =>
          productApi.getAll({
             skip: 0,
-            limit: 8,
-            sort: isTop ? 'createdAt:-1' : 'sold:-1',
+            limit: 10,
+            sort: isTop ? 'createdAt:-1' : 'discount:-1',
+            status: 'show',
          }),
-      staleTime: 60 * 1000,
    });
+
    return (
       <>
-         <div className='relative -mt-5 banner'>
+         <div className='relative banner'>
             <img
                src={images.bannerr}
                alt=''
                className='w-[580px] absolute right-28 bottom-0 object-contain'
             />
+
             <div className='absolute text-white flex-column top-1/3 left-28'>
                <span className='font-nikeFutura tracking-[8px] text-8xl overflow-hidden whitespace-nowrap animate-typing'>
                   JUST DO IT
@@ -57,6 +73,34 @@ const Home = () => {
          </div>
 
          <div className='container py-10 space-y-16'>
+            <div className='space-y-3'>
+               <h2 className='text-2xl'>{t('home.bestSeller')}</h2>
+               <Swiper
+                  spaceBetween={8}
+                  slidesPerView={5}
+                  scrollbar={{
+                     hide: false,
+                  }}
+                  modules={[Scrollbar]}
+                  // scrollbar={{
+                  //     hide: false
+                  // }}
+                  // modules={[Scrollbar]}
+               >
+                  {newProduct?.data?.products.map((item, index) => (
+                     <SwiperSlide key={index}>
+                        <ProductCard data={item} />
+                     </SwiperSlide>
+                  ))}
+               </Swiper>
+               {/* <Row gutter={12}>
+                  {newProduct?.data?.products.map((item, index) => (
+                     <Col key={index} span={4}>
+                        <ProductCard data={item} size={14} />
+                     </Col>
+                  ))}
+               </Row> */}
+            </div>
             <div className='text-center'>
                <h1 className='text-5xl uppercase font-nikeFutura'>
                   Just do it
@@ -104,7 +148,8 @@ const Home = () => {
                      )}
                      onClick={() => setIsTop(false)}
                   >
-                     {t('home.bestSeller')}
+                     {/* {t('home.')} */}
+                     Sale
                   </span>
                </div>
                {isLoading && (
@@ -113,9 +158,15 @@ const Home = () => {
                   </div>
                )}
                {data && (
-                  <Row gutter={[24, 32]}>
+                  <Row gutter={[8, 24]}>
                      {data.products.map((item) => (
-                        <Col key={item._id} span={6}>
+                        <Col
+                           style={{
+                              flexBasis: '20%',
+                              width: '20%',
+                           }}
+                           key={item._id}
+                        >
                            <ProductCard data={item} />
                         </Col>
                      ))}

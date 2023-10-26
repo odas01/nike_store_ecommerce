@@ -2,12 +2,13 @@ import { Router } from 'express';
 
 import * as color from '../controllers/color.controller';
 import { checkAuth, verifyAdminRoot } from '../middleware/verify.middleware';
+import skipLimit from '../middleware/skipLimit.middleware';
 
 const router = Router();
 
 router
    .route('/')
-   .get(color.getAll)
+   .get(skipLimit, color.getAll)
    .post(checkAuth, verifyAdminRoot, color.create);
 
 router

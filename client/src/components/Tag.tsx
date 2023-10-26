@@ -9,9 +9,9 @@ interface TagProps {
 
 const Tag: React.FC<TagProps> = ({ title, width, height, className }) => {
    return (
-      <div
+      <span
          className={twMerge(
-            'px-2 py-1 text-[11px] text-center rounded min-w-[72px] text-white bg-blue-500',
+            'inline-block px-2.5 py-0.5 rounded-full text-[11px] text-center min-w-[60px] text-white bg-blue-500',
             className
          )}
          style={{
@@ -20,7 +20,7 @@ const Tag: React.FC<TagProps> = ({ title, width, height, className }) => {
          }}
       >
          {title}
-      </div>
+      </span>
    );
 };
 

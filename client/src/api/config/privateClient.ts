@@ -24,9 +24,7 @@ privateClient.interceptors.response.use(
          if (refreshToken && !refresh) {
             refresh = true;
             try {
-               const res: any = await authApi.refreshToken({
-                  rftoken: refreshToken,
-               });
+               const res: any = await authApi.refreshToken(refreshToken);
                localStorage.setItem('ACCESS_TOKEN', res.accessToken);
                localStorage.setItem('REFRESH_TOKEN', res.refreshToken);
 

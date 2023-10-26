@@ -1,4 +1,3 @@
-import ReactDrawer from 'react-modern-drawer';
 import { useState, KeyboardEvent } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQuery } from '@tanstack/react-query';
@@ -25,6 +24,7 @@ import {
 import { userApi } from '@/api';
 import { dateFormat, notify } from '@/helpers';
 import { ErrorResponse, IUser } from '@/types';
+import { Drawer } from 'antd';
 
 const DEFAULT_LIMIT = import.meta.env.VITE_APP_LIMIT || 15;
 
@@ -112,12 +112,12 @@ function Admins() {
             ) : (
                <Table
                   heading={
-                     <tr className='[&>*:not(:last-child)]:px-4 [&>*]:py-3'>
+                     <tr className='[&>*:not(:last-child)]:p-4'>
                         <td className='w-[5%]'></td>
-                        <td className='w-[20%]'>{t('table.date')}</td>
-                        <td className='w-[15%]'>{t('table.name')}</td>
-                        <td className='w-[20%]'>Email</td>
-                        <td className='w-[20%]'>{t('table.phoneNumber')}</td>
+                        <td className='w-[15%]'>{t('table.date')}</td>
+                        <td className='w-[20%]'>{t('table.name')}</td>
+                        <td className='w-[25%]'>Email</td>
+                        <td className='w-[15%]'>{t('table.phoneNumber')}</td>
                         <td className='w-[10%] text-center'>
                            {t('status.status')}
                         </td>
@@ -142,21 +142,21 @@ function Admins() {
                      data.users?.map((user, index) => (
                         <tr
                            key={index}
-                           className='[&>td:not(:first-child):not(:last-child)]:p-4 [&>td:not(:last-child)>*]:line-clamp-1'
+                           className='[&>td:not(:first-child):not(:last-child)]:p-4'
                         >
                            <td>
-                              <span className='text-xs text-center text-gray-500'>
+                              <p className='text-xs text-center text-gray-500'>
                                  {skip + index + 1}
-                              </span>
+                              </p>
                            </td>
                            <td>
                               <span>{dateFormat(user.createdAt)}</span>
                            </td>
                            <td>
-                              <span>{user.name}</span>
+                              <span className='line-clamp-1'>{user.name}</span>
                            </td>
                            <td>
-                              <span>{user.email}</span>
+                              <span className='line-clamp-1'>{user.email}</span>
                            </td>
                            <td>
                               <span>{user.phone}</span>
@@ -236,18 +236,25 @@ function Admins() {
             )}
          </div>
 
-         <ReactDrawer
+         <Drawer
             open={openDrawer}
             onClose={closeDrawer}
-            direction='right'
-            size='40%'
+            width='40%'
+            title={null}
+            headerStyle={{
+               display: 'none',
+            }}
+            bodyStyle={{
+               padding: 0,
+            }}
+            className='dark:text-white'
          >
             <AdminForm
                data={userActive}
                getData={() => {}}
                closeDrawer={closeDrawer}
             />
-         </ReactDrawer>
+         </Drawer>
 
          <Modal
             title='Change password'

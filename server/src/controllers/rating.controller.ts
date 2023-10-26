@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 
-import Rating from '../models/Rating';
+import Rating from '../models/rating.model';
 import responseHandler from '../handlers/response.handler';
 import mongoose from 'mongoose';
 
@@ -15,7 +15,10 @@ export const create = async (req: Request, res: Response) => {
 };
 
 export const getAll = async (req: Request, res: Response) => {
-   const { skip, limit, product }: any = req.query;
+   const { product }: any = req.query;
+
+   const skip = res.locals.skip;
+   const limit = res.locals.limit;
 
    try {
       const total = await Rating.countDocuments({
