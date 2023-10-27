@@ -5,3 +5,7 @@ export interface IMessage extends Document {
    users: ObjectId[];
    sender: ObjectId;
 }
+export interface IChat extends Document {
+   members: ObjectId[];
+   lastMessage: ObjectId;
+}

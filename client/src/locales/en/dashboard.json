@@ -39,7 +39,8 @@
       "phoneNumber": "Phone number",
       "payment": "Payment",
       "actions": "Actions",
-      "totalAmout": "Total amount"
+      "totalAmout": "Total amount",
+      "sold": "Sold"
    },
    "role": {
       "root": "Root",
@@ -89,5 +90,19 @@
    "invoice": "Invoice",
    "value": "Value",
    "code": "Code",
-   "expirationDate": "Exp date"
+   "expirationDate": "Exp date",
+   "overview": {
+      "todayOrder": "Today order",
+      "yesdOrder": "Yesterday order",
+      "thisM": "This month",
+      "lastM": "Last month",
+      "all": "All orders",
+      "cash": "Cash",
+      "totalOrder": "Total orders",
+      "pending": "Pending",
+      "processing": "Processing",
+      "delivered": "Delivered",
+      "bestSellingProduct": "Best selling products",
+      "weeklyOrder": "Weekly orders"
+   }
 }

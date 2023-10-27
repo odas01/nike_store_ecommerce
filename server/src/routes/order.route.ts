@@ -11,6 +11,10 @@ router
    .get(skipLimit, checkAuth, order.getAll)
    .post(checkAuth, order.create);
 
+router.route('/dashboard-count').get(checkAuth, order.dashboardCount);
+router.route('/dashboard-amount').get(order.dashboardAmount);
+router.route('/dashboard-chart').get(checkAuth, order.dashboardChart);
+
 router.route('/:id').put(checkAuth, verifyAdminRoot, order.updateOne);
 
 export default router;

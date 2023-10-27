@@ -8,6 +8,7 @@ import { Link, Outlet, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import images from '@/assets/images';
 import cartStore from '@/stores/cartStore';
+import { BsChatDots, BsFillChatDotsFill } from 'react-icons/bs';
 
 const Account = () => {
    const { deleteCart } = cartStore();
@@ -30,6 +31,21 @@ const Account = () => {
                   </div>
                   <div className='flex flex-col space-y-4'>
                      <Link
+                        to='profile'
+                        className='flex items-center space-x-2 duration-75 hover:opacity-80'
+                     >
+                        <AiOutlineProfile size={16} />
+
+                        <span>{t('updateProfile')}</span>
+                     </Link>
+                     <Link
+                        to='chat'
+                        className='flex items-center space-x-2 duration-75 hover:opacity-80'
+                     >
+                        <BsChatDots size={16} />
+                        <span>Chat</span>
+                     </Link>
+                     <Link
                         to='my-orders'
                         className='flex items-center space-x-2 duration-75 hover:opacity-80'
                      >
@@ -43,14 +59,6 @@ const Account = () => {
                         <MdPassword size={16} />
 
                         <span>{t('changePass')}</span>
-                     </Link>
-                     <Link
-                        to='profile'
-                        className='flex items-center space-x-2 duration-75 hover:opacity-80'
-                     >
-                        <AiOutlineProfile size={16} />
-
-                        <span>{t('updateProfile')}</span>
                      </Link>
                      <div
                         className='flex items-center space-x-2 duration-75 cursor-pointer hover:opacity-80'

@@ -6,6 +6,43 @@ import CartItem from '../models/cartItem.model';
 import Product from '../models/product.model';
 import Variant from '../models/variant.model';
 import { sendMailOrder } from '../config/sendMail';
+import moment from 'moment';
+
+const filterOrder = (query: any) => {
+   const { search, paymentMethod, status, user } = query;
+   let filter: any = {};
+   if (search)
+      filter = {
+         ...filter,
+         $or: [{ phone: { $regex: new RegExp(search), $options: 'i' } }],
+      };
+   if (paymentMethod) {
+      filter.paymentMethod = paymentMethod;
+   }
+   if (status) {
+      filter.status = status;
+   }
+   if (user) {
+      filter.user = user;
+   }
+   return filter;
+};
+
+const sortOrder = (query: any) => {
+   let sort = {};
+   if (query.sort) {
+      const [key, value] = String(query.sort).split(':');
+
+      sort = {
+         [key]: Number(value),
+      };
+   } else {
+      sort = {
+         createdAt: -1,
+      };
+   }
+   return sort;
+};
 
 export const create = async (req: Request, res: Response) => {
    const { _id, email } = res.locals.user;
@@ -39,11 +76,8 @@ export const create = async (req: Request, res: Response) => {
 };
 
 export const getAll = async (req: Request, res: Response) => {
-   const { user } = req.query;
-   const filter: any = {};
-   if (user) {
-      filter.user = user;
-   }
+   const filter = filterOrder(req.query);
+   const sort = sortOrder(req.query);
 
    const skip = res.locals.skip;
    const limit = res.locals.limit;
@@ -56,7 +90,7 @@ export const getAll = async (req: Request, res: Response) => {
 
       const orders = await Order.find(filter)
          .lean()
-         .sort({ createdAt: -1 })
+         .sort(sort)
          .skip(Number(skip))
          .limit(Number(limit))
          .populate([
@@ -102,6 +136,172 @@ export const updateOne = async (req: Request, res: Response) => {
       await Order.findByIdAndUpdate(id, req.body);
 
       responseHandler.created(res, {});
+   } catch {
+      responseHandler.error(res);
+   }
+};
+
+export const dashboardCount = async (req: Request, res: Response) => {
+   try {
+      const orders = await Order.aggregate([
+         {
+            $group: {
+               _id: '$status',
+               count: { $sum: 1 },
+            },
+         },
+         {
+            $project: {
+               _id: 0,
+               status: '$_id',
+               count: 1,
+            },
+         },
+      ]);
+      responseHandler.ok(res, { orders });
+   } catch {
+      responseHandler.error(res);
+   }
+};
+
+export const dashboardAmount = async (req: Request, res: Response) => {
+   try {
+      const toDayOrder = await Order.aggregate([
+         {
+            $match: {
+               createdAt: {
+                  $gte: new Date(moment().startOf('day').toDate()),
+                  $lt: new Date(),
+               },
+               paid: true,
+            },
+         },
+         {
+            $group: {
+               _id: '$paymentMethod',
+               total: { $sum: '$total' },
+            },
+         },
+         {
+            $project: {
+               _id: 0,
+               method: '$_id',
+               total: 1,
+            },
+         },
+         {
+            $sort: { method: 1 },
+         },
+      ]);
+      const yesterdayOrder = await Order.aggregate([
+         {
+            $match: {
+               createdAt: {
+                  $gte: new Date(
+                     moment().add(-1, 'day').startOf('day').toDate()
+                  ),
+                  $lt: new Date(moment().add(-1, 'day').endOf('day').toDate()),
+               },
+               paid: true,
+            },
+         },
+         {
+            $group: {
+               _id: '$paymentMethod',
+               total: { $sum: '$total' },
+            },
+         },
+         {
+            $project: {
+               _id: 0,
+               method: '$_id',
+               total: 1,
+            },
+         },
+         {
+            $sort: { method: 1 },
+         },
+      ]);
+
+      const thisMonthAmount = (
+         await Order.find({
+            paid: true,
+            createdAt: {
+               $gte: moment().startOf('month').format('YYYY-MM-DD'),
+               $lte: moment().endOf('month').format('YYYY-MM-DD'),
+            },
+         })
+      ).reduce((cur, item) => item.total + cur, 0);
+
+      const lastMonthAmount = (
+         await Order.find({
+            paid: true,
+            createdAt: {
+               $gte: moment()
+                  .add(-1, 'month')
+                  .startOf('month')
+                  .format('YYYY-MM-DD'),
+               $lte: moment()
+                  .add(-1, 'month')
+                  .endOf('month')
+                  .format('YYYY-MM-DD'),
+            },
+         })
+      ).reduce((cur, item) => item.total + cur, 0);
+
+      const totalAmount = (await Order.find({ paid: true })).reduce(
+         (cur, item) => item.total + cur,
+         0
+      );
+      responseHandler.ok(res, {
+         toDayOrder,
+         yesterdayOrder,
+         thisMonthAmount,
+         lastMonthAmount,
+         totalAmount,
+      });
+   } catch {
+      responseHandler.error(res);
+   }
+};
+export const dashboardChart = async (req: Request, res: Response) => {
+   try {
+      const orders = await Order.aggregate([
+         {
+            $match: {
+               createdAt: {
+                  $gte: new Date(
+                     moment().add(-6, 'day').startOf('day').toDate()
+                  ),
+                  $lt: new Date(),
+               },
+            },
+         },
+         {
+            $project: {
+               createdAt: {
+                  $dateToString: { format: '%d-%m-%Y', date: '$createdAt' },
+               },
+            },
+         },
+         {
+            $group: {
+               _id: '$createdAt',
+               count: { $sum: 1 },
+            },
+         },
+         {
+            $project: {
+               _id: 0,
+               date: '$_id',
+               count: 1,
+            },
+         },
+         {
+            $sort: { date: 1 },
+         },
+      ]);
+      responseHandler.ok(res, { orders });
    } catch {
       responseHandler.error(res);
    }

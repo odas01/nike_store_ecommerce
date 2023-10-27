@@ -29,9 +29,11 @@ function DashboardLayout() {
             <Aside />
          </div>
 
-         <div className='flex-1 px-8 overflow-scroll text-[#272727] bg-[#fefefe] dark:text-white dark:bg-[#1A1C23]'>
+         <div className='flex-1 px-8 overflow-scroll text-[#272727] bg-[#fefefe] dark:text-white dark:bg-aside_db'>
             <Header />
-            <Outlet />
+            <div className='pb-6'>
+               <Outlet />
+            </div>
          </div>
       </div>
    );

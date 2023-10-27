@@ -17,6 +17,7 @@ import Home from '@/pages/home/Home';
 import Shop from '@/pages/home/Shop';
 import Cart from '@/pages/home/Cart';
 import Detail from '@/pages/home/Detail';
+import Chat from '@/pages/home/user/Chat';
 import CheckOut from '@/pages/home/CheckOut';
 import Profile from '@/pages/home/user/Profile';
 import MyOrders from '@/pages/home/user/Orders';
@@ -78,6 +79,7 @@ function App() {
                >
                   <Route index element={<Navigate to='profile' />} />
                   <Route path='profile' element={<Profile />} />
+                  <Route path='chat' element={<Chat />} />
                   <Route path='my-orders' element={<MyOrders />} />
                   <Route path='change-password' element={<ChangePw />} />
                </Route>
@@ -121,6 +123,7 @@ function App() {
                )}
                <Route path='orders' element={<Orders />} />
                <Route path='coupons' element={<Coupons />} />
+               <Route path='chat' element={<Chat />} />
             </Route>
          </Routes>
       </BrowserRouter>

@@ -1,20 +1,11 @@
 import { Router } from 'express';
 
-import * as coupon from '../controllers/coupon.controller';
+import * as message from '../controllers/message.controller';
 import { checkAuth, verifyAdminRoot } from '../middleware/verify.middleware';
 import skipLimit from '../middleware/skipLimit.middleware';
 
 const router = Router();
 
-router
-   .route('/')
-   .get(skipLimit, coupon.getAll)
-   .post(checkAuth, verifyAdminRoot, coupon.create);
-
-router
-   .route('/:id')
-   .get(coupon.checkOne)
-   .put(checkAuth, verifyAdminRoot, coupon.updateOne)
-   .delete(checkAuth, verifyAdminRoot, coupon.deleteOne);
+router.route('/').get(checkAuth, message.get).post(checkAuth, message.create);
 
 export default router;

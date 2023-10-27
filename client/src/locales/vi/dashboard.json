@@ -42,7 +42,8 @@
       "phoneNumber": "Số điện thoại",
       "payment": "Thanh toán",
       "totalAmout": "Tổng tiền",
-      "actions": "Hành động"
+      "actions": "Hành động",
+      "sold": "Đã bán"
    },
    "role": {
       "root": "Root",
@@ -93,5 +94,19 @@
    "invoice": "Hóa đơn",
    "value": "Giá trị",
    "code": "Mã giảm",
-   "expirationDate": "Ngày hết hạn"
+   "expirationDate": "Ngày hết hạn",
+   "overview": {
+      "todayOrder": "Đơn hôm nay",
+      "yesdOrder": "Đơn hôm qua",
+      "thisM": "Tháng này",
+      "lastM": "Tháng trước",
+      "all": "Tất cả đơn",
+      "cash": "Tiền mặt",
+      "totalOrder": "Tổng đơn hàng",
+      "pending": "Chờ xác nhận",
+      "processing": "Đang giao",
+      "delivered": "Đã giao",
+      "bestSellingProduct": "Sản phẩm bán chạy",
+      "weeklyOrder": "Đơn hàng hàng tuần"
+   }
 }

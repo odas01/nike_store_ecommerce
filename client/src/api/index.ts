@@ -10,3 +10,6 @@ export * from './variantApi';
 export * from './addressApi';
 export * from './categoryApi';
 export * from './product.api';
+export * from './messageApi';
+export * from './chatApi';
+export * from './overviewApi';

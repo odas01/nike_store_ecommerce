@@ -12,4 +12,13 @@ export const orderApi = {
       (await privateClient.delete(`orders/${id}`)).data,
    update: async (id: string, data: any) =>
       (await privateClient.put(`orders/${id}`, data)).data,
+
+   dashboardCount: async () =>
+      (await privateClient.get(`orders/dashboard-count`)).data,
+
+   dashboardAmount: async () =>
+      (await privateClient.get(`orders/dashboard-amount`)).data,
+
+   dashboardChart: async () =>
+      (await privateClient.get(`orders/dashboard-chart`)).data,
 };
