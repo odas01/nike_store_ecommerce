@@ -41,7 +41,7 @@ function Admins() {
    const [openDrawer, setOpenDrawer] = useState<boolean>(false);
    const [openModal, setOpenModal] = useState<boolean>(false);
 
-   const { t } = useTranslation('dashboard');
+   const { t } = useTranslation(['dashboard', 'mutual']);
 
    const { data, isLoading, refetch } = useQuery({
       queryKey: ['admins', skip, params],
@@ -91,7 +91,7 @@ function Admins() {
    return (
       <>
          <PageTitle title='Admins' />
-         <Title title={t('title.admin')} />
+         <Title title={t('admin.title')} />
          <div className='flex flex-col mt-6'>
             <div className='flex justify-between mb-4 space-x-4 h-11'>
                <Input
@@ -104,7 +104,7 @@ function Admins() {
                   className='h-full text-sm duration-150 bg-green-500 w-52 hover:bg-green-600'
                   onClick={() => setOpenDrawer(true)}
                >
-                  {t('form.addNew')}
+                  + {t('action.addNew')}
                </Button>
             </div>
             {isLoading ? (
@@ -114,14 +114,28 @@ function Admins() {
                   heading={
                      <tr className='[&>*:not(:last-child)]:p-4'>
                         <td className='w-[5%]'></td>
-                        <td className='w-[15%]'>{t('table.date')}</td>
-                        <td className='w-[20%]'>{t('table.name')}</td>
-                        <td className='w-[25%]'>Email</td>
-                        <td className='w-[15%]'>{t('table.phoneNumber')}</td>
-                        <td className='w-[10%] text-center'>
-                           {t('status.status')}
+                        <td className='w-[15%]'>
+                           {t('label.date', {
+                              ns: 'mutual',
+                           })}
                         </td>
-                        <td className='w-[10%]'></td>
+                        <td className='w-[25%]'>
+                           {t('label.name', {
+                              ns: 'mutual',
+                           })}
+                        </td>
+                        <td className='w-[25%]'>Email</td>
+                        <td className='w-[15%]'>
+                           {t('label.phone', {
+                              ns: 'mutual',
+                           })}
+                        </td>
+                        <td className='w-[10%] text-center'>
+                           {t('status.status', {
+                              ns: 'mutual',
+                           })}
+                        </td>
+                        <td className='w-[5%]'></td>
                      </tr>
                   }
                   pagination={
@@ -163,10 +177,16 @@ function Admins() {
                            </td>
                            <td className='flex justify-center'>
                               {user.status === 'active' ? (
-                                 <Tag title={t('status.active')} />
+                                 <Tag
+                                    title={t('status.active', {
+                                       ns: 'mutual',
+                                    })}
+                                 />
                               ) : (
                                  <Tag
-                                    title={t('status.blocked')}
+                                    title={t('status.blocked', {
+                                       ns: 'mutual',
+                                    })}
                                     className='bg-red-400'
                                  />
                               )}
@@ -177,7 +197,7 @@ function Admins() {
                                     {
                                        label: (
                                           <div
-                                             className='flex items-center space-x-2'
+                                             className='flex items-center px-2 py-1 space-x-2'
                                              onClick={() =>
                                                 onChangePassword(user)
                                              }
@@ -185,7 +205,9 @@ function Admins() {
                                              <MdPassword />
 
                                              <span>
-                                                {t('form.changePassword')}
+                                                {t('action.changePasswordd', {
+                                                   ns: 'mutual',
+                                                })}
                                              </span>
                                           </div>
                                        ),
@@ -193,18 +215,22 @@ function Admins() {
                                     {
                                        label: (
                                           <div
-                                             className='flex items-center space-x-2'
+                                             className='flex items-center px-2 py-1 space-x-2'
                                              onClick={() => onEdit(user)}
                                           >
                                              <BiMessageSquareEdit />
-                                             <span>{t('action.edit')}</span>
+                                             <span>
+                                                {t('action.edit', {
+                                                   ns: 'mutual',
+                                                })}
+                                             </span>
                                           </div>
                                        ),
                                     },
                                     {
                                        label: (
                                           <div
-                                             className='flex items-center space-x-2'
+                                             className='flex items-center px-2 py-1 space-x-2'
                                              onClick={() =>
                                                 deleteAdminMutation.mutate(
                                                    user._id
@@ -212,7 +238,11 @@ function Admins() {
                                              }
                                           >
                                              <FiTrash2 />
-                                             <span>{t('action.delete')}</span>
+                                             <span>
+                                                {t('action.delete', {
+                                                   ns: 'mutual',
+                                                })}
+                                             </span>
                                           </div>
                                        ),
                                     },

@@ -28,8 +28,7 @@ const SizeArrayField: FC<{
       name: `sizes`,
    });
 
-   const { t } = useTranslation('dashboard');
-
+   const { t } = useTranslation(['dashboard', 'mutual']);
    const onChooes = (index: number, sizeItem: ISize) => {
       setValue(`sizes.${index}.size`, sizeItem.name);
       clearErrors(`sizes.${index}.size`);
@@ -42,8 +41,8 @@ const SizeArrayField: FC<{
    return (
       <div className='pr-8 space-y-1'>
          <Row gutter={16}>
-            <Col span={16}>{t('aside.size')}</Col>
-            <Col span={8}>{t('form.stock')}</Col>
+            <Col span={16}>{t('size.aside')}</Col>
+            <Col span={8}>{t('label.stock', { ns: 'mutual' })}</Col>
          </Row>
          <Row gutter={[16, 8]} className='relative'>
             {fields.map((item, index) => {
@@ -117,7 +116,7 @@ const SizeArrayField: FC<{
                }}
             >
                <IoIosAddCircleOutline color='inherit' size={18} />
-               <span>{t('form.addMoreSize')}</span>
+               <span>{t('action.addSize')}</span>
             </Button>
          </div>
       </div>

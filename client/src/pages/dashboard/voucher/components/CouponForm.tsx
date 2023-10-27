@@ -6,23 +6,47 @@ import { FC, useEffect, useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import { Error, Input } from '@/components';
+import { Dropdown, Error, Input } from '@/components';
 import Footer from '@/components/drawer/Footer';
 import Heading from '@/components/drawer/Header';
 
 import { notify } from '@/helpers';
-import { ErrorResponse, IColor, CouponForm as CouponFormValues } from '@/types';
+import { CouponFormUpload, ErrorResponse, IColor } from '@/types';
 import { couponApi } from '@/api';
-import { ICoupon, CouponForm } from '@/types';
+import { ICoupon } from '@/types';
+import moment from 'moment';
 
 const formSchema = zod.object({
    name: zod.string().nonempty('Color name is required'),
    code: zod.string().nonempty('Color name is required'),
-   value: zod.string().nonempty('Color name is required'),
+   value: zod
+      .number({
+         invalid_type_error: 'Price is required',
+      })
+      .min(1)
+      .max(99),
    type: zod.string().nonempty('Color name is required'),
-   quantity: zod.string().nonempty('Color name is required'),
-   expirationDate: zod.coerce.date(),
+   quantity: zod
+      .number({
+         invalid_type_error: 'Price is required',
+      })
+      .min(1)
+      .max(100),
+   expirationDate: zod
+      .string()
+      .regex(/^\d{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$/),
 });
+
+type CouponFormValues = zod.infer<typeof formSchema>;
+
+const initialForm = {
+   name: '',
+   code: '',
+   value: 0,
+   type: '',
+   quantity: 0,
+   expirationDate: moment().format('YYYY-MM-DD'),
+};
 
 interface ColorFormProps {
    data: ICoupon | null;
@@ -34,27 +58,28 @@ const ColorForm: FC<ColorFormProps> = ({ data, closeDrawer }) => {
    const {
       register,
       handleSubmit,
-      formState: { errors },
-      setValue,
       reset,
+      setValue,
+      formState: { errors },
    } = useForm<CouponFormValues>({
       resolver: zodResolver(formSchema),
       mode: 'onChange',
    });
+   useEffect(() => {
+      if (data) {
+         reset({
+            ...data,
+            expirationDate: moment(data.expirationDate).format('YYYY-MM-DD'),
+         });
+      } else {
+         reset(initialForm);
+      }
+   }, [data]);
 
-   const { t } = useTranslation('dashboard');
-   const [color, setColor] = useState<string>('#ffffff');
-
-   // useEffect(() => {
-   //    if (data) {
-   //       reset(data);
-   //    } else {
-   //       reset(initialForm);
-   //    }
-   // }, [data]);
+   const { t } = useTranslation(['dashboard', 'mutual']);
 
    const createColorMutation = useMutation({
-      mutationFn: (values: CouponFormValues) => {
+      mutationFn: (values: CouponFormUpload) => {
          return couponApi.create(values);
       },
       onSuccess: () => {
@@ -67,7 +92,7 @@ const ColorForm: FC<ColorFormProps> = ({ data, closeDrawer }) => {
    });
 
    const editColorMutation = useMutation({
-      mutationFn: (values: CouponFormValues) => {
+      mutationFn: (values: CouponFormUpload) => {
          return couponApi.update(data?._id!, values);
       },
       onSuccess: () => {
@@ -80,10 +105,15 @@ const ColorForm: FC<ColorFormProps> = ({ data, closeDrawer }) => {
    });
 
    const onSubmit = handleSubmit(async (values) => {
+      const newValues = {
+         ...values,
+         expirationDate: new Date(values.expirationDate),
+      };
+
       if (data && data._id) {
-         await editColorMutation.mutateAsync(values);
+         await editColorMutation.mutateAsync(newValues);
       } else {
-         await createColorMutation.mutateAsync(values);
+         await createColorMutation.mutateAsync(newValues);
       }
       closeDrawer();
    });
@@ -92,60 +122,101 @@ const ColorForm: FC<ColorFormProps> = ({ data, closeDrawer }) => {
       <div className='flex flex-col h-full'>
          <Heading>
             <h2 className='px-4 text-center'>
-               {t(data ? 'action.edit' : 'action.create')}
+               {t(data ? 'action.edit' : 'action.create', { ns: 'mutual' })}
             </h2>
          </Heading>
          <div className='flex-1 dark:bg-[#111315] overflow-y-scroll'>
             <form className='flex flex-col p-6 space-y-2 font-medium [&>div>input]:text-sm'>
                <div className='flex flex-col space-y-1'>
-                  <label htmlFor='name'>Tên coupon</label>
+                  <label htmlFor='name'>
+                     {t('label.name', { ns: 'mutual' })}
+                  </label>
                   <Input
-                     placeholder='Color name'
+                     placeholder={t('coupon.name')}
                      isError={!!errors?.name}
                      {...register('name')}
                   />
                   <Error message={errors.name?.message} />
                </div>
                <div className='flex flex-col space-y-1'>
-                  <label htmlFor='value'>Mã coupon</label>
+                  <label htmlFor='value'>{t('coupon.code')}</label>
                   <Input
-                     placeholder='Coupon code'
+                     placeholder={t('coupon.code')}
                      isError={!!errors?.code}
                      {...register('code')}
                   />
                   <Error message={errors.code?.message} />
                </div>
                <div className='flex flex-col space-y-1'>
-                  <label htmlFor='value'>Loại giảm giá</label>
-                  <Input
-                     placeholder='Coupon type'
-                     isError={!!errors?.type}
-                     {...register('type')}
+                  <label htmlFor='value'>{t('coupon.type')}</label>
+                  <Dropdown
+                     items={[
+                        {
+                           label: (
+                              <p
+                                 className='px-3 py-2 capitalize'
+                                 onClick={() => setValue('type', 'percent')}
+                              >
+                                 percent
+                              </p>
+                           ),
+                        },
+                        {
+                           label: (
+                              <p
+                                 className='px-3 py-2 capitalize'
+                                 onClick={() => setValue('type', 'vnd')}
+                              >
+                                 vnd
+                              </p>
+                           ),
+                        },
+                     ]}
+                     children={
+                        <Input
+                           placeholder={t('placeholderForm.coupon.type')}
+                           className='w-full capitalize appearance placeholder:normal-case focus:cursor-pointer'
+                           {...register('type')}
+                           isError={!!errors.type}
+                           readOnly
+                        />
+                     }
                   />
                   <Error message={errors.type?.message} />
                </div>
                <div className='flex flex-col space-y-1'>
-                  <label htmlFor='value'>Giá trị</label>
+                  <label htmlFor='value'>
+                     {t('label.value', { ns: 'mutual' })}
+                  </label>
                   <Input
-                     placeholder='Coupon value'
+                     placeholder={t('label.value', { ns: 'mutual' })}
                      isError={!!errors?.value}
-                     {...register('value')}
+                     {...register('value', {
+                        valueAsNumber: true,
+                     })}
                   />
                   <Error message={errors.value?.message} />
                </div>
                <div className='flex flex-col space-y-1'>
-                  <label htmlFor='value'>Số lượng</label>
+                  <label htmlFor='value'>
+                     {t('label.quantity', { ns: 'mutual' })}
+                  </label>
                   <Input
-                     placeholder='Coupon quantity'
+                     placeholder={t('coupon.qty')}
                      isError={!!errors?.quantity}
-                     {...register('quantity')}
+                     {...register('quantity', {
+                        valueAsNumber: true,
+                     })}
                   />
                   <Error message={errors.quantity?.message} />
                </div>
                <div className='flex flex-col space-y-1'>
-                  <label htmlFor='value'>Ngày bắt đầu</label>
+                  <label htmlFor='value'>
+                     {t('label.expirationDate', { ns: 'mutual' })}
+                  </label>
                   <Input
                      type='date'
+                     autoComplete='off'
                      isError={!!errors?.expirationDate}
                      {...register('expirationDate')}
                   />
@@ -160,13 +231,13 @@ const ColorForm: FC<ColorFormProps> = ({ data, closeDrawer }) => {
                   className='duration-150 bg-gray-600 opacity-40 hover:opacity-30'
                   onClick={closeDrawer}
                >
-                  {t('action.cancel')}
+                  {t('action.cancel', { ns: 'mutual' })}
                </button>
                <button
                   className='duration-150 bg-blue-500 hover:opacity-80'
                   onClick={onSubmit}
                >
-                  {t(data ? 'action.edit' : 'action.create')}
+                  {t(data ? 'action.edit' : 'action.create', { ns: 'mutual' })}
                </button>
             </div>
          </Footer>

@@ -25,12 +25,15 @@ import Table from '@/layouts/dashboard/components/Table';
 import { categoryApi } from '@/api';
 import { dateFormat, notify } from '@/helpers';
 import { ErrorResponse, ICategory } from '@/types';
+import { store } from '@/constants';
 
 const DEFAULT_LIMIT = import.meta.env.VITE_APP_LIMIT || 15;
 
 type Params = {
    name: string;
 };
+
+type Store = (typeof store)[number];
 
 function Categories() {
    const [categoryActive, setCategoryActive] = useState<ICategory | null>(null);
@@ -41,7 +44,7 @@ function Categories() {
    const [openDrawer, setOpenDrawer] = useState<boolean>(false);
    const [openModal, setOpenModal] = useState<boolean>(false);
 
-   const { t, i18n } = useTranslation('dashboard');
+   const { t, i18n } = useTranslation(['dashboard', 'mutual']);
 
    const { data, isLoading, refetch } = useQuery({
       queryKey: ['categories', skip, params],
@@ -84,7 +87,7 @@ function Categories() {
    return (
       <>
          <PageTitle title='Categories' />
-         <Title title={t('title.category')} />
+         <Title title={t('category.title')} />
          <div className='flex flex-col mt-6'>
             <div className='flex mb-4 space-x-4 h-11'>
                <Input
@@ -97,7 +100,7 @@ function Categories() {
                   className='h-full text-sm duration-150 bg-green-500 w-52 hover:bg-green-600'
                   onClick={() => setOpenDrawer(true)}
                >
-                  {t('form.addNew')}
+                  + {t('action.addNew')}
                </Button>
             </div>
             {isLoading ? (
@@ -107,13 +110,18 @@ function Categories() {
                   heading={
                      <tr className='[&>*:not(:last-child)]:px-4 [&>*]:py-3'>
                         <td className='w-[5%]'></td>
-                        <td className='w-[25%]'>{t('table.name')}</td>
-                        <td className='w-[25%]'>{t('table.name')}</td>
-                        <td className='w-[25%]'>{t('table.store')}</td>
-                        <td className='w-[20%]'>{t('table.date')}</td>
-                        {/* <td className='w-[15%] text-center'>
-                           {t('status.status')}
-                        </td> */}
+                        <td className='w-[25%]'>
+                           {t('label.name', { ns: 'mutual' })}
+                        </td>
+                        <td className='w-[25%]'>
+                           {t('label.vnName', { ns: 'mutual' })}
+                        </td>
+                        <td className='w-[20%]'>
+                           {t('label.store', { ns: 'mutual' })}
+                        </td>
+                        <td className='w-[20%]'>
+                           {t('label.date', { ns: 'mutual' })}
+                        </td>
                         <td className='w-[5%]'></td>
                      </tr>
                   }
@@ -159,40 +167,36 @@ function Categories() {
                            </td>
                            <td>
                               <span className='capitalize'>
-                                 {category.store}
+                                 {t(`store.${category.store as Store}`, {
+                                    ns: 'mutual',
+                                 })}
                               </span>
                            </td>
                            <td>
                               <span>{dateFormat(category.createdAt)}</span>
                            </td>
-                           {/* <td className='flex justify-center'>
-                              {category.status === 'show' ? (
-                                 <Tag title={t('status.show')} />
-                              ) : (
-                                 <Tag
-                                    title={t('status.hide')}
-                                    className='bg-red-400'
-                                 />
-                              )}
-                           </td> */}
                            <td>
                               <Dropdown
                                  items={[
                                     {
                                        label: (
                                           <div
-                                             className='flex items-center space-x-2'
+                                             className='flex items-center px-2 py-1 space-x-2'
                                              onClick={() => onEdit(category)}
                                           >
                                              <BiMessageSquareEdit />
-                                             <span>{t('action.edit')}</span>
+                                             <span>
+                                                {t('action.edit', {
+                                                   ns: 'mutual',
+                                                })}
+                                             </span>
                                           </div>
                                        ),
                                     },
                                     {
                                        label: (
                                           <div
-                                             className='flex items-center space-x-2'
+                                             className='flex items-center px-2 py-1 space-x-2'
                                              onClick={() =>
                                                 deleteCateMutation.mutate(
                                                    category._id
@@ -200,7 +204,11 @@ function Categories() {
                                              }
                                           >
                                              <FiTrash2 />
-                                             <span>{t('action.delete')}</span>
+                                             <span>
+                                                {t('action.delete', {
+                                                   ns: 'mutual',
+                                                })}
+                                             </span>
                                           </div>
                                        ),
                                     },

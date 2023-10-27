@@ -24,6 +24,8 @@ type Params = {
    status: string;
 };
 
+type Status = 'pending' | 'processing' | 'delivered' | 'cancel';
+
 function Orders() {
    const [sort, setSort] = useState<any>('createdAt:-1');
    const [params, setParams] = useState<Partial<Params>>({});
@@ -31,8 +33,8 @@ function Orders() {
    const [openModal, setOpenModal] = useState<boolean>(true);
    const [orderActive, setOrderActive] = useState<IOrder | null>(null);
 
-   const { t } = useTranslation('dashboard');
-
+   const { t, i18n } = useTranslation(['dashboard', 'mutual']);
+   const isVnLang = i18n.language === 'vi';
    const { data, isLoading, refetch } = useQuery({
       queryKey: ['order', skip, params, sort],
       queryFn: () =>
@@ -66,7 +68,7 @@ function Orders() {
    return (
       <>
          <PageTitle title='Orders' />
-         <Title title={t('title.order')} />
+         <Title title={t('order.title')} />
          <div className='flex flex-col mt-6'>
             <div className='flex mb-4 space-x-4 h-11'>
                <Input
@@ -88,7 +90,7 @@ function Orders() {
                                  setParams({ ...params, paymentMethod: 'cash' })
                               }
                            >
-                              Cash
+                              {t('overview.cash')}
                            </p>
                         ),
                      },
@@ -110,7 +112,7 @@ function Orders() {
                   ]}
                   children={
                      <Input
-                        placeholder='Method'
+                        placeholder={t('label.method', { ns: 'mutual' })}
                         className='h-full capitalize appearance placeholder:normal-case focus:cursor-pointer'
                         value={params.paymentMethod}
                         readOnly
@@ -127,7 +129,7 @@ function Orders() {
                                  setParams({ ...params, status: 'pending' })
                               }
                            >
-                              Pending
+                              {t('status.pending', { ns: 'mutual' })}
                            </p>
                         ),
                      },
@@ -139,7 +141,8 @@ function Orders() {
                                  setParams({ ...params, status: 'processing' })
                               }
                            >
-                              Processing
+                              {' '}
+                              {t('status.processing', { ns: 'mutual' })}
                            </p>
                         ),
                      },
@@ -147,11 +150,12 @@ function Orders() {
                         label: (
                            <p
                               className='px-3 py-1'
-                              onClick={() =>
-                                 setParams({ ...params, status: 'delivered' })
-                              }
+                              onClick={() => {
+                                 t('status.deleted', { ns: 'mutual' });
+                              }}
                            >
-                              Delivered
+                              {' '}
+                              {t('status.delivered', { ns: 'mutual' })}
                            </p>
                         ),
                      },
@@ -163,14 +167,15 @@ function Orders() {
                                  setParams({ ...params, status: 'cancel' })
                               }
                            >
-                              Cancel
+                              {' '}
+                              {t('status.cancel', { ns: 'mutual' })}
                            </p>
                         ),
                      },
                   ]}
                   children={
                      <Input
-                        placeholder='Status'
+                        placeholder={t('status.status', { ns: 'mutual' })}
                         className='h-full capitalize appearance placeholder:normal-case focus:cursor-pointer'
                         value={params.status}
                         readOnly
@@ -193,10 +198,18 @@ function Orders() {
                <Table
                   heading={
                      <tr className='[&>*:not(:last-child)]:px-4 [&>*]:py-3'>
-                        <td className='w-[20%]'>{t('table.date')}</td>
-                        <td className='w-[18%]'>{t('table.customerName')}</td>
+                        <td className='w-[20%]'>
+                           {t('label.date', {
+                              ns: 'mutual',
+                           })}
+                        </td>
+                        <td className='w-[18%]'>{t('order.customerName')}</td>
                         <td className='w-[15%]'>
-                           <span>{t('table.payment')} </span>
+                           <span>
+                              {t('label.payment', {
+                                 ns: 'mutual',
+                              })}{' '}
+                           </span>
                         </td>
                         <td className='w-[15%]'>
                            <div
@@ -212,13 +225,17 @@ function Orders() {
                                  }
                               }}
                            >
-                              <span>{t('table.totalAmout')}</span>
+                              <span>{t('order.totalAmout')}</span>
                               <BiSort />
                            </div>
                         </td>
-                        <td className='w-[12%]'>{t('status.status')}</td>
+                        <td className='w-[12%]'>
+                           {t('status.status', { ns: 'mutual' })}
+                        </td>
                         <td className='w-[15%] text-center'>
-                           {t('table.actions')}
+                           {t('label.action', {
+                              ns: 'mutual',
+                           })}
                         </td>
                         <td className='w-[5%]'></td>
                      </tr>
@@ -243,7 +260,7 @@ function Orders() {
                            <td>
                               <span>
                                  {moment(order.createdAt).format(
-                                    'DD/MM YYYY HH:mm A'
+                                    'DD/MM YYYY | HH:mm A'
                                  )}
                               </span>
                            </td>
@@ -256,11 +273,13 @@ function Orders() {
                               </span>
                            </td>
                            <td>
-                              <span>{priceFormat(order.total, true)}</span>
+                              <span>{priceFormat(order.total, isVnLang)}</span>
                            </td>
                            <td>
-                              <span className='capitalize'>
-                                 {order.paid ? 'Paid' : 'Unpaid'}
+                              <span className='line-clamp-1'>
+                                 {order.paid
+                                    ? t('status.paid', { ns: 'mutual' })
+                                    : t('status.unpaid', { ns: 'mutual' })}
                               </span>
                            </td>
                            <td className='flex justify-center '>
@@ -300,11 +319,30 @@ function Orders() {
                                                    onClick={() =>
                                                       handleUpdateStatus(
                                                          order._id,
+                                                         'processing'
+                                                      )
+                                                   }
+                                                >
+                                                   {t('status.processing', {
+                                                      ns: 'mutual',
+                                                   })}
+                                                </p>
+                                             ),
+                                          },
+                                          {
+                                             label: (
+                                                <p
+                                                   className='px-2 py-1'
+                                                   onClick={() =>
+                                                      handleUpdateStatus(
+                                                         order._id,
                                                          'delivered'
                                                       )
                                                    }
                                                 >
-                                                   Delivered
+                                                   {t('status.delivered', {
+                                                      ns: 'mutual',
+                                                   })}
                                                 </p>
                                              ),
                                           },
@@ -319,7 +357,10 @@ function Orders() {
                                                       )
                                                    }
                                                 >
-                                                   Cancel
+                                                   {' '}
+                                                   {t('status.cancel', {
+                                                      ns: 'mutual',
+                                                   })}
                                                 </p>
                                              ),
                                           },
@@ -327,7 +368,10 @@ function Orders() {
                                     >
                                        <Input
                                           className='w-full h-8 text-xs placeholder:capitalize !cursor-pointer rounded-md appearance bg-[#24262D] border-none'
-                                          placeholder={order.status}
+                                          placeholder={t(
+                                             `status.${order.status as Status}`,
+                                             { ns: 'mutual' }
+                                          )}
                                           readOnly
                                        />
                                     </Dropdown>

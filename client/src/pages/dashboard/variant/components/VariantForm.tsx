@@ -75,7 +75,7 @@ const VariantForm: FC<VariantFormProps> = ({
 
    const { slug } = useParams();
    const queryClient = useQueryClient();
-   const { t } = useTranslation('dashboard');
+   const { t } = useTranslation(['dashboard', 'mutual']);
 
    const props = useForm<VariantForm>({
       defaultValues: value,
@@ -206,7 +206,7 @@ const VariantForm: FC<VariantFormProps> = ({
                      <Col span={12}>
                         <div className='relative flex flex-col space-y-1 w-[94%]'>
                            <label htmlFor='store' className='font-medium'>
-                              {t('aside.color')}
+                              {t('color.aside')}
                            </label>
                            <Dropdown
                               items={colorData.colors.map((color) => ({
@@ -296,12 +296,14 @@ const VariantForm: FC<VariantFormProps> = ({
                         <div className='flex items-center space-x-3'>
                            <div
                               className='p-1.5 bg-white rounded cursor-pointer'
+                              title={t('action.edit', { ns: 'mutual' })}
                               onClick={() => setIsEdit(true)}
                            >
                               <AiTwotoneEdit size={16} color='#000' />
                            </div>
                            {isDelete && (
                               <div
+                                 title={t('action.delete', { ns: 'mutual' })}
                                  className='p-1.5 bg-red-500 rounded cursor-pointer'
                                  onClick={() => deleteVariantMutation.mutate()}
                               >

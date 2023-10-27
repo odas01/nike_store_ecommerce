@@ -5,7 +5,6 @@ import { useTranslation } from 'react-i18next';
 import { useQueries } from '@tanstack/react-query';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { FormProvider, useForm } from 'react-hook-form';
-import { useParams } from 'react-router-dom';
 
 import { UploadImages, Image } from './ImageField';
 import SizeArrayField from './SizeArrayField';
@@ -46,7 +45,7 @@ export const productSchema = z.object({
    store: z.string().nonempty('Please chooes category'),
    category: z.string().nonempty('Please chooes category'),
    genders: z.string().array().min(1, 'Please chooes at least 1 gender'),
-   desc: z.string(),
+   desc: z.string().nonempty('Description is required'),
    color: z.string().nonempty('Please chooes color or delete color'),
    sizes: z
       .object({
@@ -77,11 +76,11 @@ interface CreateFormProps {
 }
 
 const CreateForm: FC<CreateFormProps> = ({ value, submit, deleteImages }) => {
-   const { slug } = useParams();
-   const [isDetail, setIsDetail] = useState<boolean>(false);
    const [imagesDelete, setImagesDelete] = useState<string[]>([]);
 
-   const { t } = useTranslation('dashboard');
+   const { t, i18n } = useTranslation(['dashboard', 'mutual']);
+
+   const isVnLang = i18n.language === 'vi';
 
    const props = useForm<ProductFormValue>({
       defaultValues: value,
@@ -95,7 +94,6 @@ const CreateForm: FC<CreateFormProps> = ({ value, submit, deleteImages }) => {
       getValues,
       clearErrors,
       handleSubmit,
-      trigger,
       watch,
       formState: { errors },
    } = props;
@@ -133,8 +131,6 @@ const CreateForm: FC<CreateFormProps> = ({ value, submit, deleteImages }) => {
    const onSubmit = handleSubmit(async (values) => {
       const { category, color, prices, discount, ...value } = values;
 
-      console.log(values);
-
       // category
       const category_id = categoryData?.categories.find(
          (item) => item.name === category
@@ -157,7 +153,6 @@ const CreateForm: FC<CreateFormProps> = ({ value, submit, deleteImages }) => {
          color: color_id,
          category: category_id,
       };
-      console.log(newValue);
 
       submit(newValue);
       if (imagesDelete.length > 0 && deleteImages) {
@@ -169,9 +164,7 @@ const CreateForm: FC<CreateFormProps> = ({ value, submit, deleteImages }) => {
       return <Skeleton />;
    }
 
-   const discount = watch('discount');
    const thumbnail = watch('thumbnail');
-   console.log(errors);
 
    return (
       colorData?.colors &&
@@ -187,10 +180,12 @@ const CreateForm: FC<CreateFormProps> = ({ value, submit, deleteImages }) => {
                      <Col span={24} className='space-y-8' order={1}>
                         <div className='flex flex-col space-y-1'>
                            <label htmlFor='name' className='font-medium'>
-                              {t('table.name')}
+                              {t('label.name', { ns: 'mutual' })}
+
+                              <span className='ml-0.5 text-red-500 '>*</span>
                            </label>
                            <Input
-                              placeholder='Product name'
+                              placeholder={t('placeholderForm.product.name')}
                               {...register('name')}
                               isError={!!errors.name}
                            />
@@ -202,7 +197,9 @@ const CreateForm: FC<CreateFormProps> = ({ value, submit, deleteImages }) => {
                      <Col span={12} order={4}>
                         <div className='flex flex-col space-y-1'>
                            <label htmlFor='store' className='font-medium'>
-                              {t('aside.color')}
+                              {t('label.color', { ns: 'mutual' })}
+
+                              <span className='ml-0.5 text-red-500 '>*</span>
                            </label>
                            <Dropdown
                               items={colorData.colors.map((color) => ({
@@ -219,13 +216,15 @@ const CreateForm: FC<CreateFormProps> = ({ value, submit, deleteImages }) => {
                                              backgroundColor: color.value,
                                           }}
                                        />
-                                       {color.name}
+                                       {isVnLang ? color.vnName : color.name}
                                     </div>
                                  ),
                               }))}
                               children={
                                  <Input
-                                    placeholder='Choose a store'
+                                    placeholder={t(
+                                       'placeholderForm.product.color'
+                                    )}
                                     className='w-full capitalize appearance placeholder:normal-case focus:cursor-pointer'
                                     {...register('color')}
                                     isError={!!errors.color}
@@ -240,27 +239,63 @@ const CreateForm: FC<CreateFormProps> = ({ value, submit, deleteImages }) => {
                      <Col span={12} order={4}>
                         <div className='flex flex-col space-y-1'>
                            <label htmlFor='store' className='font-medium'>
-                              {t('table.store')}
+                              {t('label.store', { ns: 'mutual' })}
+
+                              <span className='ml-0.5 text-red-500 '>*</span>
                            </label>
                            <Dropdown
-                              items={storeConst.map((store) => ({
-                                 label: (
-                                    <p
-                                       className='px-3 py-2 capitalize'
-                                       onClick={() => {
-                                          setValue('store', store);
-                                          setValue('category', '');
+                              items={[
+                                 {
+                                    label: (
+                                       <p
+                                          className='px-3 py-2 capitalize'
+                                          onClick={() => {
+                                             setValue('store', 'shoes');
+                                             setValue('category', '');
 
-                                          clearErrors('store');
-                                       }}
-                                    >
-                                       {store}
-                                    </p>
-                                 ),
-                              }))}
+                                             clearErrors('store');
+                                          }}
+                                       >
+                                          {isVnLang ? 'Giày' : 'Shoes'}
+                                       </p>
+                                    ),
+                                 },
+                                 {
+                                    label: (
+                                       <p
+                                          className='px-3 py-2 capitalize'
+                                          onClick={() => {
+                                             setValue('store', 'clothing');
+                                             setValue('category', '');
+
+                                             clearErrors('store');
+                                          }}
+                                       >
+                                          {isVnLang ? 'Quần áo' : 'Clothing'}
+                                       </p>
+                                    ),
+                                 },
+                                 {
+                                    label: (
+                                       <p
+                                          className='px-3 py-2 capitalize'
+                                          onClick={() => {
+                                             setValue('store', 'gear');
+                                             setValue('category', '');
+
+                                             clearErrors('store');
+                                          }}
+                                       >
+                                          {isVnLang ? 'Phụ kiện' : 'Gear'}
+                                       </p>
+                                    ),
+                                 },
+                              ]}
                               children={
                                  <Input
-                                    placeholder='Choose a store'
+                                    placeholder={t(
+                                       'placeholderForm.product.store'
+                                    )}
                                     className='w-full capitalize appearance placeholder:normal-case focus:cursor-pointer'
                                     {...register('store')}
                                     isError={!!errors.store}
@@ -276,7 +311,9 @@ const CreateForm: FC<CreateFormProps> = ({ value, submit, deleteImages }) => {
                      <Col span={12} order={6}>
                         <div className='flex flex-col space-y-1'>
                            <label htmlFor='category' className='font-medium'>
-                              {t('table.category')}
+                              {t('label.category', { ns: 'mutual' })}
+
+                              <span className='ml-0.5 text-red-500 '>*</span>
                            </label>
                            <Dropdown
                               items={categoryData.categories
@@ -292,13 +329,15 @@ const CreateForm: FC<CreateFormProps> = ({ value, submit, deleteImages }) => {
                                              clearErrors('category');
                                           }}
                                        >
-                                          {item.name}
+                                          {isVnLang ? item.vnName : item.name}
                                        </p>
                                     ),
                                  }))}
                               children={
                                  <Input
-                                    placeholder='Choose a category'
+                                    placeholder={t(
+                                       'placeholderForm.product.category'
+                                    )}
                                     className='w-full capitalize appearance placeholder:normal-case focus:cursor-pointer'
                                     {...register('category')}
                                     isError={!!errors.category}
@@ -314,7 +353,9 @@ const CreateForm: FC<CreateFormProps> = ({ value, submit, deleteImages }) => {
                      <Col span={12} order={4}>
                         <div className='flex flex-col space-y-1'>
                            <label htmlFor='genders' className='font-medium'>
-                              {t('form.genders')}
+                              {t('label.gender', { ns: 'mutual' })}
+
+                              <span className='ml-0.5 text-red-500 '>*</span>
                            </label>
                            <Dropdown
                               items={genders.map((gender) => ({
@@ -332,7 +373,9 @@ const CreateForm: FC<CreateFormProps> = ({ value, submit, deleteImages }) => {
                               }))}
                               children={
                                  <Input
-                                    placeholder='Choose a gender'
+                                    placeholder={t(
+                                       'placeholderForm.product.gender'
+                                    )}
                                     className='w-full capitalize appearance placeholder:normal-case focus:cursor-pointer'
                                     {...register('genders')}
                                     isError={!!errors.genders}
@@ -348,7 +391,9 @@ const CreateForm: FC<CreateFormProps> = ({ value, submit, deleteImages }) => {
                      <Col span={12} order={2}>
                         <div className='relative flex flex-col space-y-1'>
                            <label htmlFor='price' className='font-medium'>
-                              {t('table.price')}
+                              {t('label.price', { ns: 'mutual' })}
+
+                              <span className='ml-0.5 text-red-500 '>*</span>
                            </label>
                            <div className='flex'>
                               <p className=' border border-r-0 w-8 flex rounded-l justify-center items-center border-gray-400 dark:border-[#3f4244]'>
@@ -356,7 +401,9 @@ const CreateForm: FC<CreateFormProps> = ({ value, submit, deleteImages }) => {
                               </p>
                               <Input
                                  type='number'
-                                 placeholder='Product price (vnđ)'
+                                 placeholder={t(
+                                    'placeholderForm.product.price'
+                                 )}
                                  {...register('prices.originalPrice', {
                                     valueAsNumber: true,
                                  })}
@@ -374,7 +421,9 @@ const CreateForm: FC<CreateFormProps> = ({ value, submit, deleteImages }) => {
                      <Col span={12} order={3}>
                         <div className='relative flex flex-col space-y-1'>
                            <label htmlFor='price' className='font-medium'>
-                              Discount
+                              {t('label.discount', { ns: 'mutual' })}
+
+                              <span className='ml-0.5 text-red-500 '>*</span>
                            </label>
                            <div className='flex'>
                               <p className=' border border-r-0 w-8 flex justify-center rounded-l items-center border-gray-400 dark:border-[#3f4244]'>
@@ -382,7 +431,9 @@ const CreateForm: FC<CreateFormProps> = ({ value, submit, deleteImages }) => {
                               </p>
                               <Input
                                  type='number'
-                                 placeholder='Product price (vnđ)'
+                                 placeholder={t(
+                                    'placeholderForm.product.discount'
+                                 )}
                                  {...register('discount', {
                                     valueAsNumber: true,
                                  })}
@@ -397,7 +448,9 @@ const CreateForm: FC<CreateFormProps> = ({ value, submit, deleteImages }) => {
                      <Col span={24} order={6}>
                         <div className='flex flex-col space-y-1'>
                            <label htmlFor='desc' className='font-medium'>
-                              {t('form.description')}
+                              {t('label.desc', { ns: 'mutual' })}
+
+                              <span className='ml-0.5 text-red-500 '>*</span>
                            </label>
                            <TextArea {...register('desc')} rows={4} />
                            <Error message={errors.desc?.message} />
@@ -411,7 +464,9 @@ const CreateForm: FC<CreateFormProps> = ({ value, submit, deleteImages }) => {
                      <Col span={12} order={6}>
                         <div className='flex flex-col mb-4 space-y-1'>
                            <label htmlFor='desc' className='font-medium'>
-                              Thumbnail
+                              {t('label.thumb', { ns: 'mutual' })}
+
+                              <span className='ml-0.5 text-red-500 '>*</span>
                            </label>
 
                            {thumbnail.url ? (
@@ -434,7 +489,9 @@ const CreateForm: FC<CreateFormProps> = ({ value, submit, deleteImages }) => {
                         </div>
                         <div className='flex flex-col space-y-1'>
                            <label htmlFor='desc' className='font-medium'>
-                              Images
+                              {t('label.images', { ns: 'mutual' })}
+
+                              <span className='ml-0.5 text-red-500 '>*</span>
                            </label>
                            <UploadImages />
                         </div>
@@ -446,7 +503,7 @@ const CreateForm: FC<CreateFormProps> = ({ value, submit, deleteImages }) => {
                      onClick={onSubmit}
                      className='w-32 h-8 bg-blue-800 hover:bg-blue-900'
                   >
-                     Tiếp theo
+                     {t('action.next', { ns: 'mutual' })}
                   </Button>
                </div>
             </FormProvider>

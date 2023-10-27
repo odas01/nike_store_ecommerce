@@ -1,97 +1,16 @@
 {
-   "title": {
-      "product": "Products",
-      "category": "Categories",
-      "color": "Colors",
-      "size": "Sizes",
-      "customer": "Customers",
-      "admin": "Admins",
-      "overview": "Overview",
-      "order": "Orders",
-      "coupon": "Coupons",
-      "createProuct": "Create product",
-      "editProduct": "Edit product"
-   },
-   "aside": {
-      "list": "List",
-      "size": "Sizes",
-      "order": "Orders",
-      "admin": "Admins",
-      "color": "Colors",
-      "coupon": "Coupons",
-      "product": "Products",
-      "overview": "Overview",
-      "customer": "Customers",
-      "category": "Categories"
-   },
    "placeholderSearch": {
       "searchByName": "Search by name...",
       "searchByNamePhoneEmail": "Search by name phone number or email..."
-   },
-   "table": {
-      "name": "Name",
-      "date": "Date",
-      "store": "Store",
-      "productColors": "Product color",
-      "price": "Price",
-      "category": "Category",
-      "colorHex": "Color hex",
-      "phoneNumber": "Phone number",
-      "payment": "Payment",
-      "actions": "Actions",
-      "totalAmout": "Total amount",
-      "sold": "Sold"
    },
    "role": {
       "root": "Root",
       "admin": "Admin",
       "customer": "Customer"
    },
-   "action": {
-      "showing": "Showing",
-      "previous": "Previous",
-      "next": "Next",
-      "edit": "Edit",
-      "delete": "Delete",
-      "block": "Block",
-      "unblock": "Unblock",
-      "create": "Create",
-      "cancel": "Cancel",
-      "save": "Save",
-      "logOut": "Log out",
-      "profileSetting": "Profile setting",
-      "login": "Log in",
-      "signup": "Sign up"
-   },
-   "form": {
-      "addNew": "Add new",
-      "addMoreColor": "Add more color",
-      "addMoreSize": "Add more size",
-      "chooesColor": "Chooes color",
-      "changePassword": "Change password",
-      "genders": "Genders",
-      "description": "Description",
-      "stock": "Stock",
-      "images": "Images",
-      "thumbnail": "Thumbnail",
-      "imageList": "Image list",
-      "address": "Address",
-      "passwordDefault": "Password default",
-      "details": "Details"
-   },
-   "status": {
-      "status": "Status",
-      "active": "Active",
-      "deleted": "Deleted",
-      "hide": "Hide",
-      "show": "Show",
-      "blocked": "Blocked"
-   },
-   "invoice": "Invoice",
-   "value": "Value",
-   "code": "Code",
-   "expirationDate": "Exp date",
    "overview": {
+      "title": "Overview",
+      "aside": "Overview",
       "todayOrder": "Today order",
       "yesdOrder": "Yesterday order",
       "thisM": "This month",
@@ -104,5 +23,86 @@
       "delivered": "Delivered",
       "bestSellingProduct": "Best selling products",
       "weeklyOrder": "Weekly orders"
+   },
+   "product": {
+      "title": "Products",
+      "aside": "Products",
+      "createTitle": "Create product",
+      "editTitle": "Edit product"
+   },
+   "variant": {
+      "title": "Variants",
+      "createTitle": "Create variant",
+      "editTitle": "Edit variant"
+   },
+   "category": {
+      "title": "Categories",
+      "aside": "Categories",
+      "categoryName": "Category name",
+      "chooesStore": "Choose a store"
+   },
+   "color": {
+      "title": "Colors",
+      "aside": "Colors",
+      "colorName": "Color name"
+   },
+   "size": {
+      "title": "Sizes",
+      "aside": "Sizes",
+      "sizeName": "Size name",
+      "chooesStore": "Choose a store"
+   },
+   "coupon": {
+      "title": "Coupons",
+      "aside": "Coupons",
+      "name": "Coupon name",
+      "code": "Coupon code",
+      "type": "Coupon type",
+      "qty": "Coupon quantity"
+   },
+   "customer": {
+      "title": "Customers",
+      "aside": "Customers"
+   },
+   "admin": {
+      "title": "Admins",
+      "aside": "Admins",
+      "passwordDefault": "Password default"
+   },
+   "order": {
+      "title": "Orders",
+      "aside": "Orders",
+      "order": "Order",
+      "customerName": "Customer name",
+      "totalAmout": "Total amount",
+      "approve": "Approve",
+      "cancel": "Cancel",
+      "invoice": "Invoice"
+   },
+   "action": {
+      "addVariant": "Add variant",
+      "addSize": "Add size",
+      "addColor": "Add color",
+      "addNew": "Add new"
+   },
+   "placeholderForm": {
+      "product": {
+         "name": "Product name",
+         "price": "Product price",
+         "discount": "Product discount",
+         "color": "Product color",
+         "store": "Product store",
+         "gender": "Product gender",
+         "category": "Product category"
+      },
+      "coupon": {
+         "type": "Choose coupon type"
+      },
+      "admin": {
+         "name": "Admin name",
+         "email": "Admin email",
+         "phone": "Admin phone number",
+         "address": "Admin address"
+      }
    }
 }

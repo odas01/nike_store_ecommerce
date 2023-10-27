@@ -51,7 +51,7 @@ const ColorForm: FC<ColorFormProps> = ({ data, closeDrawer }) => {
       mode: 'onChange',
    });
 
-   const { t } = useTranslation('dashboard');
+   const { t } = useTranslation(['dashboard', 'mutual']);
    const [color, setColor] = useState<string>('#ffffff');
 
    useEffect(() => {
@@ -101,31 +101,35 @@ const ColorForm: FC<ColorFormProps> = ({ data, closeDrawer }) => {
       <div className='flex flex-col h-full'>
          <Heading>
             <h2 className='px-4 text-center'>
-               {t(data ? 'action.edit' : 'action.create')}
+               {t(data ? 'action.edit' : 'action.create', { ns: 'mutual' })}
             </h2>
          </Heading>
          <div className='flex-1 dark:bg-[#111315] overflow-y-scroll'>
             <form className='flex flex-col p-6 space-y-2 font-medium [&>div>input]:text-sm'>
                <div className='flex flex-col space-y-1'>
-                  <label htmlFor='name'>{t('table.name')}</label>
+                  <label htmlFor='name'>
+                     {t('label.name', { ns: 'mutual' })}
+                  </label>
                   <Input
-                     placeholder='Color name'
+                     placeholder={t('color.colorName')}
                      isError={!!errors?.name}
                      {...register('name')}
                   />
                   <Error message={errors.name?.message} />
                </div>
                <div className='flex flex-col space-y-1'>
-                  <label htmlFor='vnName'>Tên tiếng việt</label>
+                  <label htmlFor='vnName'>
+                     {t('label.vnName', { ns: 'mutual' })}
+                  </label>
                   <Input
-                     placeholder='Color vnName'
+                     placeholder={t('label.vnName', { ns: 'mutual' })}
                      isError={!!errors?.vnName}
                      {...register('vnName')}
                   />
                   <Error message={errors.vnName?.message} />
                </div>
                <div className='flex flex-col space-y-2'>
-                  <span>{t('form.chooesColor')}</span>
+                  <span>{t('label.hexCode', { ns: 'mutual' })}</span>
                   <span>
                      <ColorPicker
                         format='hex'
@@ -150,13 +154,13 @@ const ColorForm: FC<ColorFormProps> = ({ data, closeDrawer }) => {
                   className='duration-150 bg-gray-600 opacity-40 hover:opacity-30'
                   onClick={closeDrawer}
                >
-                  {t('action.cancel')}
+                  {t('action.cancel', { ns: 'mutual' })}
                </button>
                <button
                   className='duration-150 bg-blue-500 hover:opacity-80'
                   onClick={onSubmit}
                >
-                  {t(data ? 'action.edit' : 'action.create')}
+                  {t(data ? 'action.edit' : 'action.create', { ns: 'mutual' })}
                </button>
             </div>
          </Footer>

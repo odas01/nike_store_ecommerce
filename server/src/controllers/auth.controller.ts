@@ -62,6 +62,12 @@ export const login = async (req: Request, res: Response) => {
       if (!user)
          return responseHandler.badrequest(res, 'Incorret email or password');
 
+      if (user.status === 'blocked')
+         return responseHandler.badrequest(
+            res,
+            'Your account has been blocked'
+         );
+
       // check password
       const passwordValid = bcrypt.compareSync(
          req.body.password,

@@ -8,7 +8,7 @@ import authStore from '@/stores/authStore';
 
 function Aside() {
    const { logOut } = authStore();
-   const { t } = useTranslation('dashboard');
+   const { t } = useTranslation(['dashboard', 'mutual']);
 
    return (
       <div
@@ -24,7 +24,7 @@ function Aside() {
             onClick={logOut}
          >
             <AiOutlineRollback />
-            <span>{t('action.logOut')}</span>
+            <span>{t('action.logOut', { ns: 'mutual' })}</span>
          </div>
       </div>
    );

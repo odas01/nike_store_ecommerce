@@ -86,7 +86,7 @@ function Sizes() {
    return (
       <>
          <PageTitle title='Sizes' />
-         <Title title={t('title.size')} />
+         <Title title={t('size.title')} />
          <div className='flex flex-col mt-6'>
             <div className='flex justify-between mb-4 space-x-4 h-11'>
                <Input
@@ -99,7 +99,7 @@ function Sizes() {
                   className='h-full text-sm duration-150 bg-green-500 w-52 hover:opacity-80'
                   onClick={() => setOpenDrawer(true)}
                >
-                  + {t('form.addNew')}
+                  + {t('action.addNew')}
                </Button>
             </div>
             {isLoading ? (
@@ -109,9 +109,15 @@ function Sizes() {
                   heading={
                      <tr className='[&>*:not(:last-child)]:px-4 [&>*]:py-3'>
                         <td className='w-[5%]'></td>
-                        <td className='w-[30%]'>{t('table.name')}</td>
-                        <td className='w-[30%]'>{t('table.store')}</td>
-                        <td className='w-[30%]'>{t('table.date')}</td>
+                        <td className='w-[30%]'>
+                           {t('label.name', { ns: 'mutual' })}
+                        </td>
+                        <td className='w-[30%]'>
+                           {t('label.store', { ns: 'mutual' })}
+                        </td>
+                        <td className='w-[30%]'>
+                           {t('label.date', { ns: 'mutual' })}
+                        </td>
                         <td className='w-[5%]'></td>
                      </tr>
                   }
@@ -164,18 +170,22 @@ function Sizes() {
                                     {
                                        label: (
                                           <div
-                                             className='flex items-center space-x-2'
+                                             className='flex items-center px-2 py-1 space-x-2'
                                              onClick={() => onEdit(size)}
                                           >
                                              <BiMessageSquareEdit />
-                                             <span>{t('action.edit')}</span>
+                                             <span>
+                                                {t('action.edit', {
+                                                   ns: 'mutual',
+                                                })}
+                                             </span>
                                           </div>
                                        ),
                                     },
                                     {
                                        label: (
                                           <div
-                                             className='flex items-center space-x-2'
+                                             className='flex items-center px-2 py-1 space-x-2'
                                              onClick={() =>
                                                 deleteColorMutation.mutate(
                                                    size._id
@@ -183,7 +193,11 @@ function Sizes() {
                                              }
                                           >
                                              <FiTrash2 />
-                                             <span>{t('action.delete')}</span>
+                                             <span>
+                                                {t('action.delete', {
+                                                   ns: 'mutual',
+                                                })}
+                                             </span>
                                           </div>
                                        ),
                                     },

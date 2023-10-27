@@ -1,101 +1,18 @@
 {
-   "title": {
-      "overview": "Tổng quan",
-      "color": "Danh sách màu sắc",
-      "size": "Danh sách kích thước",
-      "product": "Danh sách sản phẩm",
-      "category": "Danh sách danh mục",
-      "order": "Danh sách đơn hàng",
-      "coupon": "Phiếu giảm giá",
-      "customer": "Danh sách khách hàng",
-      "admin": "Danh sách quản trị viên",
-      "createProuct": "Thêm sản phẩm",
-      "editProduct": "Chỉnh sửa sản phẩm"
-   },
-   "aside": {
-      "color": "Màu sắc",
-      "list": "Danh sách",
-      "order": "Đơn hàng",
-      "size": "Kích thước",
-      "product": "Sản phẩm",
-      "coupon": "Phiếu giảm",
-      "category": "Danh mục",
-      "overview": "Tổng quan",
-      "admin": "Quản trị viên",
-      "customer": "Khách hàng"
-   },
    "placeholderSearch": {
-      "searchByName": "Tìm kiếm...",
+      "searchByName": "Tìm kiếm theo tên...",
       "searchByNamePhoneEmail": "Tìm kiếm tên, số điện thoại hoặc email...",
       "colorName": "Color name",
       "chooesColorBelow": "Choose color hex below"
-   },
-   "table": {
-      "name": "Tên",
-      "price": "Giá",
-      "productColors": "Màu",
-      "store": "Loại",
-      "date": "Ngày tạo",
-      "colorHex": "Mã màu",
-      "category": "Danh mục",
-      "customerName": "Tên khách hàng",
-      "phoneNumber": "Số điện thoại",
-      "payment": "Thanh toán",
-      "totalAmout": "Tổng tiền",
-      "actions": "Hành động",
-      "sold": "Đã bán"
    },
    "role": {
       "root": "Root",
       "admin": "Quản trị viên",
       "customer": "Khách hàng"
    },
-   "action": {
-      "showing": "Showing",
-      "previous": "Trở về",
-      "next": "Tiếp",
-      "edit": "Chỉnh sửa",
-      "delete": "Xóa",
-      "block": "Khóa tài khoản",
-      "unblock": "Gỡ khóa",
-      "create": "Thêm",
-      "cancel": "Trở về",
-      "save": "Lưu",
-      "logOut": "Đăng xuất",
-      "profileSetting": "Cài đặt hồ sơ",
-      "login": "Đăng nhập",
-      "signup": "Đăng kí"
-   },
-   "form": {
-      "addNew": "Thêm mới",
-      "addMoreColor": "Thêm màu",
-      "chooesColor": "Chọn màu",
-      "addMoreSize": "Thêm kích thước",
-      "changePassword": "Đổi mật khẩu",
-      "genders": "Giới tính",
-      "description": "Mô tả",
-      "details": "Thông tin chi tiết",
-      "stock": "Tồn kho",
-      "images": "Danh sách hình ảnh",
-      "thumbnail": "Ảnh ",
-      "imageList": "Ảnh con",
-      "address": "Địa chỉ",
-
-      "passwordDefault": "Mật khẩu mặc định"
-   },
-   "status": {
-      "status": "Trạng thái",
-      "active": "Hoạt động",
-      "deleted": "Đã xóa",
-      "hide": "Ẩn",
-      "show": "Hiện",
-      "blocked": "Đã khóa"
-   },
-   "invoice": "Hóa đơn",
-   "value": "Giá trị",
-   "code": "Mã giảm",
-   "expirationDate": "Ngày hết hạn",
    "overview": {
+      "title": "Tổng quan",
+      "aside": "Tổng quan",
       "todayOrder": "Đơn hôm nay",
       "yesdOrder": "Đơn hôm qua",
       "thisM": "Tháng này",
@@ -108,5 +25,86 @@
       "delivered": "Đã giao",
       "bestSellingProduct": "Sản phẩm bán chạy",
       "weeklyOrder": "Đơn hàng hàng tuần"
+   },
+   "product": {
+      "title": "Danh sách sản phẩm",
+      "aside": "Sản phẩm",
+      "createTitle": "Thêm sản phẩm",
+      "editTitle": "Chỉnh sửa sản phẩm"
+   },
+   "variant": {
+      "title": "Danh sách biến thể",
+      "createTitle": "Thêm biến thể",
+      "editTitle": "Chỉnh sửa biến thể"
+   },
+   "category": {
+      "title": "Danh sách danh mục",
+      "aside": "Danh mục",
+      "categoryName": "Tên danh mục",
+      "chooesStore": "Chọn loại danh mục"
+   },
+   "color": {
+      "title": "Danh sách màu sắc",
+      "aside": "Màu sắc",
+      "colorName": "Tên màu"
+   },
+   "size": {
+      "title": "Danh sách kích thước",
+      "aside": "Kích thước",
+      "sizeName": "Tên kích thước",
+      "chooesStore": "Chọn loại kích thước"
+   },
+   "coupon": {
+      "title": "Danh sách phiếu giảm giá",
+      "aside": "Giảm giá",
+      "name": "Tên phiếu giảm giá",
+      "code": "Mã giảm giá",
+      "type": "Loại giảm giá",
+      "qty": "Số lượng phiếu giảm giá"
+   },
+   "customer": {
+      "title": "Danh sách khách hàng",
+      "aside": "Khách hàng"
+   },
+   "admin": {
+      "title": "Danh sách quản trị viên",
+      "aside": "Quản trị viên",
+      "passwordDefault": "Mật khẩu mặc định"
+   },
+   "order": {
+      "title": "Danh sách đơn hàng",
+      "aside": "Đơn hàng",
+      "customerName": "Tên khách hàng",
+      "totalAmout": "Tổng tiền",
+      "approve": "Duyệt",
+      "cancel": "Hủy",
+      "order": "Đơn hàng",
+      "invoice": "Hóa đơn"
+   },
+   "action": {
+      "addVariant": "Thêm biến thể",
+      "addSize": "Thêm kích thước",
+      "addColor": "Thêm màu sắc",
+      "addNew": "Thêm mới"
+   },
+   "placeholderForm": {
+      "product": {
+         "name": "Tên sản phẩm",
+         "price": "Giá sản phẩm",
+         "discount": "Giảm giá",
+         "color": "Màu sắc sản phẩm",
+         "store": "Loại sản phẩm",
+         "gender": "Giới tính",
+         "category": "Danh mục sản phẩm"
+      },
+      "coupon": {
+         "type": "Chọn loại giảm giá"
+      },
+      "admin": {
+         "name": "Tên quản trị viên",
+         "email": "Email quản trị viên",
+         "phone": "Số điện thoại quản trị viên",
+         "address": "Địa chỉ quản trị viên"
+      }
    }
 }

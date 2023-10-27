@@ -15,7 +15,7 @@ function EditProduct() {
    const { slug } = useParams();
    const navigate = useNavigate();
    const queryClient = useQueryClient();
-   const { t } = useTranslation('dashboard', { keyPrefix: 'title' });
+   const { t } = useTranslation(['dashboard', 'mutual']);
 
    const { data, isLoading, refetch } = useQuery({
       queryKey: ['product', slug],
@@ -35,12 +35,12 @@ function EditProduct() {
          return productApi.update(slug!, values);
       },
       onSuccess: () => {
-         // refetch();
-         // navigate(-1);
-         // queryClient.invalidateQueries({
-         //    queryKey: ['products'],
-         // });
-         // notify('success', 'Created product successfully');
+         refetch();
+         navigate(-1);
+         queryClient.invalidateQueries({
+            queryKey: ['products'],
+         });
+         notify('success', t('notify.updateSuccess', { ns: 'mutual' }));
       },
       onError: (error: ErrorResponse) => {
          notify('error', error.message);
@@ -60,8 +60,8 @@ function EditProduct() {
    };
    return (
       <>
-         <PageTitle title='Create product' />
-         <Title title={t('editProduct')} />
+         <PageTitle title='Edit product' />
+         <Title title={t('product.editTitle')} />
          {editProductMutation.isLoading && (
             <LoadingOverlay>
                <Spin size='large' />
@@ -70,9 +70,9 @@ function EditProduct() {
          <div className='flex justify-end mt-4'>
             <Button
                className='h-8 px-5 ml-auto duration-150 bg-green-500 hover:bg-green-600'
-               onClick={() => navigate('create')}
+               onClick={() => navigate(`/dashboard/products/${slug}/variants`)}
             >
-               + Add variant
+               {t('variant.title')}
             </Button>
          </div>
          <div className='py-4'>

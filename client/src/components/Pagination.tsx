@@ -25,23 +25,23 @@ const Pagination: React.FC<Props> = ({
    const isFirstPage = page === 1;
    const isLastPage = page === lastPage;
 
-   const { t } = useTranslation('dashboard', { keyPrefix: 'action' });
+   const { t } = useTranslation(['mutual']);
    return (
       <div
          className={twMerge(
-            'flex justify-between items-center font-normal py-2 px-4 text-xs dark:text-gray-400 text-gray-700  border-t dark:border-[#343434] rounded-br-lg rounded-bl-lg bg-db-wrap dark:bg-gray-bg',
+            'flex justify-between items-center font-normal py-2 px-4 dark:text-gray-400 text-gray-700  border-t dark:border-[#343434] rounded-br-lg rounded-bl-lg bg-db-wrap dark:bg-gray-bg',
             className
          )}
       >
-         <div>
-            SHOWING{' '}
+         <div className='text-xs uppercase'>
+            {t('pagination.showing')}{' '}
             <span>
                {skip + 1} - {skip + currentTotal}
             </span>{' '}
-            OF
+            {t('pagination.of')}
             <span> {total}</span>
          </div>
-         <ul className='flex justify-between items-center text-[#9e9e9e]  mt-0'>
+         <ul className='flex justify-between items-center text-[#9e9e9e] mt-0 text-xs'>
             <li className='px-3 py-1'>
                <button
                   className={twMerge(
@@ -53,7 +53,7 @@ const Pagination: React.FC<Props> = ({
                   disabled={isFirstPage}
                   onClick={() => setSkip((skip) => skip - limit)}
                >
-                  {t('previous')}
+                  {t('action.previous')}
                </button>
             </li>
             <li className='px-3 py-1'>
@@ -89,7 +89,7 @@ const Pagination: React.FC<Props> = ({
                   disabled={isLastPage}
                   onClick={() => setSkip((skip) => skip + limit)}
                >
-                  {t('next')}
+                  {t('action.next')}
                </button>
             </li>
          </ul>

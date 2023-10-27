@@ -16,7 +16,20 @@ export const create = async (req: Request, res: Response) => {
 export const getAll = async (req: Request, res: Response) => {
    const filter = req.query.name
       ? {
-           name: { $regex: new RegExp(String(req.query.name)), $options: 'i' },
+           $or: [
+              {
+                 name: {
+                    $regex: new RegExp(String(req.query.name)),
+                    $options: 'i',
+                 },
+              },
+              {
+                 vnName: {
+                    $regex: new RegExp(String(req.query.name)),
+                    $options: 'i',
+                 },
+              },
+           ],
         }
       : {};
 

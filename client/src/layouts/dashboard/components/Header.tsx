@@ -13,7 +13,7 @@ import authStore from '@/stores/authStore';
 function Header() {
    const { isDarkMode, setIsDarkMode } = useContext(ThemeContext);
    const { logOut } = authStore();
-   const { t, i18n } = useTranslation('dashboard');
+   const { t, i18n } = useTranslation(['dashboard', 'mutual']);
 
    const changeLng = (lng: 'vi' | 'en') => {
       i18n.changeLanguage(lng);
@@ -31,7 +31,7 @@ function Header() {
                      {
                         label: (
                            <div
-                              className='flex items-center px-2 py-1 space-x-2 cursor-pointer'
+                              className='flex items-center px-3 py-2 space-x-2 cursor-pointer'
                               onClick={() => changeLng('vi')}
                            >
                               <img
@@ -46,7 +46,7 @@ function Header() {
                      {
                         label: (
                            <div
-                              className='flex items-center px-2 py-1 space-x-2 cursor-pointer'
+                              className='flex items-center px-3 py-2 space-x-2 cursor-pointer'
                               onClick={() => changeLng('en')}
                            >
                               <img
@@ -79,7 +79,7 @@ function Header() {
                   items={[
                      {
                         label: (
-                           <div className='flex items-center p-1 space-x-2'>
+                           <div className='flex items-center px-3 py-2 space-x-2'>
                               <LuLayoutDashboard />
                               <span>Dashboard</span>
                            </div>
@@ -87,20 +87,14 @@ function Header() {
                      },
                      {
                         label: (
-                           <div className='flex items-center p-1 space-x-2'>
-                              <CiSettings />
-                              <span>{t('action.profileSetting')}</span>
-                           </div>
-                        ),
-                     },
-                     {
-                        label: (
                            <div
-                              className='flex items-center p-1 space-x-2'
+                              className='flex items-center px-3 py-2 space-x-2'
                               onClick={logOut}
                            >
                               <CiLogout />
-                              <span>{t('action.logOut')}</span>
+                              <span>
+                                 {t('action.logOut', { ns: 'mutual' })}
+                              </span>
                            </div>
                         ),
                      },

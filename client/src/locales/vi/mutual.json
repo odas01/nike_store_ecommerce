@@ -18,7 +18,8 @@
       "signup": "Đăng kí",
       "buyNow": "Thanh toán ngay",
       "addToCart": "Thêm vào giỏ hàng",
-      "deleteAll": "Xóa tất cả"
+      "deleteAll": "Xóa tất cả",
+      "changePasswordd": "Đổi mật khẩu"
    },
    "status": {
       "status": "Trạng thái",
@@ -26,23 +27,66 @@
       "deleted": "Đã xóa",
       "hide": "Ẩn",
       "show": "Hiện",
-      "blocked": "Đã khóa"
+      "blocked": "Đã khóa",
+      "expired": "Hết hạn",
+      "paid": "Đã thanh toán",
+      "unpaid": "Chưa thanh toán",
+      "pending": "Chờ duyệt",
+      "processing": "Đang giao",
+      "delivered": "Đã giao",
+      "cancel": "Hủy"
    },
    "label": {
       "total": "Tổng",
-      "sold": "đã bán",
+      "sold": "Đã bán",
       "quantity": "Số lượng",
       "name": "Tên",
       "price": "Giá",
       "size": "Kích thước",
       "color": "Màu sắc",
-      "phoneNumber": "Số điện thoại",
+      "phone": "Số điện thoại",
       "address": "Địa chỉ",
-      "password": "Mật khẩu"
+      "password": "Mật khẩu",
+      "discount": "Giảm giá",
+      "store": "Loại",
+      "gender": "Giới tính",
+      "category": "Danh mục",
+      "desc": "Mô tả",
+      "stock": "Tồn kho",
+      "thumb": "Ảnh",
+      "images": "Danh sách hình ảnh",
+      "variant": "Biến thể",
+      "date": "Ngày tạo",
+      "vnName": "Tên tiếng Việt",
+      "hexCode": "Mã màu",
+      "value": "Giá trị",
+      "code": "Mã giảm giá",
+      "expirationDate": "Ngày hết hạn",
+      "method": "Phương thức",
+      "payment": "Thanh toán",
+      "action": "Hành động",
+      "message": "Lời nhắn"
    },
    "store": {
       "shoes": "Giày",
       "clothing": "Quần áo",
       "gear": "Phụ kiện"
+   },
+   "notify": {
+      "createSuccess": "Tạo thành công",
+      "updateSuccess": "Cập nhật thành công"
+   },
+   "pagination": {
+      "showing": "Hiển thị",
+      "of": "Trên"
+   },
+   "order": {
+      "shippingCost": "Phí vận chuyển",
+      "paymentMethod": "Phương thức thanh toán"
+   },
+   "gender": {
+      "men": "Nam",
+      "women": "Nữ",
+      "child": "Trẻ em"
    }
 }

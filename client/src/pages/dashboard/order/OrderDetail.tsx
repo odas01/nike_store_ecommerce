@@ -6,16 +6,16 @@ import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { AiOutlineCheck, AiOutlineClose } from 'react-icons/ai';
 
+type Status = 'pending' | 'processing' | 'delivered' | 'cancel';
+
 interface OrderDetailProps {
    order: IOrder;
-   handleUpdateStatus: (
-      id: string,
-      status: 'pending' | 'processing' | 'delivered' | 'cancel'
-   ) => void;
+   handleUpdateStatus: (id: string, status: Status) => void;
 }
 
 const OrderDetail: FC<OrderDetailProps> = ({ order, handleUpdateStatus }) => {
-   const { t } = useTranslation(['dashboard', 'home']);
+   const { t, i18n } = useTranslation(['dashboard', 'mutual']);
+   const isVnLang = i18n.language === 'vi';
 
    return (
       <div className='relative flex flex-col h-full px-4 py-2'>
@@ -23,34 +23,36 @@ const OrderDetail: FC<OrderDetailProps> = ({ order, handleUpdateStatus }) => {
             <Col span={10}>
                <div className='flex flex-col h-full font-normal'>
                   <h2 className='text-xl uppercase'>
-                     {t('invoice')}
+                     {t('order.invoice')}
                      <span className='ml-2 text-[#9a9a9a]'>
                         ({dateFormat(order.createdAt)})
                      </span>
                   </h2>
                   <div className='flex items-center mt-2 mb-8 space-x-2'>
-                     <span>{t('status.status')}: </span>
-                     <span className='px-1.5 py-0.5 text-xs bg-red-400 rounded capitalize'>
-                        {order.status}
+                     <span>{t('status.status', { ns: 'mutual' })}: </span>
+                     <span className='px-1.5 py-0.5 text-xs bg-red-400 rounded'>
+                        {t(`status.${order.status as Status}`, {
+                           ns: 'mutual',
+                        })}
                      </span>
                   </div>
                   <Row>
                      <Col span={8}>
                         <div className='flex flex-col space-y-1'>
                            <span className='text-[#9e9e9e]'>
-                              {t('table.name')}:{' '}
+                              {t('label.name', { ns: 'mutual' })}:{' '}
                            </span>
                            <span className='text-[#9e9e9e]'>
                               {' '}
-                              {t('table.phoneNumber')}:{' '}
+                              {t('label.phone', { ns: 'mutual' })}:{' '}
                            </span>
                            <span className='text-[#9e9e9e]'>Email: </span>
                            <span className='text-[#9e9e9e]'>
                               {' '}
-                              {t('form.address')}:{' '}
+                              {t('label.address', { ns: 'mutual' })}:{' '}
                            </span>
                            <span className='text-[#9e9e9e]'>
-                              {t('checkout.message', { ns: 'home' })}:{' '}
+                              {t('label.message', { ns: 'mutual' })}:{' '}
                            </span>
                         </div>
                      </Col>
@@ -60,7 +62,7 @@ const OrderDetail: FC<OrderDetailProps> = ({ order, handleUpdateStatus }) => {
                            <span> {order.phone}</span>
                            <span> {order.user.email}</span>
                            <span> {order.address} </span>
-                           <span> "{order.message || 'No message'}" </span>
+                           <span> {order.message} </span>
                         </div>
                      </Col>
                   </Row>
@@ -68,16 +70,20 @@ const OrderDetail: FC<OrderDetailProps> = ({ order, handleUpdateStatus }) => {
             </Col>
             <Col span={14}>
                <div className='flex flex-col space-y-2 pt-9'>
-                  <span>{t('title.product')}:</span>
+                  <span>{t('product.title')}:</span>
                   <div className='max-h-[300px] overflow-hidden overflow-y-scroll'>
                      <Table
                         heading={
                            <tr className='[&>td]:py-2 text-xs'>
                               <td className='w-[10%]'></td>
-                              <td className='w-[46%]'>{t('table.name')}</td>
-                              <td className='w-[17%]'>{t('table.price')}</td>
+                              <td className='w-[46%]'>
+                                 {t('label.name', { ns: 'mutual' })}
+                              </td>
+                              <td className='w-[17%]'>
+                                 {t('label.price', { ns: 'mutual' })}
+                              </td>
                               <td className='text-end w-[17%]'>
-                                 {t('total', { ns: 'home' })}
+                                 {t('label.total', { ns: 'mutual' })}
                               </td>
                            </tr>
                         }
@@ -97,9 +103,9 @@ const OrderDetail: FC<OrderDetailProps> = ({ order, handleUpdateStatus }) => {
                                     </span>
                                  </div>
                               </td>
-                              <td>{priceFormat(item.price)}</td>
+                              <td>{priceFormat(item.price, isVnLang)}</td>
                               <td className='text-end'>
-                                 {priceFormat(item.price * item.qty)}
+                                 {priceFormat(item.price * item.qty, isVnLang)}
                               </td>
                            </tr>
                         ))}
@@ -112,28 +118,28 @@ const OrderDetail: FC<OrderDetailProps> = ({ order, handleUpdateStatus }) => {
          <div className='flex justify-between bg-[#2a2b30] rounded p-4 mt-20 mb-6'>
             <div className='flex flex-col mr-8'>
                <span className='mb-1 text-sm font-semibold text-gray-500 uppercase'>
-                  {t('checkout.paymentMethod', { ns: 'home' })}
+                  {t('order.paymentMethod', { ns: 'mutual' })}
                </span>
                <span className='capitalize'>{order.paymentMethod}</span>
             </div>
             <div className='flex flex-col mr-12'>
                <span className='mb-1 text-sm font-semibold text-gray-500 uppercase'>
-                  {t('checkout.shippingFee', { ns: 'home' })}
+                  {t('order.shippingCost', { ns: 'mutual' })}
                </span>
-               <span>{priceFormat(order?.shippingCost || 0)}</span>
+               <span>{priceFormat(order?.shippingCost || 0, isVnLang)}</span>
             </div>
             <div className='flex flex-col mr-12'>
                <span className='mb-1 text-sm font-semibold text-gray-500 uppercase'>
-                  {t('checkout.discount', { ns: 'home' })}
+                  {t('label.discount', { ns: 'mutual' })}
                </span>
-               <span>{priceFormat(order?.discount || 0)}</span>
+               <span>{priceFormat(order?.discount || 0, isVnLang)}</span>
             </div>
             <div className='flex flex-col items-end mb-1'>
                <span className='mb-1 text-sm font-semibold text-gray-500 uppercase'>
-                  {t('table.totalAmout')}
+                  {t('order.totalAmout')}
                </span>
                <span className='text-xl font-semibold text-red-400'>
-                  {priceFormat(order.total)}
+                  {priceFormat(order.total, isVnLang)}
                </span>
             </div>
          </div>
@@ -144,14 +150,14 @@ const OrderDetail: FC<OrderDetailProps> = ({ order, handleUpdateStatus }) => {
                   onClick={() => handleUpdateStatus(order._id, 'cancel')}
                >
                   <AiOutlineClose />
-                  <span>Cancel </span>
+                  <span>{t('order.cancel')} </span>
                </div>
                <div
                   className='flex items-center px-3 py-1.5 space-x-2 text-white bg-green-500 rounded cursor-pointer'
                   onClick={() => handleUpdateStatus(order._id, 'processing')}
                >
                   <AiOutlineCheck />
-                  <span>Approve </span>
+                  <span>{t('order.approve')} </span>
                </div>
             </div>
          )}

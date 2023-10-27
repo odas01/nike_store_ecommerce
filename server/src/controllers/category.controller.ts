@@ -7,7 +7,6 @@ export const create = async (req: Request, res: Response) => {
    try {
       const isExist = await Category.findOne({
          name: req.body.name,
-         parentCate: req.body.parentCate,
       });
 
       if (isExist)

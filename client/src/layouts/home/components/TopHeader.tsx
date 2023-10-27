@@ -10,7 +10,7 @@ import cartStore from '@/stores/cartStore';
 
 const TopHeader = () => {
    const navigate = useNavigate();
-   const { t, i18n } = useTranslation(['dashboard', 'home']);
+   const { t, i18n } = useTranslation(['mutual']);
    const { currentUser, logOut } = authStore();
    const { deleteCart } = cartStore();
    const changeLng = (lng: 'vi' | 'en') => {

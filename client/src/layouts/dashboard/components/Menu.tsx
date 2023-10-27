@@ -14,46 +14,62 @@ import { useTranslation } from 'react-i18next';
 
 function Menu() {
    const { currentUser } = authStore();
-   const { t } = useTranslation('dashboard', { keyPrefix: 'aside' });
+   const { t } = useTranslation('dashboard');
+
    return (
-      <div className='flex flex-col space-y-2 text-xs font-medium'>
-         <MenuItem title={t('overview')} path='' icon={<LuLayoutDashboard />} />
+      <aside className='flex flex-col space-y-2 text-xs font-medium'>
+         <MenuItem
+            title={t('overview.aside')}
+            path=''
+            icon={<LuLayoutDashboard />}
+         />
 
          <MenuItemHasChild title='Catalog' icon={<IoColorPaletteOutline />}>
             <MenuItem
-               title={t('product')}
+               title={t('product.aside')}
                path='products'
                icon={<GiSonicShoes />}
             />
             <MenuItem
-               title={t('category')}
+               title={t('category.aside')}
                path='categories'
                icon={<BiCategoryAlt />}
             />
             <MenuItem
-               title={t('color')}
+               title={t('color.aside')}
                path='colors'
                icon={<IoColorPaletteOutline />}
             />
             <MenuItem
-               title={t('size')}
+               title={t('size.aside')}
                path='sizes'
                icon={<IoColorPaletteOutline />}
             />
             <MenuItem
-               title={t('coupon')}
+               title={t('coupon.aside')}
                path='coupons'
                icon={<BsCartCheck />}
             />
          </MenuItemHasChild>
 
-         <MenuItem title={t('customer')} path='customers' icon={<FiUsers />} />
+         <MenuItem
+            title={t('customer.aside')}
+            path='customers'
+            icon={<FiUsers />}
+         />
          {currentUser && currentUser.role === 'root' && (
-            <MenuItem title={t('admin')} path='admins' icon={<RiAdminLine />} />
+            <MenuItem
+               title={t('admin.aside')}
+               path='admins'
+               icon={<RiAdminLine />}
+            />
          )}
-         <MenuItem title={t('order')} path='orders' icon={<BsCartCheck />} />
-         {/* <MenuItem title='Coupons' path='coupons' icon={<RiCoupon3Line />} /> */}
-      </div>
+         <MenuItem
+            title={t('order.aside')}
+            path='orders'
+            icon={<BsCartCheck />}
+         />
+      </aside>
    );
 }
 

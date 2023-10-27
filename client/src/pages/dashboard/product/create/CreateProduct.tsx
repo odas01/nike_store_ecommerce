@@ -3,19 +3,19 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
+import CreateForm from './components/CreateForm';
 import Title from '@/layouts/dashboard/components/Title';
 import { LoadingOverlay, PageTitle } from '@/components';
 
 import { notify } from '@/helpers';
 import { productApi } from '@/api';
 import { ErrorResponse, ProductFormValue } from '@/types';
-import CreateForm from './components/CreateForm';
 
 const DEFAULT_FORM_VALUE: ProductFormValue = {
    name: '',
    store: '',
    category: '',
-   discount: 5,
+   discount: 0,
    prices: {
       originalPrice: 0,
       price: 0,
@@ -24,19 +24,7 @@ const DEFAULT_FORM_VALUE: ProductFormValue = {
    desc: '',
    sizes: [
       {
-         size: 's',
-         stock: 50,
-      },
-      {
-         size: 'm',
-         stock: 50,
-      },
-      {
-         size: 'l',
-         stock: 50,
-      },
-      {
-         size: 'xl',
+         size: '',
          stock: 50,
       },
    ],
@@ -51,7 +39,7 @@ const DEFAULT_FORM_VALUE: ProductFormValue = {
 function CreateProduct() {
    const navigate = useNavigate();
    const queryClient = useQueryClient();
-   const { t } = useTranslation('dashboard', { keyPrefix: 'title' });
+   const { t } = useTranslation(['dashboard', 'mutual']);
 
    const createProductMutation = useMutation({
       mutationFn: (values: ProductFormValue) => {
@@ -62,7 +50,6 @@ function CreateProduct() {
          queryClient.invalidateQueries({
             queryKey: ['products'],
          });
-         notify('success', 'Created product successfully');
       },
       onError: (error: ErrorResponse) => {
          notify('error', error.message);
@@ -76,7 +63,7 @@ function CreateProduct() {
    return (
       <>
          <PageTitle title='Create product' />
-         <Title title={t('createProuct')} />
+         <Title title={t('product.createTitle')} />
          {createProductMutation.isLoading && (
             <LoadingOverlay>
                <Spin size='large' />

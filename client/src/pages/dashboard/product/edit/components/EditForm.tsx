@@ -19,6 +19,8 @@ import { categoryApi } from '@/api';
 import { genders, store as storeConst } from '@/constants';
 import * as z from 'zod';
 
+type Gender = (typeof genders)[number];
+
 const productSchema = z.object({
    name: z.string().nonempty('Name is required'),
    discount: z.number(),
@@ -42,8 +44,8 @@ interface EditFormProps {
 }
 
 const EditForm: FC<EditFormProps> = ({ value, submit }) => {
-   const { t } = useTranslation('dashboard');
-
+   const { t, i18n } = useTranslation(['dashboard', 'mutual']);
+   const isVnLang = i18n.language === 'vi';
    const props = useForm<ProductEdit>({
       defaultValues: value,
       resolver: zodResolver(productSchema),
@@ -105,11 +107,11 @@ const EditForm: FC<EditFormProps> = ({ value, submit }) => {
                   <Col span={12} className='space-y-8' order={1}>
                      <div className='flex flex-col space-y-1'>
                         <label htmlFor='name' className='font-medium'>
-                           {t('table.name')}{' '}
+                           {t('label.name', { ns: 'mutual' })}
                            <span className='ml-0.5 text-red-500 '>*</span>
                         </label>
                         <Input
-                           placeholder='Product name'
+                           placeholder={t('placeholderForm.product.name')}
                            {...register('name')}
                            isError={!!errors.name}
                         />
@@ -121,14 +123,14 @@ const EditForm: FC<EditFormProps> = ({ value, submit }) => {
                   <Col span={12} order={4}>
                      <div className='flex flex-col space-y-1'>
                         <label htmlFor='store' className='font-medium'>
-                           {t('table.store')}
+                           {t('label.store', { ns: 'mutual' })}
                            <span className='ml-0.5 text-red-500 '>*</span>
                         </label>
                         <Dropdown
                            items={storeConst.map((store) => ({
                               label: (
                                  <div
-                                    className='capitalize'
+                                    className='px-3 py-2 capitalize'
                                     onClick={() => {
                                        setValue('store', store);
                                        setValue('category', '');
@@ -136,13 +138,15 @@ const EditForm: FC<EditFormProps> = ({ value, submit }) => {
                                        clearErrors('store');
                                     }}
                                  >
-                                    {store}
+                                    {t(`store.${store}`, { ns: 'mutual' })}
                                  </div>
                               ),
                            }))}
                            children={
                               <Input
-                                 placeholder='Choose a store'
+                                 placeholder={t(
+                                    'placeholderForm.product.store'
+                                 )}
                                  className='w-full capitalize appearance placeholder:normal-case focus:cursor-pointer'
                                  {...register('store')}
                                  isError={!!errors.store}
@@ -158,7 +162,7 @@ const EditForm: FC<EditFormProps> = ({ value, submit }) => {
                   <Col span={12} order={6}>
                      <div className='flex flex-col space-y-1'>
                         <label htmlFor='category' className='font-medium'>
-                           {t('table.category')}
+                           {t('label.category', { ns: 'mutual' })}
                            <span className='ml-0.5 text-red-500 '>*</span>
                         </label>
                         <Dropdown
@@ -169,19 +173,21 @@ const EditForm: FC<EditFormProps> = ({ value, submit }) => {
                               .map((item) => ({
                                  label: (
                                     <div
-                                       className='capitalize'
+                                       className='px-3 py-2 capitalize'
                                        onClick={() => {
                                           setValue('category', item.name);
                                           clearErrors('category');
                                        }}
                                     >
-                                       {item.name}
+                                       {isVnLang ? item.vnName : item.name}
                                     </div>
                                  ),
                               }))}
                            children={
                               <Input
-                                 placeholder='Choose a category'
+                                 placeholder={t(
+                                    'placeholderForm.product.category'
+                                 )}
                                  className='w-full capitalize appearance placeholder:normal-case focus:cursor-pointer'
                                  {...register('category')}
                                  isError={!!errors.category}
@@ -197,26 +203,30 @@ const EditForm: FC<EditFormProps> = ({ value, submit }) => {
                   <Col span={12} order={2}>
                      <div className='flex flex-col space-y-1'>
                         <label htmlFor='genders' className='font-medium'>
-                           {t('form.genders')}
+                           {t('label.gender', { ns: 'mutual' })}
                            <span className='ml-0.5 text-red-500 '>*</span>
                         </label>
                         <Dropdown
                            items={genders.map((gender) => ({
                               label: (
                                  <div
-                                    className='capitalize'
+                                    className='px-3 py-2 capitalize'
                                     onClick={() => {
                                        setValue('genders', [gender]);
                                        clearErrors('genders');
                                     }}
                                  >
-                                    {gender}
+                                    {t(`gender.${gender as Gender}`, {
+                                       ns: 'mutual',
+                                    })}
                                  </div>
                               ),
                            }))}
                            children={
                               <Input
-                                 placeholder='Choose a gender'
+                                 placeholder={t(
+                                    'placeholderForm.product.gender'
+                                 )}
                                  className='w-full capitalize appearance placeholder:normal-case focus:cursor-pointer'
                                  {...register('genders')}
                                  isError={!!errors.genders}
@@ -232,7 +242,7 @@ const EditForm: FC<EditFormProps> = ({ value, submit }) => {
                   <Col span={12} order={3}>
                      <div className='relative flex flex-col space-y-1'>
                         <label htmlFor='price' className='font-medium'>
-                           {t('table.price')}
+                           {t('label.price', { ns: 'mutual' })}
                            <span className='ml-0.5 text-red-500 '>*</span>
                         </label>
                         <div className='flex'>
@@ -241,7 +251,7 @@ const EditForm: FC<EditFormProps> = ({ value, submit }) => {
                            </p>
                            <Input
                               type='number'
-                              placeholder='Product price (vnđ)'
+                              placeholder={t('placeholderForm.product.price')}
                               {...register('prices.originalPrice', {
                                  valueAsNumber: true,
                               })}
@@ -259,7 +269,7 @@ const EditForm: FC<EditFormProps> = ({ value, submit }) => {
                   <Col span={12} order={5}>
                      <div className='relative flex flex-col space-y-1'>
                         <label htmlFor='price' className='font-medium'>
-                           Discount
+                           {t('label.discount', { ns: 'mutual' })}
                            <span className='ml-0.5 text-red-500 '>*</span>
                         </label>
                         <div className='flex'>
@@ -268,7 +278,9 @@ const EditForm: FC<EditFormProps> = ({ value, submit }) => {
                            </p>
                            <Input
                               type='number'
-                              placeholder='Product price (vnđ)'
+                              placeholder={t(
+                                 'placeholderForm.product.discount'
+                              )}
                               {...register('discount', {
                                  valueAsNumber: true,
                               })}
@@ -283,7 +295,7 @@ const EditForm: FC<EditFormProps> = ({ value, submit }) => {
                   <Col span={12} order={6}>
                      <div className='flex flex-col space-y-1'>
                         <label htmlFor='desc' className='font-medium'>
-                           {t('form.description')}
+                           {t('label.desc', { ns: 'mutual' })}
                         </label>
                         <TextArea {...register('desc')} rows={4} />
                      </div>
@@ -295,7 +307,7 @@ const EditForm: FC<EditFormProps> = ({ value, submit }) => {
                   onClick={onSubmit}
                   className='w-32 h-8 bg-blue-800 hover:bg-blue-900'
                >
-                  Tiếp theo
+                  {t('action.save', { ns: 'mutual' })}
                </Button>
             </div>
          </>

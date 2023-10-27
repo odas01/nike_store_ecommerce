@@ -61,7 +61,7 @@ function Overviews() {
    return (
       <>
          <PageTitle title='Overviews' />
-         <Title title='Overviews' />
+         <Title title={t('overview.title')} />
          {orderAmount && orderCount && orderChart && (
             <div className='min-h-full mt-6 space-y-6'>
                <Row gutter={8}>
@@ -308,7 +308,7 @@ function Overviews() {
                                  labels,
                                  datasets: [
                                     {
-                                       label: t('aside.order'),
+                                       label: t('order.aside'),
                                        data: labels.map((label) => {
                                           const count =
                                              orderChart?.orders.find(
@@ -339,7 +339,9 @@ function Overviews() {
                                     ),
                                     datasets: [
                                        {
-                                          label: t('table.sold'),
+                                          label: t('label.sold', {
+                                             ns: 'mutual',
+                                          }),
                                           data: productData.products.map(
                                              (item) => item.sold
                                           ),

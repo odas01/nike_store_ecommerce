@@ -12,7 +12,7 @@ export interface ICoupon {
    createdAt: Date;
 }
 
-export type CouponForm = Pick<
+export type CouponFormUpload = Pick<
    ICoupon,
    'name' | 'code' | 'value' | 'type' | 'quantity' | 'expirationDate'
 >;

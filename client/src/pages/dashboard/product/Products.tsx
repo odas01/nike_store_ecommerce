@@ -112,12 +112,12 @@ function Products() {
       else setParams({} as Params);
    };
 
-   const { t, i18n } = useTranslation('dashboard');
+   const { t, i18n } = useTranslation(['dashboard', 'mutual']);
    const isVnLan = i18n.language === 'vi';
    return (
       <>
          <PageTitle title='Products' />
-         <Title title={t('title.product')} />
+         <Title title={t('product.title')} />
          <div className='flex flex-col mt-6'>
             <div className='flex justify-between mb-4 space-x-4 h-11'>
                <Input
@@ -130,7 +130,7 @@ function Products() {
                   className='h-full text-sm duration-150 bg-green-500 w-52 hover:bg-green-600'
                   onClick={() => navigate('create')}
                >
-                  + {t('form.addNew')}
+                  + {t('action.addNew')}
                </Button>
             </div>
 
@@ -155,11 +155,13 @@ function Products() {
                                  }
                               }}
                            >
-                              <span>{t('table.name')}</span>
+                              <span>{t('label.name', { ns: 'mutual' })}</span>
                               <BiSort />
                            </div>
                         </td>
-                        <td className='w-[20%] pl-4'>{t('table.category')}</td>
+                        <td className='w-[20%] pl-4'>
+                           {t('label.category', { ns: 'mutual' })}
+                        </td>
                         <td className='w-[10%] pl-4'>
                            <div
                               className='flex items-center space-x-2 cursor-pointer w-fit'
@@ -176,7 +178,7 @@ function Products() {
                                  }
                               }}
                            >
-                              <span>{t('table.price')}</span>
+                              <span>{t('label.price', { ns: 'mutual' })}</span>
                               <BiSort />
                            </div>
                         </td>
@@ -214,7 +216,7 @@ function Products() {
                                  }
                               }}
                            >
-                              <span>Sold</span>
+                              <span>{t('label.sold', { ns: 'mutual' })}</span>
                               <BiSort />
                            </div>
                         </td>
@@ -233,7 +235,9 @@ function Products() {
                                  }
                               }}
                            >
-                              <span>{t('status.status')}</span>
+                              <span>
+                                 {t('status.status', { ns: 'mutual' })}
+                              </span>
                               <BiSort />
                            </div>
                         </td>
@@ -280,13 +284,13 @@ function Products() {
                                        alt='product-img'
                                     />
                                  </div>
-                                 <span className='flex-1 line-clamp-1'>
+                                 <span className='flex-1 py-1 line-clampx-2'>
                                     {product.name}
                                  </span>
                               </div>
                            </td>
                            <td className='px-4 py-4 capitalize'>
-                              <p className='line-clamp-1'>
+                              <p className='py-1 line-clampx-2'>
                                  {isVnLan
                                     ? product.category.vnName
                                     : product.category.name}
@@ -312,20 +316,6 @@ function Products() {
                               <p className='text-center'>{product.sold || 0}</p>
                            </td>
                            <td>
-                              {/* {product.status === 'show' ? (
-                                 <Tag title={t('status.show')} />
-                              ) : (
-                                 <Tag
-                                    title={t('status.hide')}
-                                    className='bg-red-400'
-                                 />
-                              )} */}
-                              {/* <Switch
-                                 offColor='#E53E3E'
-                                 onColor='#2F855A'
-                                 width={30}
-                                 height={15}
-                              /> */}
                               <div className='flex items-center justify-center h-full'>
                                  <Switch
                                     offColor='#E53E3E'
@@ -351,20 +341,24 @@ function Products() {
                                     {
                                        label: (
                                           <div
-                                             className='flex items-center p-1 space-x-2'
+                                             className='flex items-center px-2 py-1 space-x-2'
                                              onClick={() =>
                                                 navigate(`${product.slug}/edit`)
                                              }
                                           >
                                              <BiMessageSquareEdit />
-                                             <span>{t('action.edit')}</span>
+                                             <span>
+                                                {t('action.edit', {
+                                                   ns: 'mutual',
+                                                })}
+                                             </span>
                                           </div>
                                        ),
                                     },
                                     {
                                        label: (
                                           <div
-                                             className='flex items-center p-1 space-x-2'
+                                             className='flex items-center px-2 py-1 space-x-2'
                                              onClick={() =>
                                                 navigate(
                                                    `${product.slug}/variants`
@@ -372,14 +366,18 @@ function Products() {
                                              }
                                           >
                                              <BiMessageSquareEdit />
-                                             <span>Biến thể</span>
+                                             <span>
+                                                {t('label.variant', {
+                                                   ns: 'mutual',
+                                                })}
+                                             </span>
                                           </div>
                                        ),
                                     },
                                     {
                                        label: (
                                           <div
-                                             className='flex items-center p-1 space-x-2'
+                                             className='flex items-center px-2 py-1 space-x-2'
                                              onClick={() =>
                                                 deleleProductMutation.mutate(
                                                    product._id
@@ -387,7 +385,11 @@ function Products() {
                                              }
                                           >
                                              <FiTrash2 />
-                                             <span>{t('action.delete')}</span>
+                                             <span>
+                                                {t('action.delete', {
+                                                   ns: 'mutual',
+                                                })}
+                                             </span>
                                           </div>
                                        ),
                                     },
@@ -409,38 +411,6 @@ function Products() {
                   )}
                </Table>
             )}
-            {/* {isLoading ? (
-               <Loading />
-            ) : (
-               <div className='border border-table_db dark:border-[#343434] rounded-md text-sm overflow-hidden'>
-                  <table className='w-full'>
-                     <thead className='font-medium border-b border-inherit text-table_db_thead'>
-                        <tr className='[&>*:not(:last-child)]:px-4 [&>*]:py-3'>
-                           <td className='w-[5%]'></td>
-                           <td className='w-[%]'>Name</td>
-                           <td className='w-[%]'>Category</td>
-                           <td className='w-[%]'>Price</td>
-                           <td className='w-[%]'>Date</td>
-                           <td className='w-[10%] text-center'>Status</td>
-                           <td className='w-[10%]'></td>
-                        </tr>
-                     </thead>
-                     <tbody className='divide-y divide-table_db dark:divide-[#343434] font-normal'>
-                        
-                     </tbody>
-                  </table>
-                  {data && data.products.length > 0 && (
-                     <Pagination
-                        page={data.page}
-                        lastPage={data.lastPage}
-                        total={data.total}
-                        currentTotal={data.products.length}
-                        skip={skip}
-                        setSkip={setSkip}
-                     />
-                  )}
-               </div>
-            )} */}
          </div>
          <Modal
             title='Change password'

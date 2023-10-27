@@ -18,7 +18,8 @@
       "signup": "Sign up",
       "buyNow": "Buy now",
       "addToCart": "Add to cart",
-      "deleteAll": "Delete all"
+      "deleteAll": "Delete all",
+      "changePasswordd": "Change password"
    },
    "status": {
       "status": "Status",
@@ -26,11 +27,18 @@
       "deleted": "Deleted",
       "hide": "Hide",
       "show": "Show",
-      "blocked": "Blocked"
+      "blocked": "Blocked",
+      "expired": "Expired",
+      "paid": "Paid",
+      "unpaid": "Unpaid",
+      "pending": "Pending",
+      "processing": "Processing",
+      "delivered": "Delivered",
+      "cancel": "Cancel"
    },
    "label": {
       "total": "Total",
-      "sold": "sold",
+      "sold": "Sold",
       "quantity": "Quantity",
       "name": "Name",
       "price": "Price",
@@ -38,11 +46,48 @@
       "color": "Color",
       "phone": "Phone number",
       "address": "Address",
-      "password": "Password"
+      "password": "Password",
+      "discount": "Discount",
+      "store": "Store",
+      "gender": "Gender",
+      "category": "Category",
+      "desc": "Description",
+      "stock": "Stock",
+      "thumb": "Thumbnail",
+      "images": "Images",
+      "variant": "Variant",
+      "date": "Date",
+      "vnName": "Vietnamese name",
+      "hexCode": "Hex code",
+      "value": "Value",
+      "code": "Code",
+      "expirationDate": "Exp date",
+      "method": "Method",
+      "payment": "Payment",
+      "action": "Action",
+      "message": "Message"
    },
    "store": {
       "shoes": "Shoes",
       "clothing": "Clothing",
       "gear": "Gear"
+   },
+   "notify": {
+      "createSuccess": "Create successful",
+      "updateSuccess": "Update successful"
+   },
+
+   "pagination": {
+      "showing": "Showing",
+      "of": "Of"
+   },
+   "order": {
+      "shippingCost": "Shipping cost",
+      "paymentMethod": "Payment method"
+   },
+   "gender": {
+      "men": "Men",
+      "women": "Women",
+      "child": "Child"
    }
 }

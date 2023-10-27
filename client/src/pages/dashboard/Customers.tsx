@@ -31,7 +31,7 @@ function Customers() {
    const [skip, setSkip] = useState<number>(0);
    const [params, setParams] = useState<Params>({} as Params);
 
-   const { t } = useTranslation('dashboard');
+   const { t } = useTranslation(['dashboard', 'mutual']);
 
    const { data, isLoading, refetch } = useQuery({
       queryKey: ['customers', skip, params],
@@ -71,7 +71,7 @@ function Customers() {
    return (
       <>
          <PageTitle title='Customers' />
-         <Title title={t('title.customer')} />
+         <Title title={t('customer.title')} />
          <div className='flex flex-col mt-6'>
             <div className='mb-4 h-11'>
                <Input
@@ -88,14 +88,28 @@ function Customers() {
                   heading={
                      <tr className='[&>*:not(:last-child)]:p-4'>
                         <td className='w-[5%]'></td>
-                        <td className='w-[15%]'>{t('table.date')}</td>
-                        <td className='w-[20%]'>{t('table.name')}</td>
-                        <td className='w-[25%]'>Email</td>
-                        <td className='w-[15%]'>{t('table.phoneNumber')}</td>
-                        <td className='w-[10%] text-center'>
-                           {t('status.status')}
+                        <td className='w-[15%]'>
+                           {t('label.date', {
+                              ns: 'mutual',
+                           })}
                         </td>
-                        <td className='w-[10%]'></td>
+                        <td className='w-[25%]'>
+                           {t('label.name', {
+                              ns: 'mutual',
+                           })}
+                        </td>
+                        <td className='w-[25%]'>Email</td>
+                        <td className='w-[15%]'>
+                           {t('label.phone', {
+                              ns: 'mutual',
+                           })}
+                        </td>
+                        <td className='w-[10%] text-center'>
+                           {t('status.status', {
+                              ns: 'mutual',
+                           })}
+                        </td>
+                        <td className='w-[5%]'></td>
                      </tr>
                   }
                   pagination={
@@ -137,10 +151,16 @@ function Customers() {
                            </td>
                            <td className='flex justify-center'>
                               {user.status === 'active' ? (
-                                 <Tag title={t('status.active')} />
+                                 <Tag
+                                    title={t('status.active', {
+                                       ns: 'mutual',
+                                    })}
+                                 />
                               ) : (
                                  <Tag
-                                    title={t('status.blocked')}
+                                    title={t('status.blocked', {
+                                       ns: 'mutual',
+                                    })}
                                     className='bg-red-400'
                                  />
                               )}
@@ -151,7 +171,7 @@ function Customers() {
                                     {
                                        label: (
                                           <div
-                                             className='flex items-center space-x-2'
+                                             className='flex items-center px-2 py-1 space-x-2'
                                              onClick={() => {
                                                 const status =
                                                    user.status === 'active'
@@ -170,14 +190,18 @@ function Customers() {
                                                 <>
                                                    <AiOutlineLock />
                                                    <span>
-                                                      {t('action.block')}
+                                                      {t('action.block', {
+                                                         ns: 'mutual',
+                                                      })}
                                                    </span>
                                                 </>
                                              ) : (
                                                 <>
                                                    <AiOutlineUnlock />
                                                    <span>
-                                                      {t('action.unblock')}
+                                                      {t('action.unblock', {
+                                                         ns: 'mutual',
+                                                      })}
                                                    </span>
                                                 </>
                                              )}
@@ -187,13 +211,17 @@ function Customers() {
                                     {
                                        label: (
                                           <div
-                                             className='flex items-center space-x-2'
+                                             className='flex items-center px-2 py-1 space-x-2'
                                              onClick={() => {
                                                 // deleteAdmin(user._id)
                                              }}
                                           >
                                              <FiTrash2 />
-                                             <span>{t('action.delete')}</span>
+                                             <span>
+                                                {t('action.delete', {
+                                                   ns: 'mutual',
+                                                })}
+                                             </span>
                                           </div>
                                        ),
                                     },

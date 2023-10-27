@@ -23,7 +23,7 @@ const DEFAULT_FORM_VALUE: VariantFormValue = {
 function CreateVariant() {
    const { slug } = useParams();
    const navigate = useNavigate();
-   const { t } = useTranslation('dashboard', { keyPrefix: 'title' });
+   const { t } = useTranslation(['dashboard']);
 
    const { data, isLoading } = useQuery({
       queryKey: ['product', slug],
@@ -33,7 +33,7 @@ function CreateVariant() {
    return (
       <>
          <PageTitle title='Add variant' />
-         <Title title={t('createProuct')} />
+         <Title title={t('variant.createTitle')} />
          {isLoading && (
             <LoadingOverlay>
                <Spin size='large' />

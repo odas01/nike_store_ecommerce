@@ -3,7 +3,7 @@ import { ListWithParams } from './listWithParamsType';
 export interface ISize {
    _id: string;
    name: string;
-   store: 'shoes' | 'clothing' | 'gear';
+   store: string;
    createdAt: Date;
 }
 

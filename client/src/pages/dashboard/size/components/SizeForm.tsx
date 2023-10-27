@@ -42,7 +42,7 @@ const SizeForm: FC<SizeFormProps> = ({ data, closeDrawer }) => {
       mode: 'onChange',
    });
    const queryClient = useQueryClient();
-   const { t } = useTranslation('dashboard');
+   const { t } = useTranslation(['dashboard', 'mutual']);
 
    useEffect(() => {
       if (data) {
@@ -94,41 +94,47 @@ const SizeForm: FC<SizeFormProps> = ({ data, closeDrawer }) => {
       <div className='flex flex-col h-full'>
          <Heading>
             <h2 className='relative px-4 text-center'>
-               {t(data ? 'action.edit' : 'action.create')}
+               {t(data ? 'action.edit' : 'action.create', { ns: 'mutual' })}
             </h2>
          </Heading>
          <div className='flex-1 dark:bg-[#111315] overflow-y-scroll'>
             <form className='flex flex-col p-6 space-y-8 font-medium [&>div>input]:text-sm'>
                <div className='flex flex-col space-y-2'>
-                  <label htmlFor='name'>{t('table.name')}</label>
+                  <label htmlFor='name'>
+                     {t('label.name', { ns: 'mutual' })}
+                  </label>
                   <Input
-                     placeholder='Size name'
+                     placeholder={t('size.sizeName')}
                      isError={!!errors?.name}
                      {...register('name')}
                   />
                   {errors?.name && <Error message={errors.name.message} />}
                </div>
                <div className='flex flex-col space-y-2'>
-                  <label htmlFor='store'>{t('table.store')}</label>
+                  <label htmlFor='store'>
+                     {t('label.store', { ns: 'mutual' })}
+                  </label>
                   <Dropdown
                      items={store.map((item) => ({
                         label: (
                            <p
-                              className='capitalize'
+                              className='px-3 py-2 capitalize'
                               onClick={() => setValue('store', item)}
                            >
-                              {item}
+                              {t(`store.${item}`, { ns: 'mutual' })}
                            </p>
                         ),
                      }))}
-                  >
-                     <Input
-                        placeholder='Chooes a store'
-                        readOnly
-                        className='w-full !cursor-pointer appearance capitalize placeholder:normal-case'
-                        {...register('store')}
-                     />
-                  </Dropdown>
+                     children={
+                        <Input
+                           placeholder={t('size.chooesStore')}
+                           className='w-full capitalize appearance placeholder:normal-case focus:cursor-pointer'
+                           {...register('store')}
+                           isError={!!errors.store}
+                           readOnly
+                        />
+                     }
+                  />
                   {errors?.store && <Error message={errors.store.message} />}
                </div>
             </form>
@@ -140,7 +146,9 @@ const SizeForm: FC<SizeFormProps> = ({ data, closeDrawer }) => {
                   className='duration-150 bg-gray-600 opacity-40 hover:bg-gray-700'
                   onClick={closeDrawer}
                >
-                  {t('action.cancel')}
+                  {t('action.cancel', {
+                     ns: 'mutual',
+                  })}
                </Button>
                <Button
                   className={twMerge(
@@ -151,7 +159,11 @@ const SizeForm: FC<SizeFormProps> = ({ data, closeDrawer }) => {
                   onClick={onSubmit}
                >
                   {isLoading && <Spinner width={18} />}
-                  <span>{t(data ? 'action.edit' : 'action.create')}</span>
+                  <span>
+                     {t(data ? 'action.edit' : 'action.create', {
+                        ns: 'mutual',
+                     })}
+                  </span>
                </Button>
             </div>
          </Footer>

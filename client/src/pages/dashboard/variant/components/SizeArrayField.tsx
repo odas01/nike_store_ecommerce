@@ -44,8 +44,8 @@ const SizeArrayField: FC<{
       <div className='pr-8 space-y-1'>
          {getValues(`sizes`).length > 0 && (
             <Row gutter={16}>
-               <Col span={16}>{t('aside.size')}</Col>
-               <Col span={8}>{t('form.stock')}</Col>
+               <Col span={16}>{t('size.aside')}</Col>
+               <Col span={8}>{t('label.stock', { ns: 'mutual' })}</Col>
             </Row>
          )}
          <Row gutter={16} className='relative'>
@@ -117,7 +117,7 @@ const SizeArrayField: FC<{
                }}
             >
                <IoIosAddCircleOutline color='inherit' size={18} />
-               <span>{t('form.addMoreSize')}</span>
+               <span>{t('action.addColor')}</span>
             </Button>
          </div>
       </div>

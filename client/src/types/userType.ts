@@ -9,7 +9,7 @@ export interface IUser {
    phone: string;
    address: string;
    avatar: Image;
-   status: 'active' | 'blocked' | 'deleted';
+   status: string;
    createdAt: Date;
 }
 

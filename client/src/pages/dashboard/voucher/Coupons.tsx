@@ -1,6 +1,6 @@
 import { twMerge } from 'tailwind-merge';
 import { Drawer } from 'antd';
-import { useTranslation } from 'react-i18next';
+import { composeInitialProps, useTranslation } from 'react-i18next';
 import { useState, KeyboardEvent } from 'react';
 import { useMutation, useQuery } from '@tanstack/react-query';
 
@@ -32,6 +32,8 @@ type Params = {
    name: string;
 };
 
+type Status = 'Active' | 'Expired';
+
 function Coupons() {
    const [couponActive, setCouponActive] = useState<ICoupon | null>(null);
 
@@ -40,7 +42,7 @@ function Coupons() {
 
    const [openDrawer, setOpenDrawer] = useState<boolean>(false);
 
-   const { t } = useTranslation('dashboard');
+   const { t } = useTranslation(['dashboard', 'mutual']);
 
    const { isLoading, data, refetch } = useQuery({
       queryKey: ['coupons', skip, params],
@@ -83,11 +85,12 @@ function Coupons() {
       setOpenDrawer(true);
       setCouponActive(coupon);
    };
+   console.log(couponActive);
 
    return (
       <>
          <PageTitle title='Coupons' />
-         <Title title={t('title.coupon')} />
+         <Title title={t('coupon.title')} />
          <div className='flex flex-col mt-6'>
             <div className='flex justify-between mb-4 space-x-4 h-11'>
                <Input
@@ -100,7 +103,7 @@ function Coupons() {
                   className='h-full text-sm duration-150 bg-green-500 w-52 hover:bg-green-600'
                   onClick={() => setOpenDrawer(true)}
                >
-                  + {t('form.addNew')}
+                  + {t('action.addNew')}
                </Button>
             </div>
             {isLoading ? (
@@ -110,11 +113,23 @@ function Coupons() {
                   heading={
                      <tr className='[&>*:not(:last-child)]:px-4 [&>*]:py-3'>
                         <td className='w-[5%]'></td>
-                        <td className='w-[20%]'>{t('table.name')}</td>
-                        <td className='w-[15%]'>{t('code')}</td>
-                        <td className='w-[15%]'>{t('value')}</td>
-                        <td className='w-[15%]'>{t('expirationDate')}</td>
-                        <td className='w-[10%]'>{t('status.status')}</td>
+                        <td className='w-[20%]'>
+                           {t('label.name', { ns: 'mutual' })}
+                        </td>
+                        <td className='w-[20%]'>
+                           {t('label.code', { ns: 'mutual' })}
+                        </td>
+                        <td className='w-[20%]'>
+                           {t('label.value', { ns: 'mutual' })}
+                        </td>
+                        <td className='w-[20%]'>
+                           {t('label.expirationDate', { ns: 'mutual' })}
+                        </td>
+                        <td className='w-[10%] text-center'>
+                           {t('status.status', {
+                              ns: 'mutual',
+                           })}
+                        </td>
                         <td className='w-[5%]'></td>
                      </tr>
                   }
@@ -163,17 +178,25 @@ function Coupons() {
                               <span>
                                  {coupon.type === 'percent'
                                     ? coupon.value + '%'
-                                    : priceFormat(coupon.value)}
+                                    : priceFormat(coupon.value, true)}
                               </span>
                            </td>
                            <td>
                               <span>{dateFormat(coupon.expirationDate)}</span>
                            </td>
-                           <td>
+                           <td className='text-center'>
                               {moment().isAfter(coupon.expirationDate) ? (
-                                 <Tag title='Expired' className='bg-red-500' />
+                                 <Tag
+                                    title={t(`status.expired`, {
+                                       ns: 'mutual',
+                                    })}
+                                    className='bg-red-500'
+                                 />
                               ) : (
-                                 <Tag title='Active' className='bg-green-500' />
+                                 <Tag
+                                    title={t(`status.active`, { ns: 'mutual' })}
+                                    className='bg-green-500'
+                                 />
                               )}
                            </td>
                            <td>
@@ -183,18 +206,22 @@ function Coupons() {
                                     {
                                        label: (
                                           <div
-                                             className='flex items-center space-x-2'
+                                             className='flex items-center px-2 py-1 space-x-2'
                                              onClick={() => onEdit(coupon)}
                                           >
                                              <BiMessageSquareEdit />
-                                             <span>{t('action.edit')}</span>
+                                             <span>
+                                                {t('action.edit', {
+                                                   ns: 'mutual',
+                                                })}
+                                             </span>
                                           </div>
                                        ),
                                     },
                                     {
                                        label: (
                                           <div
-                                             className='flex items-center space-x-2'
+                                             className='flex items-center px-2 py-1 space-x-2'
                                              onClick={() =>
                                                 deleteCouponMutation.mutate(
                                                    coupon._id
@@ -202,7 +229,11 @@ function Coupons() {
                                              }
                                           >
                                              <FiTrash2 />
-                                             <span>{t('action.delete')}</span>
+                                             <span>
+                                                {t('action.delete', {
+                                                   ns: 'mutual',
+                                                })}
+                                             </span>
                                           </div>
                                        ),
                                     },

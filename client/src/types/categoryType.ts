@@ -4,7 +4,7 @@ export interface ICategory {
    _id: string;
    name: string;
    vnName: string;
-   store: 'shoes' | 'clothing' | 'gear';
+   store: string;
    status: string;
    createdAt: Date;
 }

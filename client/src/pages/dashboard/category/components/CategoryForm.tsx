@@ -9,7 +9,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import Footer from '@/components/drawer/Footer';
 import Heading from '@/components/drawer/Header';
-import { Button, Error, Input, Select, Spinner } from '@/components';
+import { Button, Dropdown, Error, Input, Select, Spinner } from '@/components';
 
 import { notify } from '@/helpers';
 import { store } from '@/constants';
@@ -37,6 +37,7 @@ const CategoryForm: FC<CategoryFormProps> = ({ data, closeDrawer }) => {
    const {
       register,
       handleSubmit,
+      setValue,
       formState: { errors },
       reset,
    } = useForm<CagtegoryFormValue>({
@@ -45,7 +46,7 @@ const CategoryForm: FC<CategoryFormProps> = ({ data, closeDrawer }) => {
    });
    const [status, setStatus] = useState<string>(data ? data.status : 'show');
 
-   const { t } = useTranslation('dashboard');
+   const { t } = useTranslation(['dashboard', 'mutual']);
 
    useEffect(() => {
       if (data) {
@@ -103,43 +104,62 @@ const CategoryForm: FC<CategoryFormProps> = ({ data, closeDrawer }) => {
       <div className='flex flex-col h-full'>
          <Heading>
             <h2 className='px-4 text-center'>
-               {t(data ? 'action.edit' : 'action.create')}
+               {t(data ? 'action.edit' : 'action.create', { ns: 'mutual' })}
             </h2>
          </Heading>
          <div className='flex-1 dark:bg-[#111315] overflow-y-scroll'>
             <form className='flex flex-col p-6 space-y-8 font-medium [&>div>input]:text-sm'>
                <div className='flex flex-col space-y-2'>
-                  <label htmlFor='name'>{t('table.name')}</label>
+                  <label htmlFor='name'>
+                     {t('label.name', {
+                        ns: 'mutual',
+                     })}
+                  </label>
                   <Input
-                     placeholder='Admin name'
+                     placeholder={t('category.categoryName')}
                      isError={!!errors?.name}
                      {...register('name')}
                   />
                   {errors?.name && <Error message={errors.name.message} />}
                </div>
                <div className='flex flex-col space-y-2'>
-                  <label htmlFor='vnName'>Tên việt</label>
+                  <label htmlFor='vnName'>
+                     {t('label.vnName', { ns: 'mutual' })}
+                  </label>
                   <Input
-                     placeholder='Admin vnName'
+                     placeholder={t('label.vnName', { ns: 'mutual' })}
                      isError={!!errors?.vnName}
                      {...register('vnName')}
                   />
                   {errors?.name && <Error message={errors.name.message} />}
                </div>
                <div className='flex flex-col space-y-2'>
-                  <label htmlFor='store'>{t('table.store')}</label>
-                  <Select
-                     options={store.map((item) => ({
-                        label: item,
-                        value: item,
+                  <label htmlFor='store'>
+                     {t('label.store', {
+                        ns: 'mutual',
+                     })}
+                  </label>
+                  <Dropdown
+                     items={store.map((item) => ({
+                        label: (
+                           <p
+                              className='px-3 py-2 capitalize'
+                              onClick={() => setValue('store', item)}
+                           >
+                              {t(`store.${item}`, { ns: 'mutual' })}
+                           </p>
+                        ),
                      }))}
-                     hiddenOption={{
-                        label: '-- Choose one store -- ',
-                        value: '',
-                     }}
-                     isError={!!errors?.store}
-                     {...register('store')}
-                  ></Select>
+                     children={
+                        <Input
+                           placeholder={t('category.chooesStore')}
+                           className='w-full capitalize appearance placeholder:normal-case focus:cursor-pointer'
+                           {...register('store')}
+                           isError={!!errors.store}
+                           readOnly
+                        />
+                     }
+                  />
                   {errors?.store && <Error message={errors.store.message} />}
                </div>
                <Switch
@@ -149,12 +169,12 @@ const CategoryForm: FC<CategoryFormProps> = ({ data, closeDrawer }) => {
                   checked={status === 'show'}
                   checkedIcon={
                      <div className='flex items-center h-full pl-3 text-sm text-white'>
-                        {t('status.show')}
+                        {t('status.show', { ns: 'mutual' })}
                      </div>
                   }
                   uncheckedIcon={
                      <div className='flex items-center h-full -ml-1 text-sm text-white'>
-                        {t('status.hide')}
+                        {t('status.hide', { ns: 'mutual' })}
                      </div>
                   }
                   onChange={(value) => setStatus(value ? 'show' : 'hide')}
@@ -168,7 +188,9 @@ const CategoryForm: FC<CategoryFormProps> = ({ data, closeDrawer }) => {
                   className='duration-150 bg-gray-600 opacity-40 hover:opacity-30'
                   onClick={closeDrawer}
                >
-                  {t('action.cancel')}
+                  {t('action.cancel', {
+                     ns: 'mutual',
+                  })}
                </button>
                <Button
                   className={twMerge(
@@ -179,7 +201,11 @@ const CategoryForm: FC<CategoryFormProps> = ({ data, closeDrawer }) => {
                   onClick={onSubmit}
                >
                   {isLoading && <Spinner width={18} />}
-                  <span>{t(data ? 'action.edit' : 'action.create')}</span>
+                  <span>
+                     {t(data ? 'action.edit' : 'action.create', {
+                        ns: 'mutual',
+                     })}
+                  </span>
                </Button>
             </div>
          </Footer>
