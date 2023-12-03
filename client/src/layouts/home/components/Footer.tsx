@@ -1,17 +1,18 @@
-import images from '@/assets/images';
 import { Col, Row } from 'antd';
-import React from 'react';
-import { AiOutlineMail, AiOutlinePhone } from 'react-icons/ai';
+
 import { MdOutlinePlace } from 'react-icons/md';
+import { AiOutlineMail, AiOutlinePhone } from 'react-icons/ai';
+
+import images from '@/assets/images';
 
 const Footer = () => {
    return (
-      <div className='border-t border-[#e7e7e7] mt-auto'>
-         <div className='container pt-4 pb-2'>
+      <footer className='bg-[#f1f1f1] mt-auto'>
+         <div className='container py-2'>
             <div className='mt-4 mb-10'>
                <Row gutter={24}>
                   <Col span={6}>
-                     <h2 className='text-lg'>Follow our Socials</h2>
+                     {/* <h2 className='text-lg font-medium'>Follow our Socials</h2>
                      <div className='flex pt-4'>
                         <div
                            className='w-10 h-10 shadow-[0px_2px_12px_0px_#006fff87] rounded-full flex-center transition-all 
@@ -43,19 +44,19 @@ const Footer = () => {
                               alt='google'
                            />
                         </div>
-                     </div>
+                     </div> */}
                   </Col>
                   <Col span={6}>
-                     <h2 className='text-lg'>Company</h2>
-                     <div className='pt-2 font-normal space-y-1'>
+                     <h2 className='text-lg font-medium'>Company</h2>
+                     <div className='pt-2 space-y-1 font-normal'>
                         <p>About Us</p>
                         <p>Press</p>
                         <p>Contact</p>
                      </div>
                   </Col>
                   <Col span={6}>
-                     <h2 className='text-lg'>Introduce</h2>
-                     <div className='pt-2 pr-6 font-normal space-y-1'>
+                     <h2 className='text-lg font-medium'>Introduce</h2>
+                     <div className='pt-2 pr-6 space-y-1 font-normal'>
                         <p className='flex items-center '>
                            <AiOutlinePhone className='mr-2' /> 0123789456
                         </p>
@@ -71,8 +72,8 @@ const Footer = () => {
                      </div>
                   </Col>
                   <Col span={6}>
-                     <h2 className='text-lg'>Support</h2>
-                     <div className='pt-2 font-normal space-y-1'>
+                     <h2 className='text-lg font-medium'>Support</h2>
+                     <div className='pt-2 space-y-1 font-normal'>
                         <p>Submit a warranty claim</p>
                         <p>Submit a return request</p>
                         <p>
@@ -89,7 +90,7 @@ const Footer = () => {
                © Copyright 2022 By lntthanh3317
             </span>
          </div>
-      </div>
+      </footer>
    );
 };
 

@@ -1,20 +1,21 @@
 import { Button, Error, Input } from '@/components';
-import React, { FC } from 'react';
-import { BsGoogle } from 'react-icons/bs';
 import { useGoogleLogin } from '@react-oauth/google';
 import * as zod from 'zod';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import authStore from '@/stores/authStore';
-import { useMutation } from '@tanstack/react-query';
-import { authApi } from '@/api';
-import { ErrorResponse, ILogin, ISignUp } from '@/types';
-import { notify } from '@/helpers';
-import DotLoader from 'react-spinners/DotLoader';
 import { twMerge } from 'tailwind-merge';
+import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
+import DotLoader from 'react-spinners/DotLoader';
+import { useMutation } from '@tanstack/react-query';
+import { zodResolver } from '@hookform/resolvers/zod';
+
+import { BsGoogle } from 'react-icons/bs';
+
+import { authApi } from '@/api';
+import { notify } from '@/helpers';
+import authStore from '@/stores/authStore';
 import cartStore from '@/stores/cartStore';
-import { Link, useNavigate } from 'react-router-dom';
+import { ErrorResponse, ISignUp } from '@/types';
 
 const formSchema = zod
    .object({
@@ -30,10 +31,13 @@ const formSchema = zod
 type SignupFormValues = zod.infer<typeof formSchema>;
 
 const SignUp = () => {
-   const { setCurrentUser, saveToken } = authStore();
-   const { t } = useTranslation(['home', 'mutual']);
-   const { getCart } = cartStore();
    const navigate = useNavigate();
+   const { getCart } = cartStore();
+   const { setCurrentUser, saveToken, previousLocation } = authStore();
+
+   const { t, i18n } = useTranslation(['home', 'mutual']);
+   const isVnLang = i18n.language === 'vi';
+
    const {
       register,
       handleSubmit,
@@ -50,23 +54,23 @@ const SignUp = () => {
          navigate('/login');
       },
 
-      onError: (error: ErrorResponse) => {
-         notify('error', error.message);
+      onError: ({ message }) => {
+         notify('error', isVnLang ? message.vi : message.en);
       },
    });
 
    const googleLoginMutation = useMutation({
       mutationFn: (token: string) => authApi.googleLogin(token),
-      onSuccess: ({ user, token }) => {
+      onSuccess: ({ user, token, message }) => {
          saveToken(token);
          setCurrentUser(user);
          getCart();
-         notify('success', `Welcome ${user.name} to Nike Store`);
-         navigate('/');
+         notify('success', isVnLang ? message.vi : message.en);
+         navigate(previousLocation);
       },
 
-      onError: (error: ErrorResponse) => {
-         notify('error', error.message);
+      onError: ({ message }) => {
+         notify('error', isVnLang ? message.vi : message.en);
       },
    });
 
@@ -85,7 +89,7 @@ const SignUp = () => {
          <h3 className='text-2xl text-center'>
             {t('action.signup', { ns: 'mutual' })}
          </h3>
-         <div className='w-full rounded-md shadow-lg px-7 py-8 bg-white'>
+         <div className='w-full py-8 bg-white rounded-md shadow-lg px-7'>
             <div className='space-y-3'>
                <div className='flex flex-col'>
                   <span className='text-13'>

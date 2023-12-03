@@ -5,7 +5,7 @@ import { IUser } from '../types/user.type';
 import responseHandler from '../handlers/response.handler';
 import { NextFunction, Request, Response } from 'express';
 
-const tokenDecode = (req: Request) => {
+const tokenDecode = async (req: Request) => {
    const bearerHeader = req.headers['authorization'];
 
    if (bearerHeader) {
@@ -31,10 +31,10 @@ export const checkAuth = async (
    res: Response,
    next: NextFunction
 ) => {
-   const tokenDecoded: any = tokenDecode(req);
+   const tokenDecoded: any = await tokenDecode(req);
 
    if (tokenDecoded) {
-      const user = await User.findById(tokenDecoded.id);
+      const user = await User.findById(tokenDecoded.id).lean();
 
       if (!user) return responseHandler.unauthorize(res);
 

@@ -1,1 +1,1 @@
-export const store = ['shoes', 'clothing', 'gear'] as const;
+export const store = ['shoes', 'clothing', 'accessories'] as const;

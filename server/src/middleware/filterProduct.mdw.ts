@@ -2,14 +2,6 @@ import { NextFunction, Request, Response } from 'express';
 import Category from '../models/category.model';
 import Variant from '../models/variant.model';
 
-// type FilterCate = {
-//    name?: string;
-//    store?: string;
-// };
-// type Filter = {
-//    name:
-// }
-
 type Query = {
    name: string;
    store: string;
@@ -18,6 +10,8 @@ type Query = {
    color: string[];
    size: string[];
    status: string;
+   gte: string;
+   lte: string;
 };
 
 type FilterCate = {
@@ -32,8 +26,17 @@ const filterProduct = async (
 ) => {
    let filter: any = {};
 
-   const { name, store, category, price, color, size, status }: Partial<Query> =
-      req.query;
+   const {
+      name,
+      store,
+      category,
+      price,
+      color,
+      size,
+      status,
+      gte,
+      lte,
+   }: Partial<Query> = req.query;
 
    if (name) {
       filter.name = {
@@ -100,9 +103,11 @@ const filterProduct = async (
       };
    }
 
-   if (Object.keys(res.locals.sort).includes('sold')) {
-      filter.sold = {
-         $gte: 1,
+   if (gte) {
+      let [key, value] = gte.split(':');
+
+      filter[key] = {
+         $gte: value,
       };
    }
 

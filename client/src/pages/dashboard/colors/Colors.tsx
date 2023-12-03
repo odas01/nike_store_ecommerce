@@ -15,14 +15,14 @@ import {
    Input,
    Button,
    Dropdown,
-   Skeleton,
    PageTitle,
    Pagination,
+   Loading,
 } from '@/components';
 
-import { dateFormat, notify } from '@/helpers';
-import { ErrorResponse, IColor } from '@/types';
 import { colorApi } from '@/api';
+import { dateFormat, notify } from '@/helpers';
+import { IColor } from '@/types';
 
 const DEFAULT_LIMIT = import.meta.env.VITE_APP_LIMIT || 15;
 
@@ -38,8 +38,8 @@ function Colors() {
 
    const [openDrawer, setOpenDrawer] = useState<boolean>(false);
 
-   const { t } = useTranslation(['dashboard', 'mutual']);
-
+   const { t, i18n } = useTranslation(['dashboard', 'mutual']);
+   const isVnLang = i18n.language === 'vi';
    const { isLoading, data, refetch } = useQuery({
       queryKey: ['colors', skip, params],
       queryFn: () =>
@@ -55,12 +55,13 @@ function Colors() {
       mutationFn: (id: string) => {
          return colorApi.delete(id);
       },
-      onSuccess: (data) => {
+      onSuccess: ({ message }) => {
+         notify('success', isVnLang ? message.vi : message.en);
          refetch();
-         notify('success', `"${data.name}" deleted`);
       },
-      onError: (error: ErrorResponse) => {
-         notify('error', error.message);
+
+      onError: ({ message }) => {
+         notify('error', isVnLang ? message.vi : message.en);
       },
    });
 
@@ -102,7 +103,7 @@ function Colors() {
                </Button>
             </div>
             {isLoading ? (
-               <Skeleton />
+               <Loading />
             ) : (
                <Table
                   heading={

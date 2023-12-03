@@ -1,6 +1,5 @@
-import { Spin } from 'antd';
-import { useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import EditForm from './components/EditForm';
@@ -15,7 +14,9 @@ function EditProduct() {
    const { slug } = useParams();
    const navigate = useNavigate();
    const queryClient = useQueryClient();
-   const { t } = useTranslation(['dashboard', 'mutual']);
+
+   const { t, i18n } = useTranslation(['dashboard', 'mutual']);
+   const isVnLang = i18n.language === 'vi';
 
    const { data, isLoading, refetch } = useQuery({
       queryKey: ['product', slug],
@@ -34,16 +35,17 @@ function EditProduct() {
       mutationFn: (values: ProductEdit) => {
          return productApi.update(slug!, values);
       },
-      onSuccess: () => {
+      onSuccess: ({ message }) => {
          refetch();
          navigate(-1);
          queryClient.invalidateQueries({
             queryKey: ['products'],
          });
-         notify('success', t('notify.updateSuccess', { ns: 'mutual' }));
+         notify('success', isVnLang ? message.vi : message.en);
       },
-      onError: (error: ErrorResponse) => {
-         notify('error', error.message);
+
+      onError: ({ message }) => {
+         notify('error', isVnLang ? message.vi : message.en);
       },
    });
 
@@ -62,11 +64,7 @@ function EditProduct() {
       <>
          <PageTitle title='Edit product' />
          <Title title={t('product.editTitle')} />
-         {editProductMutation.isLoading && (
-            <LoadingOverlay>
-               <Spin size='large' />
-            </LoadingOverlay>
-         )}
+         {editProductMutation.isLoading && <LoadingOverlay />}
          <div className='flex justify-end mt-4'>
             <Button
                className='h-8 px-5 ml-auto duration-150 bg-green-500 hover:bg-green-600'

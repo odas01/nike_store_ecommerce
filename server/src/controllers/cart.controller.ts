@@ -8,6 +8,7 @@ export const getOne = async (req: Request, res: Response) => {
 
    try {
       const cartItems = await CartItem.find({ user })
+         .lean()
          .populate({
             path: 'product',
             select: 'name discount category prices slug',
@@ -26,7 +27,6 @@ export const getOne = async (req: Request, res: Response) => {
                select: '-_id name value',
             },
          })
-         .lean()
          .sort({ updatedAt: -1 });
       responseHandler.ok(res, { items: cartItems, total: cartItems.length });
    } catch {
@@ -38,44 +38,46 @@ export const create = async (req: Request, res: Response) => {
    const { _id: user } = res.locals.user;
 
    try {
-      const { variant, size, qty } = req.body;
+      const variant = await Variant.findOne({ _id: req.body.variant }).lean();
+      if (variant) {
+         const stock = variant.sizes.find(
+            (item) => item.size === req.body.size
+         )?.stock;
 
-      const cartItem = await CartItem.findOne({
-         user,
-         variant,
-         size,
-      });
+         if (stock) {
+            if (req.body.qty > stock) {
+               return responseHandler.badrequest(res, {
+                  vi: `Sorry, you can only buy a maximum of ${
+                     stock > 1
+                        ? `${stock + ' products'}`
+                        : `${stock + ' product'}`
+                  }`,
+                  en: `Xin lỗi, bạn chỉ có thể mua tối đa ${stock} sản phẩm`,
+               });
+            }
+         }
 
-      if (!cartItem) await CartItem.create({ ...req.body, user });
-      else
-         await CartItem.updateOne(
-            { user, variant, size },
-            { qty: cartItem.qty + qty }
-         );
+         const cartItem = await CartItem.findOne({
+            user,
+            variant: req.body.variant,
+            size: req.body.size,
+         }).lean();
 
-      responseHandler.ok(res, { msg: 'Created' });
-   } catch {
-      responseHandler.error(res);
-   }
-};
-export const deleteOne = async (req: Request, res: Response) => {
-   // const { _id: user } = req.user;
-   // try {
-   //    await CartItem.deleteMany({ user });
-   //    responseHandler.ok(res, { msg: 'Deleted' });
-   // } catch {
-   //    responseHandler.error(res);
-   // }
-};
+         if (!cartItem) await CartItem.create({ ...req.body, user });
+         else
+            await CartItem.updateOne(
+               { user, variant: req.body.variant, size: req.body.size },
+               { qty: cartItem.qty + req.body.qty }
+            );
 
-export const deleteOneOrAll = async (req: Request, res: Response) => {
-   try {
-      // await CartItem.deleteMany({ user: req.params.id });
-
-      // if (!req.boody) {
-      //    await CartItem.deleteMany({ user: req.params.id });
-      // }
-      responseHandler.ok(res, { msg: 'Deleted all' });
+         return responseHandler.created(res, {
+            message: {
+               vi: 'Added to cart',
+               en: 'Đã thêm vào giỏ hàng',
+            },
+         });
+      }
+      responseHandler.ok(res, {});
    } catch {
       responseHandler.error(res);
    }
@@ -85,25 +87,29 @@ export const updateItem = async (req: Request, res: Response) => {
    const itemId = req.params.itemId;
 
    try {
-      const variant = await Variant.findOne({ _id: req.body.variant });
+      const variant = await Variant.findOne({ _id: req.body.variant }).lean();
       if (variant) {
          const stock = variant.sizes.find(
             (item) => item.size === req.body.size
          )?.stock;
-         console.log(stock);
 
          if (stock) {
             if (req.body.qty > stock) {
-               return responseHandler.badrequest(
-                  res,
-                  `Sorry, you can only buy max ${stock} in one checkout`
-               );
+               return responseHandler.badrequest(res, {
+                  vi: `Sorry, you can only buy a maximum of ${
+                     stock > 1
+                        ? `${stock + ' products'}`
+                        : `${stock + ' product'}`
+                  }`,
+                  en: `Xin lỗi, bạn chỉ có thể mua tối đa ${stock} sản phẩm`,
+               });
             } else {
                const item = await CartItem.findOneAndUpdate(
                   { _id: itemId },
                   { qty: req.body.qty },
                   { new: true }
                )
+                  .lean()
                   .populate({
                      path: 'product',
                      select: 'name discount category prices slug',
@@ -128,12 +134,6 @@ export const updateItem = async (req: Request, res: Response) => {
             }
          }
       }
-
-      // const item = await CartItem.findByIdAndUpdate(itemId, req.body, {
-      //    new: true,
-      //    update: true,
-      // }).populate('product');
-
       responseHandler.ok(res, {});
    } catch {
       responseHandler.error(res);
@@ -150,7 +150,7 @@ export const deleteItems = async (req: Request, res: Response) => {
          await CartItem.deleteMany({ user: user._id });
       }
 
-      responseHandler.ok(res, { msg: 'Delete successfully' });
+      responseHandler.ok(res, {});
    } catch {
       responseHandler.error(res);
    }

@@ -19,7 +19,7 @@ const categorySchema = new Schema(
       store: {
          type: String,
          required: true,
-         enum: ['shoes', 'clothing', 'gear'],
+         enum: ['shoes', 'clothing', 'accessories'],
          lowercase: true,
       },
       status: {

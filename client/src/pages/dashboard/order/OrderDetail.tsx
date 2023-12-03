@@ -1,21 +1,48 @@
-import { dateFormat, priceFormat } from '@/helpers';
-import Table from '@/layouts/dashboard/components/Table';
-import { IOrder } from '@/types/orderType';
 import { Col, Row } from 'antd';
-import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
+
 import { AiOutlineCheck, AiOutlineClose } from 'react-icons/ai';
+
+import Table from '@/layouts/dashboard/components/Table';
+
+import { IOrder } from '@/types/orderType';
+import { dateFormat, notify, priceFormat } from '@/helpers';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { orderApi } from '@/api';
+import { BiTrash } from 'react-icons/bi';
+import moment from 'moment';
+import { Dispatch, SetStateAction } from 'react';
 
 type Status = 'pending' | 'processing' | 'delivered' | 'cancel';
 
 interface OrderDetailProps {
    order: IOrder;
    handleUpdateStatus: (id: string, status: Status) => void;
+   setOpenModal: Dispatch<SetStateAction<string | null>>;
 }
 
-const OrderDetail: FC<OrderDetailProps> = ({ order, handleUpdateStatus }) => {
+const OrderDetail: React.FC<OrderDetailProps> = ({
+   order,
+   setOpenModal,
+   handleUpdateStatus,
+}) => {
    const { t, i18n } = useTranslation(['dashboard', 'mutual']);
    const isVnLang = i18n.language === 'vi';
+
+   const queryClient = useQueryClient();
+
+   const deleteOrderMutation = useMutation({
+      mutationFn: (id: string) => orderApi.delete(id),
+      onSuccess: ({ message }) => {
+         setOpenModal(null);
+         queryClient.invalidateQueries({ queryKey: ['orders'] });
+         notify('success', isVnLang ? message.vi : message.en);
+      },
+      onError: ({ message }) => {
+         setOpenModal(null);
+         notify('success', isVnLang ? message.vi : message.en);
+      },
+   });
 
    return (
       <div className='relative flex flex-col h-full px-4 py-2'>
@@ -25,12 +52,12 @@ const OrderDetail: FC<OrderDetailProps> = ({ order, handleUpdateStatus }) => {
                   <h2 className='text-xl uppercase'>
                      {t('order.invoice')}
                      <span className='ml-2 text-[#9a9a9a]'>
-                        ({dateFormat(order.createdAt)})
+                        {moment(order.createdAt).format('DD/MM/YY - HH:mm')}
                      </span>
                   </h2>
                   <div className='flex items-center mt-2 mb-8 space-x-2'>
                      <span>{t('status.status', { ns: 'mutual' })}: </span>
-                     <span className='px-1.5 py-0.5 text-xs bg-red-400 rounded'>
+                     <span className='px-1.5 py-1 text-xs text-white bg-red-400 rounded'>
                         {t(`status.${order.status as Status}`, {
                            ns: 'mutual',
                         })}
@@ -115,7 +142,7 @@ const OrderDetail: FC<OrderDetailProps> = ({ order, handleUpdateStatus }) => {
             </Col>
          </Row>
 
-         <div className='flex justify-between bg-[#2a2b30] rounded p-4 mt-20 mb-6'>
+         <div className='flex justify-between bg-gray-200 dark:bg-[#2a2b30] rounded p-4 mt-20 mb-6'>
             <div className='flex flex-col mr-8'>
                <span className='mb-1 text-sm font-semibold text-gray-500 uppercase'>
                   {t('order.paymentMethod', { ns: 'mutual' })}
@@ -143,24 +170,34 @@ const OrderDetail: FC<OrderDetailProps> = ({ order, handleUpdateStatus }) => {
                </span>
             </div>
          </div>
-         {order.status === 'pending' && (
-            <div className='flex items-center justify-end space-x-3'>
-               <div
-                  className='flex items-center px-3 py-1.5 space-x-2 text-white bg-red-500 rounded cursor-pointer'
-                  onClick={() => handleUpdateStatus(order._id, 'cancel')}
-               >
-                  <AiOutlineClose />
-                  <span>{t('order.cancel')} </span>
-               </div>
-               <div
-                  className='flex items-center px-3 py-1.5 space-x-2 text-white bg-green-500 rounded cursor-pointer'
-                  onClick={() => handleUpdateStatus(order._id, 'processing')}
-               >
-                  <AiOutlineCheck />
-                  <span>{t('order.approve')} </span>
-               </div>
+
+         <div className='flex items-center justify-end space-x-3'>
+            <div
+               className='flex items-center px-3 py-1.5 space-x-2 dark:text-white border border-gray-400 dark:border-gray-600 rounded cursor-pointer'
+               onClick={() => deleteOrderMutation.mutate(order._id)}
+            >
+               <BiTrash />
+               <span>{t('action.delete', { ns: 'mutual' })} </span>
             </div>
-         )}
+            {order.status === 'pending' && (
+               <>
+                  <div
+                     className='flex items-center px-3 py-1.5 space-x-2 text-white bg-red-500 rounded cursor-pointer'
+                     onClick={() => handleUpdateStatus(order._id, 'cancel')}
+                  >
+                     <AiOutlineClose />
+                     <span>{t('order.cancel')} </span>
+                  </div>
+                  <div
+                     className='flex items-center px-3 py-1.5 space-x-2 text-white bg-green-500 rounded cursor-pointer'
+                     onClick={() => handleUpdateStatus(order._id, 'processing')}
+                  >
+                     <AiOutlineCheck />
+                     <span>{t('order.approve')} </span>
+                  </div>
+               </>
+            )}
+         </div>
       </div>
    );
 };

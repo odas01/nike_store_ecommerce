@@ -1,20 +1,18 @@
 import { FC, ReactNode, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { CgSize } from 'react-icons/cg';
 import { FiUsers } from 'react-icons/fi';
 import { GiSonicShoes } from 'react-icons/gi';
 import { BiCategoryAlt } from 'react-icons/bi';
-import { RxDropdownMenu } from 'react-icons/rx';
 import { LuLayoutDashboard } from 'react-icons/lu';
 import { IoColorPaletteOutline } from 'react-icons/io5';
-import { RiAdminLine, RiCoupon3Line } from 'react-icons/ri';
+import { RiAdminLine } from 'react-icons/ri';
 import { BsCartCheck, BsChevronDown, BsChevronRight } from 'react-icons/bs';
 import authStore from '@/stores/authStore';
 import { useTranslation } from 'react-i18next';
 
 function Menu() {
    const { currentUser } = authStore();
-   const { t } = useTranslation('dashboard');
+   const { t } = useTranslation(['dashboard', 'mutual']);
 
    return (
       <aside className='flex flex-col space-y-2 text-xs font-medium'>
@@ -24,7 +22,46 @@ function Menu() {
             icon={<LuLayoutDashboard />}
          />
 
-         <MenuItemHasChild title='Catalog' icon={<IoColorPaletteOutline />}>
+         <MenuItemHasChild title={t('order.aside')} icon={<BsCartCheck />}>
+            <MenuItem
+               title={t('status.pending', { ns: 'mutual' })}
+               path='orders/pending'
+               icon={<GiSonicShoes />}
+            />
+            <MenuItem
+               title={t('status.processing', { ns: 'mutual' })}
+               path='orders/processing'
+               icon={<BiCategoryAlt />}
+            />
+            <MenuItem
+               title={t('status.delivered', { ns: 'mutual' })}
+               path='orders/delivered'
+               icon={<IoColorPaletteOutline />}
+            />
+            <MenuItem
+               title={t('status.cancel', { ns: 'mutual' })}
+               path='orders/cancel'
+               icon={<IoColorPaletteOutline />}
+            />
+         </MenuItemHasChild>
+
+         <MenuItem
+            title={t('customer.aside')}
+            path='customers'
+            icon={<FiUsers />}
+         />
+         {currentUser && currentUser.role === 'root' && (
+            <MenuItem
+               title={t('admin.aside')}
+               path='admins'
+               icon={<RiAdminLine />}
+            />
+         )}
+
+         <MenuItemHasChild
+            title={t('catalog')}
+            icon={<IoColorPaletteOutline />}
+         >
             <MenuItem
                title={t('product.aside')}
                path='products'
@@ -51,24 +88,6 @@ function Menu() {
                icon={<BsCartCheck />}
             />
          </MenuItemHasChild>
-
-         <MenuItem
-            title={t('customer.aside')}
-            path='customers'
-            icon={<FiUsers />}
-         />
-         {currentUser && currentUser.role === 'root' && (
-            <MenuItem
-               title={t('admin.aside')}
-               path='admins'
-               icon={<RiAdminLine />}
-            />
-         )}
-         <MenuItem
-            title={t('order.aside')}
-            path='orders'
-            icon={<BsCartCheck />}
-         />
       </aside>
    );
 }
@@ -82,12 +101,13 @@ interface MenuItemProps {
 const MenuItem: FC<MenuItemProps> = ({ title, path, icon }) => {
    const { pathname } = useLocation();
    const curPath = pathname.replace('dashboard', '').split('/').join('');
+   const newPath = path.split('/').join('');
 
    return (
       <Link
          to={path}
          className={`flex items-center space-x-2 p-3 rounded-md cursor-pointer hover:text-white hover:bg-green-500 duration-100 dark:hover:text-white dark:hover:bg-[#1A1C20] ${
-            curPath === path
+            curPath === newPath
                ? 'text-white bg-green-500  dark:text-white dark:bg-[#1A1C20]'
                : ''
          }`}
@@ -108,7 +128,7 @@ const MenuItemHasChild: FC<MenuItemHasChildProps> = ({
    icon,
    children,
 }) => {
-   const [show, setShow] = useState<boolean>(true);
+   const [show, setShow] = useState<boolean>(false);
    return (
       <div className='flex flex-col'>
          <div

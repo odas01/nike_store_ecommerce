@@ -2,7 +2,6 @@ import express, { NextFunction, Request } from 'express';
 import cors from 'cors';
 import mongoose from 'mongoose';
 import 'dotenv/config';
-import { Server } from 'socket.io';
 const http = require('http');
 
 import router from './routes';
@@ -16,20 +15,6 @@ app.use(express.urlencoded({ limit: '100mb', extended: true }));
 app.use('/api', router);
 
 const server = http.createServer(app);
-const io = new Server(server, {
-   cors: {
-      origin: 'http://localhost:3001',
-      methods: ['GET', 'POST'],
-   },
-});
-
-io.on('connection', (socket) => {
-   socket.on('send_message', (data) => {
-      console.log(socket.id);
-
-      io.emit('receive_message', data);
-   });
-});
 
 const PORT = process.env.PORT || 3000;
 const MONGOURL =

@@ -8,37 +8,49 @@ import {
    ISignUp,
    TokenUser,
    ChangePass,
+   LoginResponse,
+   SignupResponse,
+   AuthCheckResponse,
+   UserResponse,
+   IMessage,
 } from '@/types';
 
 export const authApi = {
    login: async (data: ILogin) =>
-      (await publicClient.post<AuthResponse>('auth/login', data)).data,
+      (await publicClient.post<LoginResponse>('auth/login', data)).data,
    signup: async (data: ISignUp) =>
-      (await publicClient.post<IUser>('auth/signup', data)).data,
+      (await publicClient.post<SignupResponse>('auth/signup', data)).data,
    authChecker: async () =>
-      (
-         await privateClient.get<{
-            role: string;
-            user: IUser;
-         }>('auth/authChecker')
-      ).data,
+      (await privateClient.get<AuthCheckResponse>('auth/authChecker')).data,
 
    adminLogin: async (data: ILogin) =>
-      (await publicClient.post<AuthResponse>('auth/admin/login', data)).data,
+      (await publicClient.post<LoginResponse>('auth/admin/login', data)).data,
    adminSignUp: async (data: ISignUp) =>
-      (await privateClient.post<IUser>('auth/admin/signup', data)).data,
+      (await privateClient.post<SignupResponse>('auth/admin/signup', data))
+         .data,
+   adminChangePassword: async (userId: string, newPassword: string) =>
+      (
+         await privateClient.post<SignupResponse>(
+            'auth/admin/change-password',
+            { userId, newPassword }
+         )
+      ).data,
 
    changePassword: async (data: ChangePass) =>
-      (await privateClient.post<IUser>('auth/change-password', data)).data,
+      (await privateClient.post<IMessage>('auth/change-password', data)).data,
 
    forgotPassword: async (email: string) =>
-      (await publicClient.post<IUser>('auth/forgot-password', { email })).data,
+      (await publicClient.post<IMessage>('auth/forgot-password', { email }))
+         .data,
 
    resetPassword: async (password: string, id: string, token: string) =>
       (
-         await privateClient.post<IUser>(`auth/reset-password/${id}/${token}`, {
-            password,
-         })
+         await privateClient.post<IMessage>(
+            `auth/reset-password/${id}/${token}`,
+            {
+               password,
+            }
+         )
       ).data,
 
    refreshToken: async (token: string) =>
@@ -58,6 +70,6 @@ export const authApi = {
                   authorization: `Bearer ${accessToken}`,
                },
             })
-            .post<AuthResponse>('auth/googleLogin')
+            .post<LoginResponse>('auth/googleLogin')
       ).data,
 };

@@ -1,6 +1,7 @@
-import { twMerge } from 'tailwind-merge';
+import moment from 'moment';
 import { Drawer } from 'antd';
-import { composeInitialProps, useTranslation } from 'react-i18next';
+import { twMerge } from 'tailwind-merge';
+import { useTranslation } from 'react-i18next';
 import { useState, KeyboardEvent } from 'react';
 import { useMutation, useQuery } from '@tanstack/react-query';
 
@@ -15,24 +16,21 @@ import {
    Input,
    Button,
    Dropdown,
-   Skeleton,
    PageTitle,
    Pagination,
    Tag,
+   Loading,
 } from '@/components';
 
-import { dateFormat, notify, priceFormat } from '@/helpers';
-import { ErrorResponse, ICoupon } from '@/types';
+import { ICoupon } from '@/types';
 import { couponApi } from '@/api';
-import moment from 'moment';
+import { dateFormat, notify, priceFormat } from '@/helpers';
 
 const DEFAULT_LIMIT = import.meta.env.VITE_APP_LIMIT || 15;
 
 type Params = {
    name: string;
 };
-
-type Status = 'Active' | 'Expired';
 
 function Coupons() {
    const [couponActive, setCouponActive] = useState<ICoupon | null>(null);
@@ -42,8 +40,8 @@ function Coupons() {
 
    const [openDrawer, setOpenDrawer] = useState<boolean>(false);
 
-   const { t } = useTranslation(['dashboard', 'mutual']);
-
+   const { t, i18n } = useTranslation(['dashboard', 'mutual']);
+   const isVnLang = i18n.language === 'vi';
    const { isLoading, data, refetch } = useQuery({
       queryKey: ['coupons', skip, params],
       queryFn: () =>
@@ -59,12 +57,13 @@ function Coupons() {
       mutationFn: (id: string) => {
          return couponApi.delete(id);
       },
-      onSuccess: (data) => {
+      onSuccess: ({ message }) => {
          refetch();
-         notify('success', `"${data.name}" deleted`);
+         notify('success', isVnLang ? message.vi : message.en);
       },
-      onError: (error: ErrorResponse) => {
-         notify('error', error.message);
+
+      onError: ({ message }) => {
+         notify('error', isVnLang ? message.vi : message.en);
       },
    });
 
@@ -85,7 +84,6 @@ function Coupons() {
       setOpenDrawer(true);
       setCouponActive(coupon);
    };
-   console.log(couponActive);
 
    return (
       <>
@@ -107,7 +105,7 @@ function Coupons() {
                </Button>
             </div>
             {isLoading ? (
-               <Skeleton />
+               <Loading />
             ) : (
                <Table
                   heading={
@@ -116,11 +114,14 @@ function Coupons() {
                         <td className='w-[20%]'>
                            {t('label.name', { ns: 'mutual' })}
                         </td>
-                        <td className='w-[20%]'>
+                        <td className='w-[15%]'>
                            {t('label.code', { ns: 'mutual' })}
                         </td>
-                        <td className='w-[20%]'>
+                        <td className='w-[15%]'>
                            {t('label.value', { ns: 'mutual' })}
+                        </td>
+                        <td className='w-[10%]'>
+                           {t('label.quantity', { ns: 'mutual' })}
                         </td>
                         <td className='w-[20%]'>
                            {t('label.expirationDate', { ns: 'mutual' })}
@@ -179,6 +180,11 @@ function Coupons() {
                                  {coupon.type === 'percent'
                                     ? coupon.value + '%'
                                     : priceFormat(coupon.value, true)}
+                              </span>
+                           </td>
+                           <td>
+                              <span className='capitalize line-clamp-1'>
+                                 {coupon.quantity}
                               </span>
                            </td>
                            <td>

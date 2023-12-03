@@ -8,7 +8,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import Footer from '@/components/drawer/Footer';
 import Heading from '@/components/drawer/Header';
-import { Button, Error, Select, Spinner, Input, Dropdown } from '@/components';
+import { Button, Error, Spinner, Input, Dropdown } from '@/components';
 
 import { sizeApi } from '@/api';
 import { notify } from '@/helpers';
@@ -42,8 +42,8 @@ const SizeForm: FC<SizeFormProps> = ({ data, closeDrawer }) => {
       mode: 'onChange',
    });
    const queryClient = useQueryClient();
-   const { t } = useTranslation(['dashboard', 'mutual']);
-
+   const { t, i18n } = useTranslation(['dashboard', 'mutual']);
+   const isVnLang = i18n.language === 'vi';
    useEffect(() => {
       if (data) {
          reset(data);
@@ -56,12 +56,13 @@ const SizeForm: FC<SizeFormProps> = ({ data, closeDrawer }) => {
       mutationFn: (values: SizeFormValues) => {
          return sizeApi.create(values);
       },
-      onSuccess: () => {
-         notify('success', 'Created successfully');
+      onSuccess: ({ message }) => {
+         notify('success', isVnLang ? message.vi : message.en);
          queryClient.invalidateQueries({ queryKey: ['sizes'] });
       },
-      onError: (error: ErrorResponse) => {
-         notify('error', error.message);
+
+      onError: ({ message }) => {
+         notify('error', isVnLang ? message.vi : message.en);
       },
    });
 
@@ -70,11 +71,12 @@ const SizeForm: FC<SizeFormProps> = ({ data, closeDrawer }) => {
          return sizeApi.update(data?._id!, values);
       },
       onSuccess: () => {
-         notify('success', 'Created successfully');
+         notify('success', t('notify.updateSuccess', { ns: 'mutual' }));
          queryClient.invalidateQueries({ queryKey: ['sizes'] });
       },
-      onError: (error: ErrorResponse) => {
-         notify('error', error.message);
+
+      onError: ({ message }) => {
+         notify('error', isVnLang ? message.vi : message.en);
       },
    });
 

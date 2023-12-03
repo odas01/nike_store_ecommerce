@@ -82,7 +82,7 @@ export const updateOne = async (req: Request, res: Response) => {
    try {
       const rating = await Rating.findByIdAndUpdate(id, req.body, {
          new: true,
-      });
+      }).lean();
       responseHandler.ok(res, rating);
    } catch {
       responseHandler.error(res);
@@ -92,9 +92,55 @@ export const updateOne = async (req: Request, res: Response) => {
 export const deleteOne = async (req: Request, res: Response) => {
    const id = req.params.id;
    try {
-      const rating = await Rating.findByIdAndDelete(id);
+      const rating = await Rating.findByIdAndDelete(id).lean();
 
       responseHandler.ok(res, rating);
+   } catch {
+      responseHandler.error(res);
+   }
+};
+export const avg = async (req: Request, res: Response) => {
+   const product = req.params.id;
+   try {
+      const length = await Rating.countDocuments({ product }).lean();
+
+      const rateCount = await Rating.aggregate([
+         {
+            $match: {
+               product: new mongoose.Types.ObjectId(product),
+            },
+         },
+         {
+            $group: {
+               _id: '$rate',
+               count: { $sum: 1 },
+            },
+         },
+         {
+            $project: {
+               _id: 0,
+               rate: '$_id',
+               count: 1,
+            },
+         },
+         { $sort: { rate: 1 } },
+      ]);
+
+      const avg =
+         rateCount.length > 0
+            ? (
+                 rateCount.reduce(
+                    (cur, item) => cur + item.rate * item.count,
+                    0
+                 ) / length
+              ).toFixed(1)
+            : 5;
+
+      responseHandler.ok(res, {
+         rateCount,
+         avg,
+         length,
+      });
    } catch {
       responseHandler.error(res);
    }

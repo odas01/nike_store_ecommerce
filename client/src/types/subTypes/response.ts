@@ -1,4 +1,6 @@
+import { Message } from '..';
+
 export interface ErrorResponse {
-   message: string;
+   message: Message;
    status: number;
 }

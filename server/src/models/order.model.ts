@@ -71,7 +71,7 @@ const schema = new Schema(
       },
       paymentMethod: {
          type: String,
-         enum: ['cash', 'paypal'],
+         enum: ['cash', 'paypal', 'vnpay'],
          default: 'cash',
       },
       shippingCost: {

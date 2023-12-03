@@ -11,19 +11,17 @@ import { BiMessageSquareEdit, BiSort } from 'react-icons/bi';
 import Title from '@/layouts/dashboard/components/Title';
 import Table from '@/layouts/dashboard/components/Table';
 import {
-   Tag,
    Modal,
    Input,
    Button,
-   Skeleton,
    Dropdown,
    PageTitle,
    Pagination,
+   Loading,
 } from '@/components';
 import Switch from 'react-switch';
 
 import { categoryApi, productApi } from '@/api';
-import { ErrorResponse } from '@/types';
 import { notify, priceFormat } from '@/helpers';
 
 const DEFAULT_LIMIT = import.meta.env.VITE_APP_LIMIT || 1;
@@ -40,6 +38,9 @@ function Products() {
    const [openModal, setOpenModal] = useState<boolean>(false);
 
    const navigate = useNavigate();
+
+   const { t, i18n } = useTranslation(['dashboard', 'mutual']);
+   const isVnLang = i18n.language === 'vi';
 
    const [{ data, isLoading, refetch }, cateQuery] = useQueries({
       queries: [
@@ -64,12 +65,12 @@ function Products() {
       mutationFn: ({ slug, status }: { slug: string; status: string }) => {
          return productApi.update(slug, { status });
       },
-      onSuccess: () => {
-         notify('success', 'Update product sucessfully');
+      onSuccess: ({ message }) => {
+         notify('success', isVnLang ? message.vi : message.en);
          refetch();
       },
-      onError: (error: ErrorResponse) => {
-         notify('error', error.message);
+      onError: ({ message }) => {
+         notify('error', isVnLang ? message.vi : message.en);
       },
    });
 
@@ -81,7 +82,7 @@ function Products() {
       mutationFn: (id: string) => {
          return productApi.delete(id);
       },
-      onSuccess: async () => {
+      onSuccess: async ({ message }) => {
          const _id = deleleProductMutation.variables;
          const variants = data?.products.find((item) => item._id === _id)
             ?.variants!;
@@ -96,11 +97,12 @@ function Products() {
          });
 
          await deleteImgs.mutateAsync(deleteImages);
-         notify('success', 'Deleted product sucessfully');
+         notify('success', isVnLang ? message.vi : message.en);
          refetch();
       },
-      onError: (error: ErrorResponse) => {
-         notify('error', error.message);
+
+      onError: ({ message }) => {
+         notify('error', isVnLang ? message.vi : message.en);
       },
    });
 
@@ -111,9 +113,6 @@ function Products() {
       if (value) setParams({ name: value });
       else setParams({} as Params);
    };
-
-   const { t, i18n } = useTranslation(['dashboard', 'mutual']);
-   const isVnLan = i18n.language === 'vi';
    return (
       <>
          <PageTitle title='Products' />
@@ -135,7 +134,7 @@ function Products() {
             </div>
 
             {isLoading || cateQuery.isLoading ? (
-               <Skeleton />
+               <Loading />
             ) : (
                <Table
                   heading={
@@ -291,21 +290,16 @@ function Products() {
                            </td>
                            <td className='px-4 py-4 capitalize'>
                               <p className='py-1 line-clampx-2'>
-                                 {isVnLan
+                                 {isVnLang
                                     ? product.category.vnName
                                     : product.category.name}
                               </p>
-                              {/* <p className='flex items-center '>
-                                 {product.genders}
-                                 <span className='inline-block h-3 mx-2 border-r border-gray-500'></span>
-                                 {product.category.store}
-                              </p> */}
                            </td>
                            <td className='px-4 py-4'>
                               <span>
                                  {priceFormat(
                                     product.prices.originalPrice,
-                                    isVnLan
+                                    isVnLang
                                  )}
                               </span>
                            </td>

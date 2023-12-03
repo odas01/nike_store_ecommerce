@@ -9,23 +9,15 @@ import { BsThreeDots } from 'react-icons/bs';
 import { BiMessageSquareEdit } from 'react-icons/bi';
 
 import Title from '@/layouts/dashboard/components/Title';
-import {
-   Tag,
-   Modal,
-   Input,
-   Button,
-   Skeleton,
-   PageTitle,
-   Pagination,
-} from '@/components';
+import { Input, Button, PageTitle, Pagination, Loading } from '@/components';
 import { Dropdown } from '@/components';
 import CategoryForm from './components/CategoryForm';
 import Table from '@/layouts/dashboard/components/Table';
 
 import { categoryApi } from '@/api';
-import { dateFormat, notify } from '@/helpers';
-import { ErrorResponse, ICategory } from '@/types';
 import { store } from '@/constants';
+import { dateFormat, notify } from '@/helpers';
+import { ICategory } from '@/types';
 
 const DEFAULT_LIMIT = import.meta.env.VITE_APP_LIMIT || 15;
 
@@ -42,10 +34,9 @@ function Categories() {
    const [params, setParams] = useState<Params>({} as Params);
 
    const [openDrawer, setOpenDrawer] = useState<boolean>(false);
-   const [openModal, setOpenModal] = useState<boolean>(false);
 
    const { t, i18n } = useTranslation(['dashboard', 'mutual']);
-
+   const isVnLang = i18n.language === 'vi';
    const { data, isLoading, refetch } = useQuery({
       queryKey: ['categories', skip, params],
       queryFn: () =>
@@ -54,15 +45,14 @@ function Categories() {
    });
 
    const deleteCateMutation = useMutation({
-      mutationFn: (id: string) => {
-         return categoryApi.delete(id);
-      },
-      onSuccess: () => {
-         notify('success', 'Deleted successfully.');
+      mutationFn: (id: string) => categoryApi.delete(id),
+      onSuccess: ({ message }) => {
          refetch();
+         notify('success', isVnLang ? message.vi : message.en);
       },
-      onError: (error: ErrorResponse) => {
-         notify('error', error.message);
+
+      onError: ({ message }) => {
+         notify('error', isVnLang ? message.vi : message.en);
       },
    });
 
@@ -104,7 +94,7 @@ function Categories() {
                </Button>
             </div>
             {isLoading ? (
-               <Skeleton />
+               <Loading />
             ) : (
                <Table
                   heading={
@@ -247,15 +237,6 @@ function Categories() {
          >
             <CategoryForm data={categoryActive} closeDrawer={closeDrawer} />
          </Drawer>
-
-         <Modal
-            title='Change password'
-            open={openModal}
-            onOk={() => setOpenModal(true)}
-            onCancel={() => setOpenModal(false)}
-         >
-            <Input className='w-full' />
-         </Modal>
       </>
    );
 }

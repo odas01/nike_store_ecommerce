@@ -1,4 +1,4 @@
-import { Variant, ListWithParams, Image, ICategory } from '.';
+import { Variant, ListWithParams, Image, ICategory, Message } from '.';
 
 type Category = Pick<ICategory, '_id' | 'name' | 'vnName' | 'store'>;
 
@@ -53,7 +53,13 @@ export type ProductFormValue = {
 };
 
 export type ProductEdit = Partial<
-   Omit<ProductFormValue, 'color' | 'sizes' | 'images' | 'thumbnail'> & {
-      status: string;
-   }
+   Pick<
+      ProductFormValue,
+      'name' | 'store' | 'genders' | 'category' | 'discount' | 'desc' | 'prices'
+   > & { status: string }
 >;
+
+export interface ProductReponse {
+   product: IProduct;
+   message: Message;
+}

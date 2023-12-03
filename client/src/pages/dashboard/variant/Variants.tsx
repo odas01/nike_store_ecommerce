@@ -1,11 +1,13 @@
-import { productApi } from '@/api';
-import { Button, LoadingOverlay, PageTitle } from '@/components';
-import Title from '@/layouts/dashboard/components/Title';
+import { useTranslation } from 'react-i18next';
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate, useParams } from 'react-router-dom';
+
 import VariantForm from './components/VariantForm';
-import { Spin } from 'antd';
-import { useTranslation } from 'react-i18next';
+import Title from '@/layouts/dashboard/components/Title';
+import { Button, LoadingOverlay, PageTitle } from '@/components';
+
+import { productApi } from '@/api';
+
 const Variants = () => {
    const { slug } = useParams();
    const navigate = useNavigate();
@@ -21,11 +23,7 @@ const Variants = () => {
       <>
          <PageTitle title='Variants' />
          <Title title={t('variant.title')} />
-         {isLoading && (
-            <LoadingOverlay>
-               <Spin size='large' />
-            </LoadingOverlay>
-         )}
+         {isLoading && <LoadingOverlay />}
          {data && (
             <>
                <div className='flex items-center justify-between mt-4'>

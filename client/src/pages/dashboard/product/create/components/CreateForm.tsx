@@ -18,9 +18,9 @@ import {
    UploadButton,
 } from '@/components';
 
+import { genders } from '@/constants';
 import { IColor, ProductFormValue } from '@/types';
 import { categoryApi, colorApi, sizeApi } from '@/api';
-import { genders, store as storeConst } from '@/constants';
 
 interface ProductFormContext {
    colorList: IColor[];
@@ -104,15 +104,16 @@ const CreateForm: FC<CreateFormProps> = ({ value, submit, deleteImages }) => {
             queryFn: () => colorApi.getAll(),
          },
          {
-            queryKey: ['sizes'],
+            queryKey: ['allSize'],
             queryFn: () =>
                sizeApi.getAll({
                   skip: 0,
                   limit: 100,
+                  createdAt: -1,
                }),
          },
          {
-            queryKey: ['categories'],
+            queryKey: ['allCate', 0, 100],
             queryFn: () =>
                categoryApi.getAll({
                   skip: 0,
@@ -216,7 +217,7 @@ const CreateForm: FC<CreateFormProps> = ({ value, submit, deleteImages }) => {
                                              backgroundColor: color.value,
                                           }}
                                        />
-                                       {isVnLang ? color.vnName : color.name}
+                                       {color.name}
                                     </div>
                                  ),
                               }))}
@@ -256,7 +257,7 @@ const CreateForm: FC<CreateFormProps> = ({ value, submit, deleteImages }) => {
                                              clearErrors('store');
                                           }}
                                        >
-                                          {isVnLang ? 'Giày' : 'Shoes'}
+                                          Shoes
                                        </p>
                                     ),
                                  },
@@ -271,7 +272,7 @@ const CreateForm: FC<CreateFormProps> = ({ value, submit, deleteImages }) => {
                                              clearErrors('store');
                                           }}
                                        >
-                                          {isVnLang ? 'Quần áo' : 'Clothing'}
+                                          Clothing
                                        </p>
                                     ),
                                  },
@@ -280,13 +281,13 @@ const CreateForm: FC<CreateFormProps> = ({ value, submit, deleteImages }) => {
                                        <p
                                           className='px-3 py-2 capitalize'
                                           onClick={() => {
-                                             setValue('store', 'gear');
+                                             setValue('store', 'accessories');
                                              setValue('category', '');
 
                                              clearErrors('store');
                                           }}
                                        >
-                                          {isVnLang ? 'Phụ kiện' : 'Gear'}
+                                          Accessories
                                        </p>
                                     ),
                                  },
@@ -329,7 +330,7 @@ const CreateForm: FC<CreateFormProps> = ({ value, submit, deleteImages }) => {
                                              clearErrors('category');
                                           }}
                                        >
-                                          {isVnLang ? item.vnName : item.name}
+                                          {item.name}
                                        </p>
                                     ),
                                  }))}

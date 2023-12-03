@@ -12,7 +12,7 @@ const sizeSchema = new Schema(
       },
       store: {
          type: String,
-         enum: ['shoes', 'clothing', 'gear'],
+         enum: ['shoes', 'clothing', 'accessories'],
          required: true,
       },
    },

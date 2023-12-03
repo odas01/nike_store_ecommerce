@@ -1,11 +1,11 @@
 import { privateClient } from '@/api/config';
-import { Variant, VariantForm } from '@/types';
+import { VariantResponse, VariantForm, IMessage } from '@/types';
 
 export const variantApi = {
    create: async (data: VariantForm) =>
-      (await privateClient.post<Variant>('variant', data)).data,
+      (await privateClient.post<VariantResponse>('variant', data)).data,
    update: async (id: string, data: VariantForm) =>
-      (await privateClient.put<Variant>(`variant/${id}`, data)).data,
+      (await privateClient.put<VariantResponse>(`variant/${id}`, data)).data,
    delete: async (id: string) =>
-      (await privateClient.delete<{}>(`variant/${id}`)).data,
+      (await privateClient.delete<IMessage>(`variant/${id}`)).data,
 };

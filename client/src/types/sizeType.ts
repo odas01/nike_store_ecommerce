@@ -1,4 +1,4 @@
-import { ListWithParams } from './listWithParamsType';
+import { Message, ListWithParams } from '.';
 
 export interface ISize {
    _id: string;
@@ -12,3 +12,8 @@ export interface AllSizes extends ListWithParams {
 }
 
 export type SizeFormValues = Omit<ISize, '_id' | 'createdAt'>;
+
+export interface SizeResponse {
+   size: ISize;
+   message: Message;
+}

@@ -29,7 +29,7 @@ const Pagination: React.FC<Props> = ({
    return (
       <div
          className={twMerge(
-            'flex justify-between items-center font-normal py-2 px-4 dark:text-gray-400 text-gray-700  border-t dark:border-[#343434] rounded-br-lg rounded-bl-lg bg-db-wrap dark:bg-gray-bg',
+            'flex justify-between items-center py-2 px-4 dark:text-gray-400 text-gray-700  border-t dark:border-[#343434] rounded-br-lg rounded-bl-lg bg-db-wrap dark:bg-gray-bg font-medium',
             className
          )}
       >

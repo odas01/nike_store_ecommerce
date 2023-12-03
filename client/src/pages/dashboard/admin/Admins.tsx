@@ -1,5 +1,8 @@
-import { useState, KeyboardEvent } from 'react';
+import * as zod from 'zod';
+import { Drawer, Modal } from 'antd';
+import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
+import { useState, KeyboardEvent } from 'react';
 import { useMutation, useQuery } from '@tanstack/react-query';
 
 import { FiTrash2 } from 'react-icons/fi';
@@ -12,19 +15,18 @@ import Title from '@/layouts/dashboard/components/Title';
 import Table from '@/layouts/dashboard/components/Table';
 import {
    Tag,
-   Modal,
    Input,
    Button,
-   Skeleton,
    Dropdown,
    PageTitle,
    Pagination,
+   Loading,
 } from '@/components';
 
-import { userApi } from '@/api';
+import { authApi, userApi } from '@/api';
 import { dateFormat, notify } from '@/helpers';
-import { ErrorResponse, IUser } from '@/types';
-import { Drawer } from 'antd';
+import { IUser } from '@/types';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 const DEFAULT_LIMIT = import.meta.env.VITE_APP_LIMIT || 15;
 
@@ -32,16 +34,26 @@ type Params = {
    search: string;
 };
 
+const formSchema = zod.object({
+   newPassword: zod.string().nonempty('New password is required'),
+});
+
+type FormValues = zod.infer<typeof formSchema>;
+
 function Admins() {
    const [userActive, setUserActive] = useState<IUser | null>(null);
-
    const [skip, setSkip] = useState<number>(0);
    const [params, setParams] = useState<Params>({} as Params);
-
    const [openDrawer, setOpenDrawer] = useState<boolean>(false);
    const [openModal, setOpenModal] = useState<boolean>(false);
 
-   const { t } = useTranslation(['dashboard', 'mutual']);
+   const { t, i18n } = useTranslation(['dashboard', 'mutual']);
+   const isVnLang = i18n.language === 'vi';
+
+   const { register, handleSubmit } = useForm<FormValues>({
+      resolver: zodResolver(formSchema),
+      mode: 'onChange',
+   });
 
    const { data, isLoading, refetch } = useQuery({
       queryKey: ['admins', skip, params],
@@ -56,12 +68,25 @@ function Admins() {
 
    const deleteAdminMutation = useMutation({
       mutationFn: (id: string) => userApi.delete(id),
-      onSuccess: () => {
+      onSuccess: ({ message }) => {
          refetch();
-         notify('success', 'Deleted admin successfully');
+         notify('success', isVnLang ? message.vi : message.en);
       },
-      onError: (error: ErrorResponse) => {
-         notify('error', error.message);
+
+      onError: ({ message }) => {
+         notify('error', isVnLang ? message.vi : message.en);
+      },
+   });
+   const changePasswordMutation = useMutation({
+      mutationFn: ({ id, newPassword }: { id: string; newPassword: string }) =>
+         authApi.adminChangePassword(id, newPassword),
+      onSuccess: ({ message }) => {
+         refetch();
+         notify('success', isVnLang ? message.vi : message.en);
+      },
+
+      onError: ({ message }) => {
+         notify('error', isVnLang ? message.vi : message.en);
       },
    });
 
@@ -88,6 +113,13 @@ function Admins() {
       setUserActive(user);
    };
 
+   const onSubmit = handleSubmit((values) => {
+      changePasswordMutation.mutate({
+         id: userActive?._id!,
+         newPassword: values.newPassword,
+      });
+   });
+
    return (
       <>
          <PageTitle title='Admins' />
@@ -108,7 +140,7 @@ function Admins() {
                </Button>
             </div>
             {isLoading ? (
-               <Skeleton />
+               <Loading />
             ) : (
                <Table
                   heading={
@@ -279,20 +311,37 @@ function Admins() {
             }}
             className='dark:text-white'
          >
-            <AdminForm
-               data={userActive}
-               getData={() => {}}
-               closeDrawer={closeDrawer}
-            />
+            <AdminForm data={userActive} closeDrawer={closeDrawer} />
          </Drawer>
 
          <Modal
-            title='Change password'
+            title={null}
             open={openModal}
-            onOk={() => setOpenModal(true)}
             onCancel={() => setOpenModal(false)}
+            footer={null}
+            className='bg-white dark:bg-[#1A1C23] text-black dark:text-white !pb-0 rounded-lg'
          >
-            <Input className='w-full' />
+            <h2 className='mb-4 text-lg'>
+               {t('action.changePasswordd', { ns: 'mutual' })}
+            </h2>
+            <Input className='w-full' {...register('newPassword')} />
+            <div className='flex justify-end mt-4 space-x-3'>
+               <div
+                  className='flex items-center px-3 py-1.5 space-x-2  dark:text-white border rounded cursor-pointer text-11'
+                  onClick={() => setOpenModal(false)}
+               >
+                  <span>{t('action.cancel', { ns: 'mutual' })} </span>
+               </div>
+               <div
+                  className='flex items-center px-3 py-1.5 space-x-2  dark:text-white border rounded cursor-pointer text-11'
+                  onClick={onSubmit}
+               >
+                  <span>
+                     {/* {t('action.changePasswordd', { ns: 'mutual' })}  */}
+                     Ok
+                  </span>
+               </div>
+            </div>
          </Modal>
       </>
    );

@@ -9,7 +9,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import Footer from '@/components/drawer/Footer';
 import Heading from '@/components/drawer/Header';
-import { Button, Dropdown, Error, Input, Select, Spinner } from '@/components';
+import { Button, Dropdown, Error, Input, Spinner } from '@/components';
 
 import { notify } from '@/helpers';
 import { store } from '@/constants';
@@ -46,8 +46,8 @@ const CategoryForm: FC<CategoryFormProps> = ({ data, closeDrawer }) => {
    });
    const [status, setStatus] = useState<string>(data ? data.status : 'show');
 
-   const { t } = useTranslation(['dashboard', 'mutual']);
-
+   const { t, i18n } = useTranslation(['dashboard', 'mutual']);
+   const isVnLang = i18n.language === 'vi';
    useEffect(() => {
       if (data) {
          setStatus(data.status);
@@ -67,11 +67,12 @@ const CategoryForm: FC<CategoryFormProps> = ({ data, closeDrawer }) => {
       mutationFn: (values: CagtegoryFormValue) => {
          return categoryApi.create(values);
       },
-      onSuccess: () => {
-         notify('success', 'Created successfully');
+      onSuccess: ({ message }) => {
+         notify('success', isVnLang ? message.vi : message.en);
       },
-      onError: (error: ErrorResponse) => {
-         notify('error', error.message);
+
+      onError: ({ message }) => {
+         notify('error', isVnLang ? message.vi : message.en);
       },
    });
 
@@ -79,11 +80,12 @@ const CategoryForm: FC<CategoryFormProps> = ({ data, closeDrawer }) => {
       mutationFn: (values: CagtegoryFormValue) => {
          return categoryApi.update(data?._id!, { ...values, status });
       },
-      onSuccess: () => {
-         notify('success', 'Edited successfully');
+      onSuccess: ({ message }) => {
+         notify('success', isVnLang ? message.vi : message.en);
       },
-      onError: (error: ErrorResponse) => {
-         notify('error', error.message);
+
+      onError: ({ message }) => {
+         notify('error', isVnLang ? message.vi : message.en);
       },
    });
 

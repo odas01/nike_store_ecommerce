@@ -1,12 +1,12 @@
-import cartStore from '@/stores/cartStore';
-import { FC } from 'react';
 import { Navigate } from 'react-router-dom';
+
+import cartStore from '@/stores/cartStore';
 
 interface PrivateCheckOutRouteProps {
    component: React.FC;
 }
 
-const PrivateCheckOutRoute: FC<PrivateCheckOutRouteProps> = ({
+const PrivateCheckOutRoute: React.FC<PrivateCheckOutRouteProps> = ({
    component: Component,
 }) => {
    const { qty } = cartStore();

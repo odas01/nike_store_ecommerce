@@ -1,6 +1,15 @@
 {
    "orders": "Đơn hàng",
    "myAccount": "Tài khoản của tôi",
+   "home": {
+      "home": "Trang chủ",
+      "trenyP": "Sản phẩm nổi bật",
+      "topP": "Mới nhất",
+      "bestSeller": "Sản phẩm bán chạy",
+      "uLike": "Có thể bạn quan tâm",
+      "shopNow": "Mua sắm bây giờ"
+   },
+
    "placeHolder": {
       "typeYourName": "Nhập tên của bạn",
       "typePasswordAgain": "Nhập lại mật khẩu",
@@ -16,33 +25,33 @@
    "navbar": {
       "home": "Trang chủ",
       "about": "Tổng quan",
-      "contact": "Liên hệ"
+      "all": "Tất cả",
+      "contact": "Liên hệ",
+      "shoes": "Giày dép",
+      "clothing": "Quần áo",
+      "accessories": "Phụ kiện"
    },
    "cart": {
+      "yourCart": "Giỏ hàng của bạn",
       "cart": "Giỏ hàng",
       "productName": "Tên sản phẩm",
       "variations": "Phân loại",
       "unitPrice": "Đơn giá",
       "totalPrice": "Tổng giá",
-      "proceedCheckOut": "Tiến hành thanh toán"
+      "proceedCheckOut": "Tiến hành thanh toán",
+      "cartEmpty": "Giỏ hàng của bạn đang trống",
+      "findAndAdd": "Tìm kiếm sản phẩm và thêm vào giỏ hàng",
+      "startShopping": "Bắt đầu mua sắm"
    },
-   "category": {
-      "filter": {
-         "under": "Dưới",
-         "over": "Trên"
-      },
-      "sort": {
-         "sortBy": "Sắp xếp theo",
-         "lowHigh": "Thấp đến cao",
-         "highLow": "Cao đến thấp",
-         "latest": "Mới nhất"
-      }
+   "filter": {
+      "under": "Dưới",
+      "over": "Trên"
    },
-   "home": {
-      "trenyP": "Sản phẩm nổi bật",
-      "topP": "Mới nhất",
-      "bestSeller": "Sản phẩm Bán chạy",
-      "uLike": "Có thể bạn quan tâm"
+   "sort": {
+      "sortBy": "Sắp xếp theo",
+      "lowHigh": "Thấp đến cao",
+      "highLow": "Cao đến thấp",
+      "latest": "Mới nhất"
    },
    "allProducts": "Tất cả sản phẩm",
    "noProductsMatch": "Không có sản phẩm phù hợp",
@@ -50,7 +59,8 @@
       "productRatings": "Đánh giá sản phẩm",
       "noRatings": "Không có đánh giá",
       "rating": "lượt đánh giá",
-      "ratings": "lượt đánh giá"
+      "ratings": "lượt đánh giá",
+      "pleaseChooes": "Vui lòng chọn đánh giá"
    },
    "comments": "Phản hồi",
    "share": "Chia sẻ",
@@ -60,11 +70,13 @@
    "items": "sản phẩm",
    "item": "sản phẩm",
    "checkout": {
+      "checkout": "Thanh toán",
       "personalDetails": "Thông tin cá nhân",
       "shippingDetails": "Thông tin giao hàng",
       "paymentMethod": "Phương thức thanh toán",
       "cashPayment": "Thanh toán tiền mặt",
       "paypalPayment": "Thanh toán qua Payal",
+      "vnpayPayment": "Thanh toán qua VnPay",
       "express": "Hỏa tốc",
       "fast": "Nhanh",
       "normal": "Bình thường",
@@ -78,6 +90,11 @@
       "pay": "Thanh toán",
       "thanksForShop": "Cảm ơn đã mua hàng ở NikeStore"
    },
+   "search": {
+      "search": "Tìm kiếm",
+      "count": "Có {{count}} sản phẩm cho tìm kiếm",
+      "result": "Kết quả tìm kiếm cho"
+   },
    "method": "Phương thức",
    "profile": "Hồ sơ",
    "updateProfile": "Cập nhật hồ sơ",
@@ -88,5 +105,14 @@
    "confirmPass": "Nhập lại mật khẩu",
    "dontOrder": "Bạn chưa có đơn hàng nào",
    "enterNewPass": "Nhập mật khẩu mới",
-   "enterConfirmPass": "Nhập lại mật khẩu"
+   "enterConfirmPass": "Nhập lại mật khẩu",
+   "onlyItemDetail": "Chỉ còn {{count}} sản phẩm!",
+   "auth": {
+      "loginYourAcc": "Đăng nhập tài khoản của bạn",
+      "forgotPass": "Quên mật khẩu",
+      "resetPass": "Đổi mật khẩu"
+   },
+
+   "history": "Lịch sử mua hàng",
+   "coupon": "Mã giảm"
 }

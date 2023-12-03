@@ -1,5 +1,5 @@
 import { privateClient } from '@/api/config';
-import { AllRatings, IRating, RatingUpload } from '@/types';
+import { AllRatings, AvgRating, IRating, RatingUpload } from '@/types';
 
 export const ratingApi = {
    getAll: async (params: any) =>
@@ -14,4 +14,6 @@ export const ratingApi = {
       (await privateClient.put<IRating>(`ratings/${id}`, data)).data,
    delete: async (id: string) =>
       (await privateClient.delete<{}>(`ratings/${id}`)).data,
+   avg: async (id: string) =>
+      (await privateClient.get<AvgRating>(`ratings/${id}/avg`)).data,
 };

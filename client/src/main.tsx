@@ -1,12 +1,7 @@
 import ReactDOM from 'react-dom/client';
 import { HelmetProvider } from 'react-helmet-async';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import {
-   PayPalScriptProvider,
-   PayPalButtons,
-   usePayPalScriptReducer,
-} from '@paypal/react-paypal-js';
+// import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 import '@/i18n';
 import './index.css';
@@ -17,7 +12,6 @@ const queryClient = new QueryClient({
       queries: {
          refetchOnWindowFocus: false,
          keepPreviousData: true,
-         staleTime: 60 * 1000,
       },
    },
 });
@@ -31,6 +25,6 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
             <App />
          </GoogleOAuthProvider>
       </HelmetProvider>
-      <ReactQueryDevtools initialIsOpen={false} />
+      {/* <ReactQueryDevtools initialIsOpen={false} /> */}
    </QueryClientProvider>
 );

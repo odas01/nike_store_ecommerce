@@ -1,7 +1,5 @@
-import { ComponentProps, FC } from 'react';
-import Button, { ButtonProps } from './Button';
 import { Spinner } from '..';
-import { twMerge } from 'tailwind-merge';
+import Button, { ButtonProps } from './Button';
 
 interface LoadingButtonProps extends ButtonProps {
    title: string;
@@ -9,7 +7,7 @@ interface LoadingButtonProps extends ButtonProps {
    onClick?: () => void;
 }
 
-const LoadingButton: FC<LoadingButtonProps> = ({
+const LoadingButton: React.FC<LoadingButtonProps> = ({
    title,
    className,
    onClick,

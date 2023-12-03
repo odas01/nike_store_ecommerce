@@ -13,7 +13,7 @@ const router = express.Router();
 router.route('/').get(skipLimit, checkAuth, verifyAdminRoot, user.getAll);
 
 // CRUD USER
-router.route('/:id/block').put(checkAuth, verifyAdminRoot, user.blockOne);
+router.route('/count').get(checkAuth, verifyAdminRoot, user.count);
 
 router
    .route('/:id')
@@ -22,8 +22,6 @@ router
    .delete(checkAuth, verifyAdminRoot, user.deleteOne);
 
 // CRUD ADMIN
-router.route('/:id/admin/block').put(checkAuth, verifyRoot, user.blockOne);
-
 router
    .route('/:id/admin')
    .get(checkAuth, verifyRoot, user.getOne)

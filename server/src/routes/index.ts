@@ -11,9 +11,6 @@ import variantRoute from './variant.route';
 import couponRoute from './coupon.route';
 import orderRoute from './order.route';
 import ratingRoute from './rating.route';
-import messageRoute from './message.route';
-import chatRoute from './chat.route';
-import overviewRoute from './overview.route';
 
 const router = Router();
 
@@ -28,8 +25,5 @@ router.use('/coupons', couponRoute);
 router.use('/variant', variantRoute);
 router.use('/orders', orderRoute);
 router.use('/ratings', ratingRoute);
-router.use('/message', messageRoute);
-router.use('/chat', chatRoute);
-router.use('/overview', overviewRoute);
 
 export default router;

@@ -1,15 +1,10 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-import {
-   CartItemUpdate,
-   CartUpload,
-   ErrorResponse,
-   ICartItem,
-   IUser,
-} from '@/types';
-import { notify } from '@/helpers';
 import { cartApi } from '@/api';
+import { notify } from '@/helpers';
+import { CartItemUpLoad, ICartItem } from '@/types';
+
 type Store = {
    qty: number;
    cart: ICartItem[];
@@ -17,7 +12,6 @@ type Store = {
 };
 
 type Actions = {
-   addItem: (data: CartUpload) => void;
    updateCart: (id: string, item: ICartItem) => void;
    getCart: () => Promise<void>;
    deleteCart: () => void;
@@ -33,15 +27,6 @@ const cartStore = create<Store & Actions>()(
    persist(
       (set, get) => ({
          ...initialState,
-         addItem: async (data) => {
-            try {
-               await cartApi.create(data);
-
-               notify('success', 'Add to cart succesfully');
-            } catch (err: any) {
-               notify('error', err.message);
-            }
-         },
          updateCart: (id, item) => {
             const cart = get().cart;
             const index = get().cart.findIndex((item) => item._id === id);

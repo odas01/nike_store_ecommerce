@@ -12,6 +12,7 @@ import { Error, TextArea, Input } from '@/components';
 import { IUser } from '@/types';
 import { notify } from '@/helpers';
 import { authApi, userApi } from '@/api';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 const phoneRegex = new RegExp(
    /^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/
@@ -29,11 +30,10 @@ const formSchema = zod.object({
    address: zod.string(),
 });
 
-type FormAdminType = zod.infer<typeof formSchema>;
+type FormAdminValues = zod.infer<typeof formSchema>;
 
 interface AdminFormProps {
    data: IUser | null;
-   getData: () => void;
    closeDrawer: () => void;
 }
 
@@ -44,19 +44,21 @@ const initialForm = {
    address: '',
 };
 
-const AdminForm: FC<AdminFormProps> = ({ data, getData, closeDrawer }) => {
+const AdminForm: FC<AdminFormProps> = ({ data, closeDrawer }) => {
    const {
       register,
       handleSubmit,
       formState: { errors },
       reset,
-   } = useForm<FormAdminType>({
+   } = useForm<FormAdminValues>({
       resolver: zodResolver(formSchema),
       mode: 'onChange',
    });
    const [status, setStatus] = useState<string>(data ? data.status : 'active');
 
-   const { t } = useTranslation('dashboard');
+   const { t, i18n } = useTranslation('dashboard');
+   const isVnLang = i18n.language === 'vi';
+   const queryClient = useQueryClient();
 
    useEffect(() => {
       if (data) {
@@ -70,38 +72,44 @@ const AdminForm: FC<AdminFormProps> = ({ data, getData, closeDrawer }) => {
 
    const onSubmit = handleSubmit(async (values) => {
       if (data) {
-         await edit(data._id, values);
+         await updateAdminMutation.mutate({ id: data._id, values });
       } else {
-         await create(values);
+         await signUpMutation.mutate(values);
       }
-      getData();
       closeDrawer();
    });
 
-   const create = async (value: FormAdminType) => {
-      try {
-         const res: any = await authApi.adminSignUp({
+   const signUpMutation = useMutation({
+      mutationFn: (value: FormAdminValues) =>
+         authApi.adminSignUp({
             ...value,
             password: 'admin',
-         });
+         }),
+      onSuccess: ({ message }) => {
+         notify('success', isVnLang ? message.vi : message.en);
+         queryClient.invalidateQueries({ queryKey: ['admins'] });
+      },
 
-         notify('success', res.message || 'Sign up successfully');
-      } catch (err: any) {
-         notify('error', err.message);
-      }
-   };
+      onError: ({ message }) => {
+         notify('error', isVnLang ? message.vi : message.en);
+      },
+   });
 
-   const edit = async (id: string, values: FormAdminType) => {
-      try {
-         const res: any = await userApi.update(id, {
+   const updateAdminMutation = useMutation({
+      mutationFn: ({ id, values }: { id: string; values: FormAdminValues }) =>
+         userApi.update(id, {
             ...values,
             status,
-         });
-         notify('success', res.message || 'Updated successfully');
-      } catch (err: any) {
-         notify('error', err.message);
-      }
-   };
+         }),
+      onSuccess: ({ message }) => {
+         notify('success', isVnLang ? message.vi : message.en);
+         queryClient.invalidateQueries({ queryKey: ['admins'] });
+      },
+
+      onError: ({ message }) => {
+         notify('error', isVnLang ? message.vi : message.en);
+      },
+   });
 
    return (
       <div className='flex flex-col h-full'>

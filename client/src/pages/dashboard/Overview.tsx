@@ -1,20 +1,22 @@
-import { PageTitle } from '@/components';
 import 'chart.js/auto';
-import Title from '@/layouts/dashboard/components/Title';
-import { Col, Row } from 'antd';
-import { TiMessages } from 'react-icons/ti';
-import { Pie, Bar, Line } from 'react-chartjs-2';
-import { useQueries, useQuery } from '@tanstack/react-query';
-import { orderApi, overviewApi, productApi } from '@/api';
-import { TbBorderSides } from 'react-icons/tb';
-import { AiOutlineCheck, AiOutlineShoppingCart } from 'react-icons/ai';
-import { LiaShippingFastSolid } from 'react-icons/lia';
-import { RxSymbol } from 'react-icons/rx';
-import { BsCheckLg } from 'react-icons/bs';
 import moment from 'moment';
-import { t } from 'i18next';
-import { priceFormat } from '@/helpers';
+import { Col, Row } from 'antd';
+import { Pie, Line } from 'react-chartjs-2';
 import { useTranslation } from 'react-i18next';
+import { useQueries } from '@tanstack/react-query';
+
+import { RxSymbol } from 'react-icons/rx';
+import { BsCartCheck, BsCheckLg } from 'react-icons/bs';
+import { AiOutlineShoppingCart } from 'react-icons/ai';
+import { LiaShippingFastSolid } from 'react-icons/lia';
+
+import { PageTitle } from '@/components';
+
+import { priceFormat } from '@/helpers';
+import { orderApi, productApi, userApi } from '@/api';
+import { FiUsers } from 'react-icons/fi';
+import { RiAdminLine } from 'react-icons/ri';
+import { GiSonicShoes } from 'react-icons/gi';
 
 const labels = Array(6)
    .fill(0)
@@ -28,10 +30,12 @@ function Overviews() {
    const isVnLang = i18n.language === 'vi';
 
    const [
-      { data: productData, isLoading: productLoading },
-      { data: orderCount, isLoading: countLoading },
-      { data: orderChart, isLoading: chartLoading },
-      { data: orderAmount, isLoading: amountLoading },
+      { data: productData },
+      { data: productCount },
+      { data: userCount },
+      { data: orderCount },
+      { data: orderChart },
+      { data: orderAmount },
    ] = useQueries({
       queries: [
          {
@@ -42,6 +46,14 @@ function Overviews() {
                   limit: 3,
                   sort: 'sold:-1',
                }),
+         },
+         {
+            queryKey: ['productCount'],
+            queryFn: () => productApi.count(),
+         },
+         {
+            queryKey: ['userCount'],
+            queryFn: () => userApi.count(),
          },
          {
             queryKey: ['orderCount'],
@@ -61,236 +73,244 @@ function Overviews() {
    return (
       <>
          <PageTitle title='Overviews' />
-         <Title title={t('overview.title')} />
+
          {orderAmount && orderCount && orderChart && (
             <div className='min-h-full mt-6 space-y-6'>
-               <Row gutter={8}>
-                  <Col
-                     style={{
-                        flexBasis: '20%',
-                        width: '20%',
-                     }}
-                  >
-                     <div className='flex items-center flex-col p-6 rounded-lg space-y-2 dark:bg-[#0D9488]'>
-                        <AiOutlineShoppingCart size={28} />
-                        <span className='text-base font-normal'>
-                           {t('overview.todayOrder')}
-                        </span>
-
-                        <span className='text-2xl font-semibold'>
-                           {priceFormat(
-                              orderAmount.toDayOrder.reduce(
-                                 (cur: number, item: any) => cur + item.total,
-                                 0
-                              ),
-                              isVnLang
-                           )}
-                        </span>
-                        <div className='flex space-x-12 font-light text-13'>
-                           <div className='flex flex-col items-center'>
-                              <span>{t('overview.cash')}:</span>
-                              <span>
-                                 {priceFormat(
-                                    orderAmount.toDayOrder.find(
-                                       (item: any) => item.method === 'cash'
-                                    )?.total || 0,
-                                    isVnLang
-                                 )}
-                              </span>
-                           </div>
-                           <div className='flex flex-col items-center'>
-                              <span>Paypal:</span>
-                              <span>
-                                 {priceFormat(
-                                    orderAmount.toDayOrder.find(
-                                       (item: any) => item.method === 'paypal'
-                                    )?.total || 0,
-                                    isVnLang
-                                 )}
-                              </span>
-                           </div>
-                        </div>
-                     </div>
-                  </Col>
-                  <Col
-                     style={{
-                        flexBasis: '20%',
-                        width: '20%',
-                     }}
-                  >
-                     <div className='flex items-center flex-col p-6 rounded-lg space-y-2 dark:bg-[#FB923C]'>
-                        <AiOutlineShoppingCart size={28} />
-                        <span className='text-base font-normal'>
-                           {t('overview.yesdOrder')}
-                        </span>
-
-                        <span className='text-2xl font-semibold'>
-                           {priceFormat(
-                              orderAmount.yesterdayOrder.reduce(
-                                 (cur: number, item: any) => cur + item.total,
-                                 0
-                              ),
-                              isVnLang
-                           )}
-                        </span>
-                        <div className='flex space-x-12 font-light text-13'>
-                           <div className='flex flex-col items-center'>
-                              <span>{t('overview.cash')}:</span>
-                              <span>
-                                 {priceFormat(
-                                    orderAmount.yesterdayOrder.find(
-                                       (item: any) => item.method === 'cash'
-                                    )?.total || 0,
-                                    isVnLang
-                                 )}
-                              </span>
-                           </div>
-                           <div className='flex flex-col items-center'>
-                              <span>Paypal:</span>
-                              <span>
-                                 {priceFormat(
-                                    orderAmount.yesterdayOrder.find(
-                                       (item: any) => item.method === 'paypal'
-                                    )?.total || 0,
-                                    isVnLang
-                                 )}
-                              </span>
-                           </div>
-                        </div>
-                     </div>
-                  </Col>
-                  <Col
-                     style={{
-                        flexBasis: '20%',
-                        width: '20%',
-                     }}
-                  >
-                     <div className='flex items-center flex-col p-6 h-full rounded-lg space-y-2 dark:bg-[#3B82F6]'>
-                        <AiOutlineShoppingCart size={28} />
-                        <span className='text-base font-normal'>
-                           {t('overview.thisM')}
-                        </span>
-
-                        <span className='text-2xl font-semibold'>
-                           {priceFormat(orderAmount.thisMonthAmount, isVnLang)}
-                        </span>
-                     </div>
-                  </Col>
-                  <Col
-                     style={{
-                        flexBasis: '20%',
-                        width: '20%',
-                     }}
-                  >
-                     <div className='flex items-center flex-col p-6 h-full rounded-lg space-y-2 dark:bg-[#0891B2]'>
-                        <AiOutlineShoppingCart size={28} />
-                        <span className='text-base font-normal'>
-                           {t('overview.lastM')}
-                        </span>
-
-                        <span className='text-2xl font-semibold'>
-                           {priceFormat(orderAmount.lastMonthAmount, isVnLang)}
-                        </span>
-                     </div>
-                  </Col>
-                  <Col
-                     style={{
-                        flexBasis: '20%',
-                        width: '20%',
-                     }}
-                  >
-                     <div className='flex items-center flex-col p-6 h-full rounded-lg space-y-2 dark:bg-[#059669]'>
-                        <AiOutlineShoppingCart size={28} />
-                        <span className='text-base font-normal'>
-                           {t('overview.all')}
-                        </span>
-
-                        <span className='text-2xl font-semibold'>
-                           {priceFormat(orderAmount.totalAmount, isVnLang)}
-                        </span>
-                     </div>
-                  </Col>
-               </Row>
-               <Row gutter={8}>
-                  <Col span={6}>
-                     <div className='flex items-center space-x-4 p-5 rounded-lg h-22 dark:bg-[#1A1C23]'>
-                        <div className='p-4 rounded-full bg-[#ED7D31]'>
-                           <AiOutlineShoppingCart size={20} />
-                        </div>
-                        <div className='flex flex-col'>
-                           <span className='text-gray-400 text-13'>
-                              {t('overview.totalOrder')}
+               <div>
+                  <h2 className='text-[20px] font-medium'>Doanh thu</h2>
+                  <Row gutter={8}>
+                     <Col
+                        style={{
+                           flexBasis: '25%',
+                           width: '25%',
+                        }}
+                     >
+                        <div className='flex items-center flex-col p-6 rounded-lg space-y-2 text-white  bg-[#0D9488] h-full'>
+                           <AiOutlineShoppingCart size={28} />
+                           <span className='text-base font-normal'>
+                              {t('overview.todayOrder')}
                            </span>
-                           <span className='text-2xl font-bold'>
-                              {orderCount.orders.reduce(
-                                 (cur: number, item: any) => item.count + cur,
-                                 0
+
+                           <span className='text-2xl font-semibold'>
+                              {priceFormat(
+                                 Math.ceil(
+                                    orderAmount.toDayOrder.reduce(
+                                       (cur: number, item: any) =>
+                                          cur + item.total,
+                                       0
+                                    )
+                                 ),
+                                 isVnLang
                               )}
                            </span>
                         </div>
-                     </div>
-                  </Col>
-                  <Col span={6}>
-                     <div className='flex items-center space-x-4 p-5 rounded-lg h-22 dark:bg-[#1A1C23]'>
-                        <div className='p-4 rounded-full bg-[#3B82F6]'>
-                           <RxSymbol size={20} />
-                        </div>
-                        <div className='flex flex-col'>
-                           <span className='text-gray-400 text-13'>
-                              {t('overview.pending')}
+                     </Col>
+                     <Col
+                        style={{
+                           flexBasis: '25%',
+                           width: '25%',
+                        }}
+                     >
+                        <div className='flex items-center flex-col p-6 h-full rounded-lg space-y-2 text-white  bg-[#3B82F6]'>
+                           <AiOutlineShoppingCart size={28} />
+                           <span className='text-base font-normal'>
+                              {t('overview.thisM')}
                            </span>
-                           <span className='text-2xl font-bold'>
-                              {
-                                 orderCount.orders.find(
-                                    (item: any) => item.status === 'pending'
-                                 ).count
-                              }
-                           </span>
-                        </div>
-                     </div>
-                  </Col>
-                  <Col span={6}>
-                     <div className='flex items-center space-x-4 p-5 rounded-lg h-22 dark:bg-[#1A1C23]'>
-                        <div className='p-4 rounded-full bg-[#14B8A6]'>
-                           <LiaShippingFastSolid size={20} />
-                        </div>
-                        <div className='flex flex-col'>
-                           <span className='text-gray-400 text-13'>
-                              {t('overview.processing')}
-                           </span>
-                           <span className='text-2xl font-bold'>
-                              {
-                                 orderCount.orders.find(
-                                    (item: any) => item.status === 'processing'
-                                 ).count
-                              }
+
+                           <span className='text-2xl font-semibold'>
+                              {priceFormat(
+                                 Math.ceil(orderAmount.thisMonthAmount),
+                                 isVnLang
+                              )}
                            </span>
                         </div>
-                     </div>
-                  </Col>
-                  <Col span={6}>
-                     <div className='flex items-center space-x-4 p-5 rounded-lg h-22 dark:bg-[#1A1C23]'>
-                        <div className='p-4 rounded-full bg-[#10B981]'>
-                           <BsCheckLg size={20} />
-                        </div>
-                        <div className='flex flex-col'>
-                           <span className='text-gray-400 text-13'>
-                              {t('overview.delivered')}
+                     </Col>
+                     <Col
+                        style={{
+                           flexBasis: '25%',
+                           width: '25%',
+                        }}
+                     >
+                        <div className='flex items-center flex-col p-6 h-full rounded-lg space-y-2 text-white  bg-[#0891B2]'>
+                           <AiOutlineShoppingCart size={28} />
+                           <span className='text-base font-normal'>
+                              {t('overview.lastM')}
                            </span>
-                           <span className='text-2xl font-bold'>
-                              {
-                                 orderCount.orders.find(
-                                    (item: any) => item.status === 'delivered'
-                                 ).count
-                              }
+
+                           <span className='text-2xl font-semibold'>
+                              {priceFormat(
+                                 Math.ceil(orderAmount.lastMonthAmount),
+                                 isVnLang
+                              )}
                            </span>
                         </div>
-                     </div>
-                  </Col>
-               </Row>
+                     </Col>
+                     <Col
+                        style={{
+                           flexBasis: '25%',
+                           width: '25%',
+                        }}
+                     >
+                        <div className='flex items-center flex-col p-6 h-full rounded-lg space-y-2 text-white  bg-[#059669]'>
+                           <AiOutlineShoppingCart size={28} />
+                           <span className='text-base font-normal'>
+                              {t('overview.all')}
+                           </span>
+
+                           <span className='text-2xl font-semibold'>
+                              {priceFormat(
+                                 Math.ceil(orderAmount.totalAmount),
+                                 isVnLang
+                              )}
+                           </span>
+                        </div>
+                     </Col>
+                  </Row>
+               </div>
+               <div>
+                  <h2 className='text-[20px] font-medium'>Thông tin chung</h2>
+                  <Row gutter={8}>
+                     <Col span={6}>
+                        <div className='flex items-center space-x-4 p-5 rounded-lg h-22 bg-gray-300 text-wh dark:bg-[#1A1C23]'>
+                           <div className='p-4 rounded-full bg-[#ED7D31]'>
+                              <BsCartCheck size={20} color='#fff' />
+                           </div>
+                           <div className='flex flex-col'>
+                              <span className='dark:text-gray-400 text-13'>
+                                 {t('overview.totalOrder')}
+                              </span>
+                              <span className='text-2xl font-bold'>
+                                 {orderCount.orders.reduce(
+                                    (cur: number, item: any) =>
+                                       item.count + cur,
+                                    0
+                                 )}
+                              </span>
+                           </div>
+                        </div>
+                     </Col>
+                     <Col span={6}>
+                        <div className='flex items-center space-x-4 p-5 rounded-lg h-22 bg-gray-300 text-wh dark:bg-[#1A1C23]'>
+                           <div className='p-4 rounded-full bg-[#3B82F6]'>
+                              <GiSonicShoes size={20} color='#fff' />
+                           </div>
+                           <div className='flex flex-col'>
+                              <span className='dark:text-gray-400 text-13'>
+                                 {t('overview.totalProduct')}
+                              </span>
+                              <span className='text-2xl font-bold'>
+                                 {productCount?.count}
+                              </span>
+                           </div>
+                        </div>
+                     </Col>
+                     <Col span={6}>
+                        <div className='flex items-center space-x-4 p-5 rounded-lg h-22 bg-gray-300 text-wh dark:bg-[#1A1C23]'>
+                           <div className='p-4 rounded-full bg-[#14B8A6]'>
+                              <RiAdminLine size={20} color='#fff' />
+                           </div>
+                           <div className='flex flex-col'>
+                              <span className='dark:text-gray-400 text-13'>
+                                 {t('overview.totalAdmin')}
+                              </span>
+                              <span className='text-2xl font-bold'>
+                                 {
+                                    userCount?.find(
+                                       (item) => item.role === 'admin'
+                                    )?.count
+                                 }
+                              </span>
+                           </div>
+                        </div>
+                     </Col>
+                     <Col span={6}>
+                        <div className='flex items-center space-x-4 p-5 rounded-lg h-22 bg-gray-300 text-wh dark:bg-[#1A1C23]'>
+                           <div className='p-4 rounded-full bg-[#10B981]'>
+                              <FiUsers size={20} color='#fff' />
+                           </div>
+                           <div className='flex flex-col'>
+                              <span className='dark:text-gray-400 text-13'>
+                                 {t('overview.totalCustomer')}
+                              </span>
+                              <span className='text-2xl font-bold'>
+                                 {
+                                    userCount?.find(
+                                       (item) => item.role === 'customer'
+                                    )?.count
+                                 }
+                              </span>
+                           </div>
+                        </div>
+                     </Col>
+                  </Row>
+               </div>
+               <div>
+                  <h2 className='text-[20px] font-medium'>
+                     Thông tin đơn hàng
+                  </h2>
+                  <Row gutter={8}>
+                     <Col span={8}>
+                        <div className='flex items-center space-x-4 p-5 rounded-lg h-22 bg-gray-300 dark:bg-[#1A1C23]'>
+                           <div className='p-4 rounded-full bg-[#3B82F6]'>
+                              <RxSymbol size={20} color='#fff' />
+                           </div>
+                           <div className='flex flex-col'>
+                              <span className='dark:text-gray-400 text-13'>
+                                 {t('overview.pending')}
+                              </span>
+                              <span className='text-2xl font-bold'>
+                                 {
+                                    orderCount.orders.find(
+                                       (item) => item.status === 'pending'
+                                    )?.count
+                                 }
+                              </span>
+                           </div>
+                        </div>
+                     </Col>
+                     <Col span={8}>
+                        <div className='flex items-center space-x-4 p-5 rounded-lg h-22 bg-gray-300 dark:bg-[#1A1C23]'>
+                           <div className='p-4 rounded-full bg-[#14B8A6]'>
+                              <LiaShippingFastSolid size={20} color='#fff' />
+                           </div>
+                           <div className='flex flex-col'>
+                              <span className='dark:text-gray-400 text-13'>
+                                 {t('overview.processing')}
+                              </span>
+                              <span className='text-2xl font-bold'>
+                                 {
+                                    orderCount.orders.find(
+                                       (item) => item.status === 'processing'
+                                    )?.count
+                                 }
+                              </span>
+                           </div>
+                        </div>
+                     </Col>
+                     <Col span={8}>
+                        <div className='flex items-center space-x-4 p-5 rounded-lg h-22 bg-gray-300 dark:bg-[#1A1C23]'>
+                           <div className='p-4 rounded-full bg-[#10B981]'>
+                              <BsCheckLg size={20} color='#fff' />
+                           </div>
+                           <div className='flex flex-col'>
+                              <span className='dark:text-gray-400 text-13'>
+                                 {t('overview.delivered')}
+                              </span>
+                              <span className='text-2xl font-bold'>
+                                 {
+                                    orderCount.orders.find(
+                                       (item) => item.status === 'delivered'
+                                    )?.count
+                                 }
+                              </span>
+                           </div>
+                        </div>
+                     </Col>
+                  </Row>
+               </div>
                <Row gutter={8}>
                   <Col span={12}>
-                     <div className='relative h-full p-4 flex items-end dark:bg-[#1A1C23] rounded-lg'>
+                     <div className='relative h-full p-4 flex items-end bg-gray-300 dark:bg-[#1A1C23] rounded-lg'>
                         <span className='absolute text-base top-4 left-4'>
                            {t('overview.weeklyOrder')}
                         </span>
@@ -325,7 +345,7 @@ function Overviews() {
                      </div>
                   </Col>
                   <Col span={12}>
-                     <div className='relative flex justify-center dark:bg-[#1A1C23] rounded-lg'>
+                     <div className='relative flex justify-center bg-gray-300 dark:bg-[#1A1C23] rounded-lg'>
                         <span className='absolute text-base top-4 left-4'>
                            {t('overview.bestSellingProduct')}
                         </span>

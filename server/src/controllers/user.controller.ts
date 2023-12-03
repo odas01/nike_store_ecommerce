@@ -17,6 +17,10 @@ const filterUser = (query: any): any => {
             { email: { $regex: new RegExp(search), $options: 'i' } },
          ],
       };
+   filter.status = {
+      $ne: 'deleted',
+   };
+
    return filter;
 };
 
@@ -34,6 +38,7 @@ export const getAll = async (req: Request, res: Response) => {
       const lastPage = Math.ceil(total / limit) || 1;
 
       const users = await User.find(filter)
+         .lean()
          .sort({ createdAt: -1 })
          .skip(skip)
          .limit(limit);
@@ -46,7 +51,9 @@ export const getAll = async (req: Request, res: Response) => {
 
 export const getOne = async (req: Request, res: Response) => {
    try {
-      const user = await User.findById(req.params.id);
+      const user = await User.findById(req.params.id)
+         .lean()
+         .select('-password');
 
       if (!user) return responseHandler.notfound(res);
 
@@ -65,10 +72,13 @@ export const updateOne = async (req: Request, res: Response) => {
          _id: { $ne: req.params.id },
          email,
          role,
-      });
+      }).lean();
 
       if (foundUser) {
-         return responseHandler.badrequest(res, 'Email already exists');
+         return responseHandler.badrequest(res, {
+            vi: 'Email đã tồn tại',
+            en: 'Email already exists',
+         });
       }
 
       if (avatar && avatar.slice(0, 4) !== 'http') {
@@ -84,9 +94,15 @@ export const updateOne = async (req: Request, res: Response) => {
             email,
          },
          { new: true }
-      );
+      ).lean();
 
-      responseHandler.ok(res, user);
+      responseHandler.ok(res, {
+         user,
+         message: {
+            vi: 'Cập nhật thông tin thành công',
+            en: 'Successfully updated information',
+         },
+      });
    } catch {
       responseHandler.error(res);
    }
@@ -94,13 +110,38 @@ export const updateOne = async (req: Request, res: Response) => {
 
 export const deleteOne = async (req: Request, res: Response) => {
    try {
-      await User.findByIdAndUpdate(req.params.id, { deleted: true });
-      responseHandler.ok(res, {});
+      await User.findByIdAndUpdate(req.params.id, { status: 'deleted' }).lean();
+
+      responseHandler.ok(res, {
+         message: {
+            vi: 'Xóa người dùng thành công',
+            en: 'Successfully deleted user',
+         },
+      });
    } catch {
       responseHandler.error(res);
    }
 };
 
-export const blockOne = async (req: Request, res: Response) => {
-   responseHandler.ok(res, { msg: '123' });
+export const count = async (req: Request, res: Response) => {
+   try {
+      const count = await User.aggregate([
+         {
+            $group: {
+               _id: '$role',
+               count: { $sum: 1 },
+            },
+         },
+         {
+            $project: {
+               _id: 0,
+               role: '$_id',
+               count: 1,
+            },
+         },
+      ]);
+      responseHandler.ok(res, count);
+   } catch {
+      responseHandler.error(res);
+   }
 };

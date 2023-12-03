@@ -1,14 +1,24 @@
 import * as z from 'zod';
+import { Col, Row } from 'antd';
 import { useForm } from 'react-hook-form';
-import authStore from '@/stores/authStore';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { Col, Row, Spin } from 'antd';
-import { Button, Error, Image, Input, UploadButton } from '@/components';
-import { ErrorResponse, UserFormUpdate } from '@/types';
+import { useTranslation } from 'react-i18next';
 import { useMutation } from '@tanstack/react-query';
+import { zodResolver } from '@hookform/resolvers/zod';
+
+import {
+   Button,
+   Error,
+   Image,
+   Input,
+   LoadingOverlay,
+   PageTitle,
+   UploadButton,
+} from '@/components';
+
 import { userApi } from '@/api';
 import { notify } from '@/helpers';
-import { useTranslation } from 'react-i18next';
+import { UserFormUpdate } from '@/types';
+import authStore from '@/stores/authStore';
 
 const formSchema = z.object({
    name: z.string().nonempty('Your name is required'),
@@ -21,6 +31,10 @@ type FormValues = z.infer<typeof formSchema>;
 
 const Profile = () => {
    const { currentUser, updateInfo } = authStore();
+
+   const { t, i18n } = useTranslation(['home', 'mutual', 'dashboard']);
+   const isVnLang = i18n.language === 'vi';
+
    const {
       register,
       handleSubmit,
@@ -47,117 +61,114 @@ const Profile = () => {
    const updateProfileMutation = useMutation({
       mutationFn: (values: UserFormUpdate) =>
          userApi.update(currentUser?._id!, values),
-      onSuccess: (data) => {
-         updateInfo(data);
-         notify('success', 'Update profile success');
-         console.log(data);
-
+      onSuccess: ({ user, message }) => {
+         updateInfo(user);
+         notify('success', isVnLang ? message.vi : message.en);
          reset({
-            name: data.name,
-            email: data.email,
-            phone: data.phone,
-            address: data.address,
-            avatar: data.avatar.url,
+            name: user.name,
+            email: user.email,
+            phone: user.phone,
+            address: user.address,
+            avatar: user.avatar.url,
          });
       },
-      onError: (err: ErrorResponse) => {
-         notify('error', err.message);
+
+      onError: ({ message }) => {
+         notify('error', isVnLang ? message.vi : message.en);
       },
    });
-   const { t } = useTranslation(['home', 'dashboard']);
 
    return (
-      <div className='relative'>
-         {updateProfileMutation.isLoading && (
-            <div className='absolute top-0 right-0 z-10 flex items-center justify-center w-full h-full'>
-               <Spin size='large' />
-            </div>
-         )}
-         <h2 className='mb-4 text-xl font-semibold'>{t('profile')}</h2>
+      <>
+         <PageTitle title='My profile' />
+         <div className='relative'>
+            {updateProfileMutation.isLoading && <LoadingOverlay />}
+            <h2 className='mb-4 text-xl font-semibold'>{t('profile')}</h2>
 
-         <Row gutter={60}>
-            <Col span={12}>
-               <div className='space-y-2'>
+            <Row gutter={60}>
+               <Col span={12}>
+                  <div className='space-y-2'>
+                     <div className='flex flex-col space-y-1'>
+                        <label htmlFor='name' className='text-13'>
+                           {t('label.name', { ns: 'mutual' })}
+                        </label>
+                        <Input
+                           className='rounded-md'
+                           placeholder='Your name'
+                           {...register('name')}
+                           isError={!!errors.name}
+                        />
+                        <Error message={errors.name?.message} />
+                     </div>
+                     <div className='flex flex-col space-y-1'>
+                        <label htmlFor='email' className='text-13'>
+                           Email
+                        </label>
+
+                        <Input
+                           className='rounded-md'
+                           placeholder='Your email'
+                           {...register('email')}
+                           isError={!!errors.email}
+                        />
+                        <Error message={errors.email?.message} />
+                     </div>
+                     <div className='flex flex-col space-y-1'>
+                        <label htmlFor='phoneNumber' className='text-13'>
+                           {t('label.phone', { ns: 'mutual' })}
+                        </label>
+
+                        <Input
+                           className='rounded-md'
+                           placeholder='Your phone'
+                           {...register('phone')}
+                           isError={!!errors.phone}
+                        />
+                        <Error message={errors.phone?.message} />
+                     </div>
+                     <div className='flex flex-col space-y-1'>
+                        <label htmlFor='address' className='text-13'>
+                           {t('label.address', { ns: 'mutual' })}
+                        </label>
+
+                        <Input
+                           className='rounded-md'
+                           placeholder='Your address'
+                           {...register('address')}
+                           isError={!!errors.address}
+                        />
+                        <Error message={errors.address?.message} />
+                     </div>
+                  </div>
+               </Col>
+               <Col span={12}>
                   <div className='flex flex-col space-y-1'>
                      <label htmlFor='name' className='text-13'>
-                        {t('table.name', { ns: 'dashboard' })}
+                        {t('avatar')}
                      </label>
-                     <Input
-                        className='rounded-md'
-                        placeholder='Your name'
-                        {...register('name')}
-                        isError={!!errors.name}
-                     />
-                     <Error message={errors.name?.message} />
+                     {watch('avatar') ? (
+                        <Image
+                           url={watch('avatar')}
+                           onRemove={() => setValue('avatar', '')}
+                           className='w-64'
+                        />
+                     ) : (
+                        <UploadButton
+                           setValue={(data) => setValue('avatar', data[0].url)}
+                           className='w-64 h-64'
+                        />
+                     )}
+
+                     <Error message={errors.avatar?.message} />
                   </div>
-                  <div className='flex flex-col space-y-1'>
-                     <label htmlFor='email' className='text-13'>
-                        Email
-                     </label>
+               </Col>
+            </Row>
 
-                     <Input
-                        className='rounded-md'
-                        placeholder='Your email'
-                        {...register('email')}
-                        isError={!!errors.email}
-                     />
-                     <Error message={errors.email?.message} />
-                  </div>
-                  <div className='flex flex-col space-y-1'>
-                     <label htmlFor='phoneNumber' className='text-13'>
-                        {t('table.phoneNumber', { ns: 'dashboard' })}
-                     </label>
-
-                     <Input
-                        className='rounded-md'
-                        placeholder='Your phone'
-                        {...register('phone')}
-                        isError={!!errors.phone}
-                     />
-                     <Error message={errors.phone?.message} />
-                  </div>
-                  <div className='flex flex-col space-y-1'>
-                     <label htmlFor='address' className='text-13'>
-                        {t('form.address', { ns: 'dashboard' })}
-                     </label>
-
-                     <Input
-                        className='rounded-md'
-                        placeholder='Your address'
-                        {...register('address')}
-                        isError={!!errors.address}
-                     />
-                     <Error message={errors.address?.message} />
-                  </div>
-               </div>
-            </Col>
-            <Col span={12}>
-               <div className='flex flex-col space-y-1'>
-                  <label htmlFor='name' className='text-13'>
-                     {t('avatar')}
-                  </label>
-                  {watch('avatar') ? (
-                     <Image
-                        url={watch('avatar')}
-                        onRemove={() => setValue('avatar', '')}
-                        className='w-64'
-                     />
-                  ) : (
-                     <UploadButton
-                        setValue={(data) => setValue('avatar', data[0].url)}
-                        className='w-64 h-64'
-                     />
-                  )}
-
-                  <Error message={errors.avatar?.message} />
-               </div>
-            </Col>
-         </Row>
-
-         <Button onClick={onSubmit} className='mt-8'>
-            {t('action.save', { ns: 'dashboard' })}
-         </Button>
-      </div>
+            <Button onClick={onSubmit} className='mt-8'>
+               {t('action.save', { ns: 'mutual' })}
+            </Button>
+         </div>
+      </>
    );
 };
 

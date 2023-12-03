@@ -31,8 +31,8 @@ function Customers() {
    const [skip, setSkip] = useState<number>(0);
    const [params, setParams] = useState<Params>({} as Params);
 
-   const { t } = useTranslation(['dashboard', 'mutual']);
-
+   const { t, i18n } = useTranslation(['dashboard', 'mutual']);
+   const isVnLang = i18n.language === 'vi';
    const { data, isLoading, refetch } = useQuery({
       queryKey: ['customers', skip, params],
       queryFn: () =>
@@ -47,16 +47,15 @@ function Customers() {
 
    const blockCustomerMutation = useMutation({
       mutationFn: ({ id, values }: { id: string; values: UserFormUpdate }) => {
-         console.log(id, values);
-
          return userApi.update(id, values);
       },
-      onSuccess: (data) => {
+      onSuccess: ({ message }) => {
          refetch();
-         notify('success', `${data.name} account has been locked`);
+         notify('success', isVnLang ? message.vi : message.en);
       },
-      onError: (error: ErrorResponse) => {
-         notify('error', error.message);
+
+      onError: ({ message }) => {
+         notify('error', isVnLang ? message.vi : message.en);
       },
    });
 

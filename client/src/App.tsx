@@ -17,12 +17,13 @@ import Home from '@/pages/home/Home';
 import Shop from '@/pages/home/Shop';
 import Cart from '@/pages/home/Cart';
 import Detail from '@/pages/home/Detail';
-import Chat from '@/pages/home/user/Chat';
+import Search from '@/pages/home/Search';
 import CheckOut from '@/pages/home/CheckOut';
 import Profile from '@/pages/home/user/Profile';
 import MyOrders from '@/pages/home/user/Orders';
 import Account from '@/pages/home/user/Account';
 import ChangePw from '@/pages/home/user/ChangePw';
+import CheckOutSuccess from '@/pages/home/CheckOutSuccess';
 
 //AUTH
 import Login from '@/pages/auth/Login';
@@ -37,6 +38,7 @@ import Admins from '@/pages/dashboard/admin/Admins';
 import Customers from '@/pages/dashboard/Customers';
 import Orders from '@/pages/dashboard/order/Orders';
 import Colors from '@/pages/dashboard/colors/Colors';
+import ProfileAdmin from './pages/dashboard/profile/Profile';
 import Coupons from '@/pages/dashboard/voucher/Coupons';
 import Variants from '@/pages/dashboard/variant/Variants';
 import Products from '@/pages/dashboard/product/Products';
@@ -44,6 +46,8 @@ import Categories from '@/pages/dashboard/category/Categories';
 import CreateVariant from '@/pages/dashboard/variant/CreateVariant';
 import EditProduct from '@/pages/dashboard/product/edit/EditProduct';
 import CreateProduct from '@/pages/dashboard/product/create/CreateProduct';
+
+import Notfound from '@/pages/NotFound';
 
 //ORDER ROUTE
 import ThemeRoute from '@/route/ThemeRoute';
@@ -54,18 +58,24 @@ import PrivateCheckOutRoute from '@/route/PrivateCheckOutRoute';
 import AuthDashboardProvider from '@/providers/AuthDashboardProvider';
 
 import authStore from '@/stores/authStore';
+// import orderSuccessStore from '@/stores/orderSuccessStore';
 
 function App() {
    const { currentUser } = authStore();
+   // const { success } = orderSuccessStore();
 
    return (
       <BrowserRouter>
          <ToastContainer />
          <Routes>
+            {true && (
+               <Route path='checkout/success' element={<CheckOutSuccess />} />
+            )}
             <Route element={<HomeLayout />}>
                <Route index element={<Home />} />
                <Route path='d/:slug' element={<Detail />} />
                <Route path='shop/:store?/:category?' element={<Shop />} />
+               <Route path='search' element={<Search />} />
                <Route path='cart' element={<Cart />} />
                <Route
                   path='checkout'
@@ -79,7 +89,6 @@ function App() {
                >
                   <Route index element={<Navigate to='profile' />} />
                   <Route path='profile' element={<Profile />} />
-                  <Route path='chat' element={<Chat />} />
                   <Route path='my-orders' element={<MyOrders />} />
                   <Route path='change-password' element={<ChangePw />} />
                </Route>
@@ -121,10 +130,29 @@ function App() {
                {currentUser && currentUser.role === 'root' && (
                   <Route path='admins' element={<Admins />} />
                )}
-               <Route path='orders' element={<Orders />} />
+               {/* <Route path='orders' element={<Orders />} /> */}
+               <Route
+                  path='orders/pending'
+                  element={<Orders status='pending' />}
+               />
+               <Route
+                  path='orders/processing'
+                  element={<Orders status='processing' />}
+               />
+               <Route
+                  path='orders/delivered'
+                  element={<Orders status='delivered' />}
+               />
+               <Route
+                  path='orders/cancel'
+                  element={<Orders status='cancel' />}
+               />
                <Route path='coupons' element={<Coupons />} />
-               <Route path='chat' element={<Chat />} />
+               <Route path='profile/:id' element={<ProfileAdmin />} />
             </Route>
+
+            <Route path='*' element={<Navigate to='404' />} />
+            <Route path='404' element={<Notfound />} />
          </Routes>
       </BrowserRouter>
    );

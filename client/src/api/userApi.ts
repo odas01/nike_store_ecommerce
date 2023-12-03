@@ -1,5 +1,12 @@
 import { privateClient } from '@/api/config';
-import { AllUsers, IUser, UserFormUpdate } from '@/types';
+import {
+   AllUsers,
+   UserResponse,
+   UserFormUpdate,
+   IUser,
+   IMessage,
+   UserCount,
+} from '@/types';
 
 export const userApi = {
    get: async (id: string) =>
@@ -8,7 +15,10 @@ export const userApi = {
       (await privateClient.get<AllUsers>('users', { params })).data,
 
    update: async (id: string, data: UserFormUpdate) =>
-      (await privateClient.put<IUser>(`users/${id}`, data)).data,
+      (await privateClient.put<UserResponse>(`users/${id}`, data)).data,
    delete: async (id: string) =>
-      (await privateClient.delete<{}>(`users/${id}`)).data,
+      (await privateClient.delete<IMessage>(`users/${id}`)).data,
+
+   count: async () =>
+      (await privateClient.get<UserCount[]>(`users/count`)).data,
 };

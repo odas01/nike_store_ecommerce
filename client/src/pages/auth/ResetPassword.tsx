@@ -18,9 +18,11 @@ const formSchema = zod.object({
 type ResetPasswordFormValue = zod.infer<typeof formSchema>;
 
 const ResetPassword = () => {
-   const { t } = useTranslation(['home', 'mutual']);
    const navigate = useNavigate();
    const { id, token } = useParams();
+
+   const { t, i18n } = useTranslation(['home', 'mutual']);
+   const isVnLang = i18n.language === 'vi';
 
    const {
       register,
@@ -33,13 +35,13 @@ const ResetPassword = () => {
 
    const resetPasswordMutation = useMutation({
       mutationFn: (email: string) => authApi.resetPassword(email, id!, token!),
-      onSuccess: async () => {
-         notify('success', `Reset password success`);
+      onSuccess: async ({ message }) => {
          navigate('/login');
+         notify('success', isVnLang ? message.vi : message.en);
       },
 
-      onError: (error: ErrorResponse) => {
-         notify('error', error.message);
+      onError: ({ message }) => {
+         notify('error', isVnLang ? message.vi : message.en);
       },
    });
 
@@ -49,8 +51,8 @@ const ResetPassword = () => {
 
    return (
       <div className='space-y-10'>
-         <h3 className='text-2xl text-center'>Forgot password</h3>
-         <div className='w-full rounded-md shadow-lg px-7 py-8 bg-white'>
+         <h3 className='text-2xl text-center'>{t('auth.resetPass')}</h3>
+         <div className='w-full py-8 bg-white rounded-md shadow-lg px-7'>
             <div className='space-y-3'>
                <div className='flex flex-col'>
                   <span className='text-13'>{t('newPass')}</span>
@@ -75,7 +77,7 @@ const ResetPassword = () => {
                {resetPasswordMutation.isLoading && (
                   <DotLoader color='#fff' size={20} />
                )}
-               <span>Send</span>
+               <span>{t('action.send', { ns: 'mutual' })}</span>
             </Button>
          </div>
       </div>

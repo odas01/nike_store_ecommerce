@@ -19,7 +19,10 @@ export interface IOrderDetail extends Document {
 }
 
 export interface ICoupon extends Document {
+   name: string;
+   type: string;
    code: string;
    value: number;
-   expiration_date: Date;
+   quantity: number;
+   expirationDate: Date;
 }

@@ -1,31 +1,28 @@
 import * as zod from 'zod';
+import moment from 'moment';
 import { useForm } from 'react-hook-form';
-import { ChromePicker } from 'react-color';
 import { useTranslation } from 'react-i18next';
-import { FC, useEffect, useState } from 'react';
+import { FC, useEffect } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import { Dropdown, Error, Input } from '@/components';
 import Footer from '@/components/drawer/Footer';
 import Heading from '@/components/drawer/Header';
+import { Dropdown, Error, Input } from '@/components';
 
-import { notify } from '@/helpers';
-import { CouponFormUpload, ErrorResponse, IColor } from '@/types';
 import { couponApi } from '@/api';
-import { ICoupon } from '@/types';
-import moment from 'moment';
+import { notify } from '@/helpers';
+import { CouponFormUpload, ICoupon } from '@/types';
 
 const formSchema = zod.object({
-   name: zod.string().nonempty('Color name is required'),
-   code: zod.string().nonempty('Color name is required'),
+   name: zod.string().nonempty('Coupon name is required'),
+   code: zod.string().nonempty('Coupon name is required'),
    value: zod
       .number({
          invalid_type_error: 'Price is required',
       })
-      .min(1)
-      .max(99),
-   type: zod.string().nonempty('Color name is required'),
+      .min(1),
+   type: zod.string().nonempty('Coupon name is required'),
    quantity: zod
       .number({
          invalid_type_error: 'Price is required',
@@ -48,12 +45,12 @@ const initialForm = {
    expirationDate: moment().format('YYYY-MM-DD'),
 };
 
-interface ColorFormProps {
+interface CouponFormProps {
    data: ICoupon | null;
    closeDrawer: () => void;
 }
 
-const ColorForm: FC<ColorFormProps> = ({ data, closeDrawer }) => {
+const CouponForm: FC<CouponFormProps> = ({ data, closeDrawer }) => {
    const queryClient = useQueryClient();
    const {
       register,
@@ -76,31 +73,33 @@ const ColorForm: FC<ColorFormProps> = ({ data, closeDrawer }) => {
       }
    }, [data]);
 
-   const { t } = useTranslation(['dashboard', 'mutual']);
-
-   const createColorMutation = useMutation({
+   const { t, i18n } = useTranslation(['dashboard', 'mutual']);
+   const isVnLang = i18n.language === 'vi';
+   const createCouponMutation = useMutation({
       mutationFn: (values: CouponFormUpload) => {
          return couponApi.create(values);
       },
-      onSuccess: () => {
-         notify('success', 'Created successfully');
-         queryClient.invalidateQueries({ queryKey: ['colors'] });
+      onSuccess: ({ message }) => {
+         notify('success', isVnLang ? message.vi : message.en);
+         queryClient.invalidateQueries({ queryKey: ['coupons'] });
       },
-      onError: (error: ErrorResponse) => {
-         notify('error', error.message);
+
+      onError: ({ message }) => {
+         notify('error', isVnLang ? message.vi : message.en);
       },
    });
 
-   const editColorMutation = useMutation({
+   const editCouponMutation = useMutation({
       mutationFn: (values: CouponFormUpload) => {
          return couponApi.update(data?._id!, values);
       },
-      onSuccess: () => {
-         notify('success', 'Update successfully');
-         queryClient.invalidateQueries({ queryKey: ['colors'] });
+      onSuccess: ({ message }) => {
+         notify('success', isVnLang ? message.vi : message.en);
+         queryClient.invalidateQueries({ queryKey: ['coupons'] });
       },
-      onError: (error: ErrorResponse) => {
-         notify('error', error.message);
+
+      onError: ({ message }) => {
+         notify('error', isVnLang ? message.vi : message.en);
       },
    });
 
@@ -111,9 +110,9 @@ const ColorForm: FC<ColorFormProps> = ({ data, closeDrawer }) => {
       };
 
       if (data && data._id) {
-         await editColorMutation.mutateAsync(newValues);
+         await editCouponMutation.mutateAsync(newValues);
       } else {
-         await createColorMutation.mutateAsync(newValues);
+         await createCouponMutation.mutateAsync(newValues);
       }
       closeDrawer();
    });
@@ -245,4 +244,4 @@ const ColorForm: FC<ColorFormProps> = ({ data, closeDrawer }) => {
    );
 };
 
-export default ColorForm;
+export default CouponForm;

@@ -1,8 +1,4 @@
 {
-   "placeholderSearch": {
-      "searchByName": "Search by name...",
-      "searchByNamePhoneEmail": "Search by name phone number or email..."
-   },
    "role": {
       "root": "Root",
       "admin": "Admin",
@@ -18,6 +14,9 @@
       "all": "All orders",
       "cash": "Cash",
       "totalOrder": "Total orders",
+      "totalProduct": "Total products",
+      "totalAdmin": "Total admins",
+      "totalCustomer": "Total customers",
       "pending": "Pending",
       "processing": "Processing",
       "delivered": "Delivered",
@@ -70,7 +69,13 @@
       "passwordDefault": "Password default"
    },
    "order": {
-      "title": "Orders",
+      "title": {
+         "orders": "Orders",
+         "pending": "Orders pending",
+         "processing": "Orders processing",
+         "delivered": "Orders delivered",
+         "cancel": "Order cancel"
+      },
       "aside": "Orders",
       "order": "Order",
       "customerName": "Customer name",
@@ -78,6 +83,9 @@
       "approve": "Approve",
       "cancel": "Cancel",
       "invoice": "Invoice"
+   },
+   "profile": {
+      "title": "Profile"
    },
    "action": {
       "addVariant": "Add variant",
@@ -104,5 +112,11 @@
          "phone": "Admin phone number",
          "address": "Admin address"
       }
-   }
+   },
+   "placeholderSearch": {
+      "searchByName": "Search by name...",
+      "searchByNamePhoneEmail": "Search by name phone number or email...",
+      "searchByPhone": "Search by phone..."
+   },
+   "catalog": "Catalog"
 }

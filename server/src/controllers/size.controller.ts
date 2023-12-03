@@ -5,8 +5,14 @@ import responseHandler from '../handlers/response.handler';
 
 export const create = async (req: Request, res: Response) => {
    try {
-      const color = await Size.create(req.body);
-      responseHandler.created(res, { message: 'Created successfully', color });
+      const size = await Size.create(req.body);
+      responseHandler.created(res, {
+         size,
+         message: {
+            vi: 'Thêm kích thước thành công',
+            en: 'Successfully added size',
+         },
+      });
    } catch {
       responseHandler.error(res);
    }
@@ -29,6 +35,7 @@ export const getAll = async (req: Request, res: Response) => {
       const lastPage = Math.ceil(total / limit) || 1;
 
       const sizes = await Size.find(filter)
+         .lean()
          .sort({ createdAt: -1 })
          .skip(skip)
          .limit(limit);
@@ -42,8 +49,14 @@ export const getAll = async (req: Request, res: Response) => {
 export const updateOne = async (req: Request, res: Response) => {
    const id = req.params.id;
    try {
-      const color = await Size.findByIdAndUpdate(id, req.body);
-      responseHandler.created(res, { color });
+      const size = await Size.findByIdAndUpdate(id, req.body).lean();
+      responseHandler.created(res, {
+         size,
+         message: {
+            vi: 'Cập nhật kích thước thành công',
+            en: 'Successfully updated size',
+         },
+      });
    } catch {
       responseHandler.error(res);
    }
@@ -52,8 +65,13 @@ export const updateOne = async (req: Request, res: Response) => {
 export const deleteOne = async (req: Request, res: Response) => {
    const id = req.params.id;
    try {
-      await Size.findByIdAndDelete(id);
-      responseHandler.created(res, { message: 'Deleted successfully' });
+      await Size.findByIdAndDelete(id).lean();
+      responseHandler.created(res, {
+         message: {
+            vi: 'Xóa kích thước thành công',
+            en: 'Successfully deleted size',
+         },
+      });
    } catch {
       responseHandler.error(res);
    }

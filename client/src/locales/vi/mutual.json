@@ -19,7 +19,9 @@
       "buyNow": "Thanh toán ngay",
       "addToCart": "Thêm vào giỏ hàng",
       "deleteAll": "Xóa tất cả",
-      "changePasswordd": "Đổi mật khẩu"
+      "changePasswordd": "Đổi mật khẩu",
+      "send": "Gửi",
+      "refresh": "Làm mới"
    },
    "status": {
       "status": "Trạng thái",
@@ -34,7 +36,7 @@
       "pending": "Chờ duyệt",
       "processing": "Đang giao",
       "delivered": "Đã giao",
-      "cancel": "Hủy"
+      "cancel": "Đã hủy"
    },
    "label": {
       "total": "Tổng",
@@ -68,13 +70,14 @@
       "message": "Lời nhắn"
    },
    "store": {
-      "shoes": "Giày",
+      "shoes": "Giày dép",
       "clothing": "Quần áo",
-      "gear": "Phụ kiện"
+      "accessories": "Phụ kiện"
    },
    "notify": {
       "createSuccess": "Tạo thành công",
-      "updateSuccess": "Cập nhật thành công"
+      "updateSuccess": "Cập nhật thành công",
+      "deleteSuccess": "Xóa thành công"
    },
    "pagination": {
       "showing": "Hiển thị",
@@ -88,5 +91,11 @@
       "men": "Nam",
       "women": "Nữ",
       "child": "Trẻ em"
+   },
+   "cash": "Trực tiếp",
+   "notfound": {
+      "pageNotFound": "Không tìm thấy trang",
+      "goHome": "Về trang chủ",
+      "previousPage": "Về trang trước"
    }
 }

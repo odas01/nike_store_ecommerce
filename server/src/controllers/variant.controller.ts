@@ -3,12 +3,11 @@ import { Request, Response } from 'express';
 import Product from '../models/product.model';
 import responseHandler from '../handlers/response.handler';
 import {
-   uploadMultiple,
    uploadSingle,
-   destroySingle,
+   uploadMultiple,
    destroyMultiple,
 } from '../middleware/images.middleware';
-import { IProduct, IVariant, Image } from '../types/product.type';
+import { Image } from '../types/product.type';
 import Variant from '../models/variant.model';
 import Order from '../models/order.model';
 
@@ -33,8 +32,15 @@ export const create = async (req: Request, res: Response) => {
          $push: {
             variants: variant._id,
          },
+      }).lean();
+
+      responseHandler.created(res, {
+         variant,
+         message: {
+            vi: 'Thêm biến thể thành công',
+            en: 'Successfully added variant',
+         },
       });
-      responseHandler.created(res, variant);
    } catch (err) {
       responseHandler.error(res);
    }
@@ -69,9 +75,15 @@ export const updateOne = async (req: Request, res: Response) => {
          new: true,
       }).lean();
 
-      responseHandler.created(res, variant);
+      responseHandler.created(res, {
+         variant,
+         message: {
+            vi: 'Cập nhật biến thể thành công',
+            en: 'Successfully updated variant',
+         },
+      });
    } catch (err) {
-      console.log(err);
+      responseHandler.error(res);
    }
 };
 
@@ -80,10 +92,10 @@ export const deleteOne = async (req: Request, res: Response) => {
    try {
       const order = await Order.find({ 'products.variant': _id });
       if (order.length > 0) {
-         return responseHandler.badrequest(
-            res,
-            'Paid product variations cannot be deleted'
-         );
+         return responseHandler.badrequest(res, {
+            vi: 'Khổng thể xóa biến thể của sản phẩm đã thanh toán',
+            en: 'Paid product variations cannot be deleted',
+         });
       }
 
       await Variant.deleteOne({ _id });
@@ -96,7 +108,12 @@ export const deleteOne = async (req: Request, res: Response) => {
          }
       ).lean();
 
-      responseHandler.ok(res, {});
+      responseHandler.ok(res, {
+         message: {
+            vi: 'Xóa biến thể thành công',
+            en: 'Successfully deleted variant',
+         },
+      });
    } catch (err) {
       responseHandler.error(res);
    }

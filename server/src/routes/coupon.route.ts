@@ -13,7 +13,7 @@ router
 
 router
    .route('/:id')
-   .get(coupon.checkOne)
+   .get(checkAuth, coupon.checkOne)
    .put(checkAuth, verifyAdminRoot, coupon.updateOne)
    .delete(checkAuth, verifyAdminRoot, coupon.deleteOne);
 

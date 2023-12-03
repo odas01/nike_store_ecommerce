@@ -13,4 +13,6 @@ router
    .put(checkAuth, rating.updateOne)
    .delete(checkAuth, rating.deleteOne);
 
+router.route('/:id/avg').get(rating.avg);
+
 export default router;

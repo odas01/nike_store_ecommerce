@@ -1,13 +1,4 @@
-import { orderApi } from '@/api';
-import {
-   PayPalScriptProvider,
-   PayPalButtons,
-   usePayPalScriptReducer,
-} from '@paypal/react-paypal-js';
-import { FC, useEffect } from 'react';
-
-// This value is from the props in the UI
-const style = { layout: 'horizontal' };
+import { PayPalScriptProvider, PayPalButtons } from '@paypal/react-paypal-js';
 
 const initialOptions = {
    clientId: 'test',
@@ -19,7 +10,7 @@ interface PaypalProps {
    handleSaveOrder: (paid: boolean) => void;
 }
 
-const Paypal: FC<PaypalProps> = ({ amount, handleSaveOrder }) => {
+const Paypal: React.FC<PaypalProps> = ({ amount, handleSaveOrder }) => {
    return (
       <PayPalScriptProvider options={initialOptions}>
          <PayPalButtons

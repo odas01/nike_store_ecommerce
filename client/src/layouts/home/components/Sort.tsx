@@ -1,5 +1,6 @@
 import { useState, memo } from 'react';
 import { useTranslation } from 'react-i18next';
+
 import { BsChevronDown } from 'react-icons/bs';
 
 type Props = {
@@ -39,15 +40,11 @@ const Sort: React.FC<Props> = ({ sort, setSort }) => {
          value: 'name:-1',
       },
       {
-         text: `${t('label.price', { ns: 'mutual' })}: ${t(
-            'category.sort.lowHigh'
-         )}`,
+         text: `${t('label.price', { ns: 'mutual' })}: ${t('sort.lowHigh')}`,
          value: 'prices.price:1',
       },
       {
-         text: `${t('label.price', { ns: 'mutual' })}: ${t(
-            'category.sort.highLow'
-         )}`,
+         text: `${t('label.price', { ns: 'mutual' })}: ${t('sort.highLow')}`,
          value: 'prices.price:-1',
       },
    ];
@@ -55,10 +52,10 @@ const Sort: React.FC<Props> = ({ sort, setSort }) => {
    return (
       <div className='relative flex gap-5'>
          <span
-            className='flex items-center gap-1 font-semibold cursor-pointer'
+            className='flex items-center gap-1 font-medium cursor-pointer'
             onClick={() => setShow(!show)}
          >
-            {t('category.sort.sortBy')}:{' '}
+            {t('sort.sortBy')}:{' '}
             <span className='mx-1 text-sm opacity-75'>{text}</span>{' '}
             <BsChevronDown />
          </span>
@@ -74,7 +71,7 @@ const Sort: React.FC<Props> = ({ sort, setSort }) => {
                      value='createdAt:-1'
                      onClick={handleSort}
                   >
-                     {t('category.sort.latest')}
+                     {t('sort.latest')}
                   </button>
                )}
                {label.map((item, index) => (

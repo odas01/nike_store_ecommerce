@@ -1,4 +1,4 @@
-import { ICoupon, IProduct, IUser, ListWithParams, Variant } from '.';
+import { ICoupon, IProduct, IUser, ListWithParams, Message, Variant } from '.';
 
 interface Product {
    product: IProduct;
@@ -48,4 +48,47 @@ export type OrderUpload = {
 
 export interface AllOrders extends ListWithParams {
    orders: IOrder[];
+}
+
+export interface OrderResponse {
+   order: IOrder;
+   message: Message;
+}
+
+export interface DbCount {
+   orders: {
+      count: number;
+      status: string;
+   }[];
+}
+
+export interface DbAmount {
+   toDayOrder: {
+      total: number;
+      method: 'cash' | 'paypal';
+   }[];
+   yesterdayOrder: {
+      total: number;
+      method: 'cash' | 'paypal';
+   }[];
+   thisMonthAmount: number;
+   lastMonthAmount: number;
+   totalAmount: number;
+}
+
+export interface DbChart {
+   orders: [
+      {
+         count: number;
+         date: string;
+      },
+      {
+         count: number;
+         date: string;
+      },
+      {
+         count: number;
+         date: string;
+      }
+   ];
 }

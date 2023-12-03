@@ -1,10 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Fira+Sans:wght@300;400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
 @tailwind base;
@@ -26,14 +19,6 @@ html {
    margin: 0;
    padding: 0;
    box-sizing: border-box;
-   /* font-family: 'Roboto', sans-serif; */
-   /* font-family: 'Poppins', sans-serif;
-   /* font-family: 'Montserrat', sans-serif;
-   font-family: 'Raleway', sans-serif; */
-   /* font-family: 'Fira Sans', sans-serif; */
-   /* font-family: 'Nunito', sans-serif; */
-   /* font-family: 'Be Vietnam Pro', sans-serif; */
-   font-family: 'Montserrat', sans-serif;
    font-family: 'Inter', sans-serif;
 }
 
@@ -96,6 +81,9 @@ ul {
 .animate-closeModal {
    animation: closeModal ease-in-out 0.2s forwards;
 }
+.animate-width {
+   animation: width ease-in-out 0.2s forwards;
+}
 
 .appearance {
    appearance: none;
@@ -136,6 +124,34 @@ ul {
       opacity: 0;
    }
 }
+
+@keyframes width {
+   from {
+      width:0%
+   }
+
+   to {
+      width: 100%;
+   }
+}
+
+.item_nav_before{
+   position: relative;
+}
+
+.item_nav_before::before{
+   content: "";
+   display: none;
+   position: absolute;
+   top: 125%;
+   left: 0;
+   height: 1.7px;
+   background-color: #5c5c5c;
+   
+   animation: width ease-in-out 0.2s forwards;
+}
+
+
 
 .banner {
    background-image: linear-gradient(45deg, #1b1f24 50%, #2b3138 50%);
@@ -194,9 +210,9 @@ ul {
       @apply absolute top-1/2 -translate-y-1/2 left-[13px] text-gray-700 font-normal select-none pointer-events-none duration-200;
    }
 
-   .container {
+   /* .container {
       @apply max-w-[1340px] mx-auto;
-   }
+   } */
 
    .before_navbar_item {
       @apply content-[''] absolute -top-[6px] left-0 h-[150%] w-full bg-[#26acbb] rounded-full -z-[1] animate-effectt;

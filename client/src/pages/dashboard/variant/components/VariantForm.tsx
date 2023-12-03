@@ -17,7 +17,7 @@ import {
    UploadButton,
 } from '@/components';
 
-import { ErrorResponse, IColor, IProduct, VariantForm } from '@/types';
+import { IColor, IProduct, VariantForm } from '@/types';
 import { colorApi, productApi, sizeApi, variantApi } from '@/api';
 import SizeArrayField from './SizeArrayField';
 import { Image, UploadImages } from './ImageField';
@@ -75,8 +75,8 @@ const VariantForm: FC<VariantFormProps> = ({
 
    const { slug } = useParams();
    const queryClient = useQueryClient();
-   const { t } = useTranslation(['dashboard', 'mutual']);
-
+   const { t, i18n } = useTranslation(['dashboard', 'mutual']);
+   const isVnLang = i18n.language === 'vi';
    const props = useForm<VariantForm>({
       defaultValues: value,
       resolver: zodResolver(variantSchema),
@@ -98,9 +98,20 @@ const VariantForm: FC<VariantFormProps> = ({
       queries: [
          {
             queryKey: ['colors'],
-            queryFn: () => colorApi.getAll(),
+            queryFn: () =>
+               colorApi.getAll({
+                  skip: 0,
+                  limit: 100,
+               }),
          },
-         { queryKey: ['sizes'], queryFn: () => sizeApi.getAll() },
+         {
+            queryKey: ['sizes'],
+            queryFn: () =>
+               sizeApi.getAll({
+                  skip: 0,
+                  limit: 100,
+               }),
+         },
       ],
    });
 
@@ -113,33 +124,34 @@ const VariantForm: FC<VariantFormProps> = ({
       mutationFn: (values: VariantForm) => {
          return variantApi.create(values);
       },
-      onSuccess: () => {
+      onSuccess: ({ message }) => {
          reset(value);
-         notify('success', 'Created product successfully');
+         notify('success', isVnLang ? message.vi : message.en);
       },
-      onError: (error: ErrorResponse) => {
-         notify('error', error.message);
+
+      onError: ({ message }) => {
+         notify('error', isVnLang ? message.vi : message.en);
       },
    });
 
    const updateVariantMutation = useMutation({
       mutationFn: (values: VariantForm) =>
          variantApi.update(value._id!, values),
-      onSuccess: () => {
+      onSuccess: ({ message }) => {
          queryClient.invalidateQueries({
             queryKey: ['product', slug],
          });
-         notify('success', 'Update successful');
+         notify('success', isVnLang ? message.vi : message.en);
       },
-      onError: (err: ErrorResponse) => {
-         notify('error', err.message);
+      onError: ({ message }) => {
+         notify('error', isVnLang ? message.vi : message.en);
       },
    });
 
    const deleteVariantMutation = useMutation({
       mutationFn: () => variantApi.delete(value._id!),
-      onSuccess: async () => {
-         notify('success', 'Delete successful');
+      onSuccess: async ({ message }) => {
+         notify('success', isVnLang ? message.vi : message.en);
          await deleteImgs.mutateAsync([
             value.thumbnail.public_id,
             ...value.images.map((item) => item.public_id),
@@ -148,8 +160,8 @@ const VariantForm: FC<VariantFormProps> = ({
             queryKey: ['product', slug],
          });
       },
-      onError: (err: ErrorResponse) => {
-         notify('error', err.message);
+      onError: ({ message }) => {
+         notify('error', isVnLang ? message.vi : message.en);
       },
    });
 
@@ -230,14 +242,16 @@ const VariantForm: FC<VariantFormProps> = ({
                               children={
                                  <div className='relative w-full'>
                                     <Input
-                                       placeholder='Choose a store'
+                                       placeholder={t(
+                                          'placeholderForm.product.color'
+                                       )}
                                        className='w-full !pl-9 capitalize appearance placeholder:normal-case focus:cursor-pointer'
                                        {...register('color')}
                                        isError={!!errors.color}
                                        readOnly
                                     />
                                     <div
-                                       className='absolute w-4 -translate-y-1/2 bg-red-400 rounded-full top-1/2 left-3 aspect-square'
+                                       className='absolute w-4 -translate-y-1/2 rounded-full top-1/2 left-3 aspect-square'
                                        style={{
                                           backgroundColor:
                                              colorData.colors.find(
@@ -261,7 +275,7 @@ const VariantForm: FC<VariantFormProps> = ({
                      <Col span={12}>
                         <div className='flex flex-col mb-4 space-y-1'>
                            <label htmlFor='desc' className='font-medium'>
-                              Thumbnail
+                              {t('label.thumb', { ns: 'mutual' })}
                            </label>
 
                            {thumbnail.url ? (
@@ -284,7 +298,7 @@ const VariantForm: FC<VariantFormProps> = ({
                         </div>
                         <div className='flex flex-col space-y-1'>
                            <label htmlFor='desc' className='font-medium'>
-                              Images
+                              {t('label.images', { ns: 'mutual' })}
                            </label>
                            <UploadImages />
                         </div>
@@ -323,7 +337,7 @@ const VariantForm: FC<VariantFormProps> = ({
                                        'pointer-events-none cursor-default'
                                  )}
                               >
-                                 Cancel
+                                 {t('action.cancel', { ns: 'mutual' })}
                               </Button>
                            )}
                            <Button
@@ -339,7 +353,7 @@ const VariantForm: FC<VariantFormProps> = ({
                                  updateVariantMutation.isLoading) && (
                                  <Spin size='small' />
                               )}
-                              <span>Save</span>
+                              <span>{t('action.save', { ns: 'mutual' })}</span>
                            </Button>
                         </div>
                      )}

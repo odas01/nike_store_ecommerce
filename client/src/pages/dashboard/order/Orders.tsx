@@ -1,22 +1,24 @@
-import { orderApi } from '@/api';
-import { Button, Dropdown, Input, Pagination, Skeleton } from '@/components';
+import moment from 'moment';
+import { Modal } from 'antd';
+import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useMutation, useQuery } from '@tanstack/react-query';
+
+import { BiSearchAlt, BiSort } from 'react-icons/bi';
+import { AiOutlineCheck, AiOutlineClose } from 'react-icons/ai';
+
+import OrderDetail from './OrderDetail';
 import PageTitle from '@/components/PageTitle';
-import { dateFormat, notify, priceFormat } from '@/helpers';
-import Header from '@/layouts/dashboard/components/Header';
 import Table from '@/layouts/dashboard/components/Table';
 import Title from '@/layouts/dashboard/components/Title';
-import { useMutation, useQuery } from '@tanstack/react-query';
-import { Modal } from 'antd';
-import React, { useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { BiSearchAlt, BiSort } from 'react-icons/bi';
-import { BsThreeDots } from 'react-icons/bs';
-import { Link, useNavigate } from 'react-router-dom';
-import OrderDetail from './OrderDetail';
+import { Button, Dropdown, Input, Loading, Pagination } from '@/components';
+
+import { orderApi } from '@/api';
 import { IOrder } from '@/types/orderType';
-import { AiOutlineCheck, AiOutlineClose } from 'react-icons/ai';
-import { ErrorResponse } from '@/types';
-import moment from 'moment';
+import { notify, priceFormat } from '@/helpers';
+import { RxShadowNone } from 'react-icons/rx';
+import { FaCheck } from 'react-icons/fa';
+import { MdOutlineLocalShipping } from 'react-icons/md';
 
 type Params = {
    search: string;
@@ -26,35 +28,42 @@ type Params = {
 
 type Status = 'pending' | 'processing' | 'delivered' | 'cancel';
 
-function Orders() {
+const DEFAULT_LIMIT = import.meta.env.VITE_APP_LIMIT || 15;
+
+const Orders: React.FC<{
+   status: Status;
+}> = ({ status }) => {
    const [sort, setSort] = useState<any>('createdAt:-1');
    const [params, setParams] = useState<Partial<Params>>({});
    const [skip, setSkip] = useState<number>(0);
-   const [openModal, setOpenModal] = useState<boolean>(true);
+   const [openModal, setOpenModal] = useState<string | null>(null);
    const [orderActive, setOrderActive] = useState<IOrder | null>(null);
 
    const { t, i18n } = useTranslation(['dashboard', 'mutual']);
    const isVnLang = i18n.language === 'vi';
    const { data, isLoading, refetch } = useQuery({
-      queryKey: ['order', skip, params, sort],
+      queryKey: ['orders', skip, params, sort, status],
       queryFn: () =>
          orderApi.getAll({
             ...params,
-            skip: skip * 15,
-            limit: 15,
+            skip: skip,
+            limit: DEFAULT_LIMIT,
             sort,
+            status,
          }),
    });
+
+   console.log(skip);
 
    const updateOrderMutation = useMutation({
       mutationFn: ({ id, status }: { id: string; status: string }) =>
          orderApi.update(id, { status, paid: status === 'delivered' }),
-      onSuccess: () => {
+      onSuccess: ({ message }) => {
          refetch();
-         notify('success', 'Update successful');
+         notify('success', isVnLang ? message.vi : message.en);
       },
-      onError: (err: ErrorResponse) => {
-         notify('error', err.message);
+      onError: ({ message }) => {
+         notify('success', isVnLang ? message.vi : message.en);
       },
    });
 
@@ -63,17 +72,20 @@ function Orders() {
       status: 'pending' | 'processing' | 'delivered' | 'cancel'
    ) => {
       updateOrderMutation.mutate({ id, status });
+
+      setOpenModal(null);
+      setOrderActive(null);
    };
 
    return (
       <>
          <PageTitle title='Orders' />
-         <Title title={t('order.title')} />
+         <Title title={t(`order.title.${status as Status}`)} />
          <div className='flex flex-col mt-6'>
             <div className='flex mb-4 space-x-4 h-11'>
                <Input
                   type='text'
-                  placeholder={t('placeholderSearch.searchByNamePhoneEmail')}
+                  placeholder={t('placeholderSearch.searchByPhone')}
                   className='w-full h-full px-4'
                   onKeyDown={(e) =>
                      e.key === 'Enter' &&
@@ -109,75 +121,27 @@ function Orders() {
                            </p>
                         ),
                      },
+                     {
+                        label: (
+                           <p
+                              className='px-3 py-1'
+                              onClick={() =>
+                                 setParams({
+                                    ...params,
+                                    paymentMethod: 'paypal',
+                                 })
+                              }
+                           >
+                              VnPay
+                           </p>
+                        ),
+                     },
                   ]}
                   children={
                      <Input
-                        placeholder={t('label.method', { ns: 'mutual' })}
+                        placeholder={t('label.payment', { ns: 'mutual' })}
                         className='h-full capitalize appearance placeholder:normal-case focus:cursor-pointer'
                         value={params.paymentMethod}
-                        readOnly
-                     />
-                  }
-               />
-               <Dropdown
-                  items={[
-                     {
-                        label: (
-                           <p
-                              className='px-3 py-1'
-                              onClick={() =>
-                                 setParams({ ...params, status: 'pending' })
-                              }
-                           >
-                              {t('status.pending', { ns: 'mutual' })}
-                           </p>
-                        ),
-                     },
-                     {
-                        label: (
-                           <p
-                              className='px-3 py-1'
-                              onClick={() =>
-                                 setParams({ ...params, status: 'processing' })
-                              }
-                           >
-                              {' '}
-                              {t('status.processing', { ns: 'mutual' })}
-                           </p>
-                        ),
-                     },
-                     {
-                        label: (
-                           <p
-                              className='px-3 py-1'
-                              onClick={() => {
-                                 t('status.deleted', { ns: 'mutual' });
-                              }}
-                           >
-                              {' '}
-                              {t('status.delivered', { ns: 'mutual' })}
-                           </p>
-                        ),
-                     },
-                     {
-                        label: (
-                           <p
-                              className='px-3 py-1'
-                              onClick={() =>
-                                 setParams({ ...params, status: 'cancel' })
-                              }
-                           >
-                              {' '}
-                              {t('status.cancel', { ns: 'mutual' })}
-                           </p>
-                        ),
-                     },
-                  ]}
-                  children={
-                     <Input
-                        placeholder={t('status.status', { ns: 'mutual' })}
-                        className='h-full capitalize appearance placeholder:normal-case focus:cursor-pointer'
-                        value={params.status}
                         readOnly
                      />
                   }
@@ -189,29 +153,24 @@ function Orders() {
                   }}
                   className='h-full  w-[20%]'
                >
-                  Reset
+                  {t('action.refresh', { ns: 'mutual' })}
                </Button>
             </div>
             {isLoading ? (
-               <Skeleton />
+               <Loading />
             ) : (
                <Table
                   heading={
                      <tr className='[&>*:not(:last-child)]:px-4 [&>*]:py-3'>
-                        <td className='w-[20%]'>
+                        <td className='w-[5%]'>ID</td>
+                        <td className='w-[13%]'>
                            {t('label.date', {
                               ns: 'mutual',
                            })}
                         </td>
-                        <td className='w-[18%]'>{t('order.customerName')}</td>
-                        <td className='w-[15%]'>
-                           <span>
-                              {t('label.payment', {
-                                 ns: 'mutual',
-                              })}{' '}
-                           </span>
-                        </td>
-                        <td className='w-[15%]'>
+                        <td className='w-[15%]'>{t('order.customerName')}</td>
+                        <td className='w-[12%]'>{t('coupon.code')}</td>
+                        <td className='w-[13%]'>
                            <div
                               className='flex items-center w-full space-x-1 cursor-pointer'
                               onClick={() => {
@@ -228,16 +187,24 @@ function Orders() {
                               <span>{t('order.totalAmout')}</span>
                               <BiSort />
                            </div>
+                        </td>{' '}
+                        <td className='w-[18%]'>
+                           {t('label.address', { ns: 'mutual' })}
                         </td>
                         <td className='w-[12%]'>
-                           {t('status.status', { ns: 'mutual' })}
+                           <span>
+                              {t('label.payment', {
+                                 ns: 'mutual',
+                              })}{' '}
+                           </span>
                         </td>
-                        <td className='w-[15%] text-center'>
-                           {t('label.action', {
-                              ns: 'mutual',
-                           })}
+                        <td className='w-[12%] text-end'>
+                           <span>
+                              {t('label.action', {
+                                 ns: 'mutual',
+                              })}{' '}
+                           </span>
                         </td>
-                        <td className='w-[5%]'></td>
                      </tr>
                   }
                   pagination={
@@ -258,136 +225,111 @@ function Orders() {
                      data.orders?.map((order, index) => (
                         <tr key={index} className='[&>td:not(:last-child)]:p-4'>
                            <td>
+                              <span>{'#' + order._id.slice(-6, -1)}</span>
+                           </td>
+                           <td>
                               <span>
                                  {moment(order.createdAt).format(
-                                    'DD/MM YYYY | HH:mm A'
+                                    'DD/MM YY | HH:mm'
                                  )}
                               </span>
                            </td>
                            <td>
-                              <span>{order.user.name}</span>
+                              <div className='flex flex-col [&>span]:line-clamp-1 space-y-1'>
+                                 <span>{order.user.name}</span>
+                                 <span>{order.phone}</span>
+                              </div>
                            </td>
                            <td>
-                              <span className='capitalize'>
-                                 {order.paymentMethod}
-                              </span>
+                              {order?.coupon ? (
+                                 <div className='flex flex-col [&>span]:line-clamp-1 space-y-1'>
+                                    <span>{order.coupon.code}</span>
+                                    <span>
+                                       {order.coupon.type === 'percent'
+                                          ? order.coupon.value + '%'
+                                          : priceFormat(
+                                               order.coupon.value,
+                                               isVnLang
+                                            )}
+                                    </span>
+                                 </div>
+                              ) : (
+                                 <RxShadowNone />
+                              )}
                            </td>
                            <td>
                               <span>{priceFormat(order.total, isVnLang)}</span>
                            </td>
                            <td>
-                              <span className='line-clamp-1'>
-                                 {order.paid
-                                    ? t('status.paid', { ns: 'mutual' })
-                                    : t('status.unpaid', { ns: 'mutual' })}
+                              <span className='line-clamp-2'>
+                                 {order.address}
                               </span>
                            </td>
-                           <td className='flex justify-center '>
-                              {order.status === 'pending' ? (
-                                 <div className='flex w-full h-8 px-3 space-x-2 py-0.5'>
-                                    <div
-                                       className='flex items-center justify-center flex-1 bg-green-500 rounded cursor-pointer'
-                                       onClick={() =>
-                                          handleUpdateStatus(
-                                             order._id,
-                                             'processing'
-                                          )
-                                       }
-                                    >
-                                       <AiOutlineCheck />
-                                    </div>
-                                    <div
-                                       className='flex items-center justify-center flex-1 bg-red-500 rounded cursor-pointer'
-                                       onClick={() =>
-                                          handleUpdateStatus(
-                                             order._id,
-                                             'cancel'
-                                          )
-                                       }
-                                    >
-                                       <AiOutlineClose />
-                                    </div>
-                                 </div>
-                              ) : (
-                                 <div className='px-3'>
-                                    <Dropdown
-                                       items={[
-                                          {
-                                             label: (
-                                                <p
-                                                   className='px-2 py-1'
-                                                   onClick={() =>
-                                                      handleUpdateStatus(
-                                                         order._id,
-                                                         'processing'
-                                                      )
-                                                   }
-                                                >
-                                                   {t('status.processing', {
-                                                      ns: 'mutual',
-                                                   })}
-                                                </p>
-                                             ),
-                                          },
-                                          {
-                                             label: (
-                                                <p
-                                                   className='px-2 py-1'
-                                                   onClick={() =>
-                                                      handleUpdateStatus(
-                                                         order._id,
-                                                         'delivered'
-                                                      )
-                                                   }
-                                                >
-                                                   {t('status.delivered', {
-                                                      ns: 'mutual',
-                                                   })}
-                                                </p>
-                                             ),
-                                          },
-                                          {
-                                             label: (
-                                                <p
-                                                   className='px-2 py-1'
-                                                   onClick={() =>
-                                                      handleUpdateStatus(
-                                                         order._id,
-                                                         'cancel'
-                                                      )
-                                                   }
-                                                >
-                                                   {' '}
-                                                   {t('status.cancel', {
-                                                      ns: 'mutual',
-                                                   })}
-                                                </p>
-                                             ),
-                                          },
-                                       ]}
-                                    >
-                                       <Input
-                                          className='w-full h-8 text-xs placeholder:capitalize !cursor-pointer rounded-md appearance bg-[#24262D] border-none'
-                                          placeholder={t(
-                                             `status.${order.status as Status}`,
-                                             { ns: 'mutual' }
-                                          )}
-                                          readOnly
-                                       />
-                                    </Dropdown>
-                                 </div>
-                              )}
+                           <td>
+                              <div className='flex flex-col [&>span]:line-clamp-1 space-y-1 text-xs'>
+                                 <span className='capitalize'>
+                                    {order.paymentMethod === 'cash'
+                                       ? t('cash', { ns: 'mutual' })
+                                       : order.paymentMethod}
+                                 </span>
+                                 <span>
+                                    {t(
+                                       !!order.paid
+                                          ? 'status.paid'
+                                          : 'status.unpaid',
+                                       { ns: 'mutual' }
+                                    )}
+                                 </span>
+                              </div>
                            </td>
                            <td>
-                              <div
-                                 className='flex items-center justify-center cursor-pointer'
-                                 title='View invoice'
-                                 onClick={() => {
-                                    setOrderActive(order);
-                                    setOpenModal(true);
-                                 }}
-                              >
-                                 <BiSearchAlt size={20} />
+                              <div className='flex items-center justify-end space-x-2'>
+                                 {status === 'pending' && (
+                                    <div
+                                       className='flex items-center justify-center px-2.5 py-1.5 bg-green-500 rounded-sm cursor-pointer'
+                                       onClick={() => {
+                                          setOrderActive(order);
+                                          setOpenModal('checkProsessing');
+                                       }}
+                                    >
+                                       <FaCheck size={14} color='#fff' />
+                                    </div>
+                                 )}
+                                 {status === 'processing' && (
+                                    <div
+                                       className='flex items-center justify-center px-2.5 py-1.5 bg-green-500 rounded-sm cursor-pointer'
+                                       onClick={() => {
+                                          setOrderActive(order);
+                                          setOpenModal('checkDelivered');
+                                       }}
+                                    >
+                                       <MdOutlineLocalShipping
+                                          size={14}
+                                          color='#fff'
+                                       />
+                                    </div>
+                                 )}
+                                 {(status === 'pending' ||
+                                    status === 'processing') && (
+                                    <div
+                                       className='flex items-center justify-center px-2.5 py-1.5 bg-red-500 rounded-sm cursor-pointer'
+                                       onClick={() => {
+                                          setOrderActive(order);
+                                          setOpenModal('checkCancel');
+                                       }}
+                                    >
+                                       <AiOutlineClose size={14} color='#fff' />
+                                    </div>
+                                 )}
+                                 <div
+                                    className='flex items-center justify-center px-2.5 py-1.5 border border-gray-400 dark:border-gray-600 rounded-sm cursor-pointer'
+                                    onClick={() => {
+                                       setOrderActive(order);
+                                       setOpenModal('view');
+                                    }}
+                                 >
+                                    <BiSearchAlt size={14} />
+                                 </div>
                               </div>
                            </td>
                         </tr>
@@ -402,25 +344,95 @@ function Orders() {
                </Table>
             )}
             {orderActive && (
-               <Modal
-                  open={openModal}
-                  width='70vw'
-                  footer={null}
-                  title={null}
-                  centered
-                  closeIcon={<AiOutlineClose color='#fff' />}
-                  className='bg-white dark:bg-[#1A1C23] text-black dark:text-white !pb-0 rounded-lg'
-                  onCancel={() => setOpenModal(false)}
-               >
-                  <OrderDetail
-                     order={orderActive}
-                     handleUpdateStatus={handleUpdateStatus}
-                  />
-               </Modal>
+               <>
+                  <Modal
+                     open={!!openModal && openModal === 'view'}
+                     width='70vw'
+                     footer={null}
+                     title={null}
+                     centered
+                     closeIcon={
+                        <div className='text-black dark:text-white'>
+                           <AiOutlineClose color='inherit' />
+                        </div>
+                     }
+                     className='bg-white dark:bg-[#1A1C23] text-black dark:text-white !pb-0 rounded-lg'
+                     onCancel={() => setOpenModal(null)}
+                  >
+                     <OrderDetail
+                        order={orderActive}
+                        handleUpdateStatus={handleUpdateStatus}
+                        setOpenModal={setOpenModal}
+                     />
+                  </Modal>
+                  <Modal
+                     open={!!openModal && openModal !== 'view'}
+                     footer={null}
+                     title={null}
+                     centered
+                     closeIcon={
+                        <div className='text-black dark:text-white'>
+                           <AiOutlineClose color='inherit' />
+                        </div>
+                     }
+                     className='bg-white dark:bg-[#1A1C23] text-black dark:text-white p-4 rounded-lg'
+                     onCancel={() => setOpenModal(null)}
+                  >
+                     <h2 className='mb-8 text-xl'>
+                        {openModal === 'checkProsessing'
+                           ? 'Xác nhận duyệt đơn'
+                           : openModal === 'checkDelivered'
+                           ? 'Xác nhận đã giao'
+                           : 'Xác nhận hủy đơn'}
+                     </h2>
+                     <div className='flex items-center justify-end space-x-2'>
+                        {openModal === 'checkCancel' && (
+                           <div
+                              className='flex items-center px-2.5 py-1.5 space-x-2 text-white bg-red-500 rounded-sm cursor-pointer'
+                              onClick={() =>
+                                 handleUpdateStatus(orderActive._id, 'cancel')
+                              }
+                           >
+                              <AiOutlineClose color='inherit' />
+                              <span>{t('order.cancel')} </span>
+                           </div>
+                        )}
+
+                        {openModal === 'checkProsessing' && (
+                           <div
+                              className='flex items-center px-2.5 py-1.5 space-x-2 text-white bg-green-500 rounded-sm cursor-pointer'
+                              onClick={() =>
+                                 handleUpdateStatus(
+                                    orderActive._id,
+                                    'processing'
+                                 )
+                              }
+                           >
+                              <AiOutlineCheck color='#fff' />
+                              <span>{t('order.approve')} </span>
+                           </div>
+                        )}
+                        {openModal === 'checkDelivered' && (
+                           <div
+                              className='flex items-center px-2 py-1 space-x-2 text-white bg-green-500 rounded-sm cursor-pointer'
+                              onClick={() =>
+                                 handleUpdateStatus(
+                                    orderActive._id,
+                                    'delivered'
+                                 )
+                              }
+                           >
+                              <AiOutlineCheck color='#fff' />
+                              <span>{t('order.approve')} </span>
+                           </div>
+                        )}
+                     </div>
+                  </Modal>
+               </>
             )}
          </div>
       </>
    );
-}
+};
 
 export default Orders;

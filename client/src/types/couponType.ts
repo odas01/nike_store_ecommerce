@@ -1,4 +1,4 @@
-import { ListWithParams } from '.';
+import { ListWithParams, Message } from '.';
 
 export interface ICoupon {
    _id: string;
@@ -20,3 +20,8 @@ export type CouponFormUpload = Pick<
 export type AllCoupons = ListWithParams & {
    coupons: ICoupon[];
 };
+
+export interface CouponResponse {
+   coupon: ICoupon;
+   message: Message;
+}

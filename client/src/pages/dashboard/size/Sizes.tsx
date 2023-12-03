@@ -15,20 +15,23 @@ import {
    Button,
    Input,
    Dropdown,
-   Skeleton,
    PageTitle,
    Pagination,
+   Loading,
 } from '@/components';
 
 import { sizeApi } from '@/api';
-import { ErrorResponse, ISize } from '@/types';
+import { ISize } from '@/types';
 import { dateFormat, notify } from '@/helpers';
+import { store } from '@/constants';
 
 const DEFAULT_LIMIT = import.meta.env.VITE_APP_LIMIT || 15;
 
 type Params = {
    name: string;
 };
+
+type Store = (typeof store)[number];
 
 function Sizes() {
    const [sizeActive, setSizeActie] = useState<ISize | null>(null);
@@ -38,8 +41,8 @@ function Sizes() {
 
    const [openDrawer, setOpenDrawer] = useState<boolean>(false);
 
-   const { t } = useTranslation(['dashboard', 'mutual']);
-
+   const { t, i18n } = useTranslation(['dashboard', 'mutual']);
+   const isVnLang = i18n.language === 'vi';
    const { isLoading, data, refetch } = useQuery({
       queryKey: ['sizes', skip, params],
       queryFn: () =>
@@ -55,13 +58,13 @@ function Sizes() {
       mutationFn: (id: string) => {
          return sizeApi.delete(id);
       },
-      onSuccess: () => {
+      onSuccess: ({ message }) => {
          refetch();
-         notify('success', 'Deleted successfully');
-         console.log(deleteColorMutation.variables);
+         notify('success', isVnLang ? message.vi : message.en);
       },
-      onError: (error: ErrorResponse) => {
-         notify('error', error.message);
+
+      onError: ({ message }) => {
+         notify('error', isVnLang ? message.vi : message.en);
       },
    });
 
@@ -96,14 +99,14 @@ function Sizes() {
                   onKeyDown={(e) => e.key === 'Enter' && searchColor(e)}
                />
                <Button
-                  className='h-full text-sm duration-150 bg-green-500 w-52 hover:opacity-80'
+                  className='h-full text-sm duration-150 bg-green-500 w-52 hover:bg-green-600'
                   onClick={() => setOpenDrawer(true)}
                >
                   + {t('action.addNew')}
                </Button>
             </div>
             {isLoading ? (
-               <Skeleton />
+               <Loading />
             ) : (
                <Table
                   heading={
@@ -158,7 +161,9 @@ function Sizes() {
                            </td>
                            <td>
                               <span className='capitalize line-clamp-1'>
-                                 {t(`store.${size.store}`, { ns: 'mutual' })}
+                                 {t(`store.${size.store as Store}`, {
+                                    ns: 'mutual',
+                                 })}
                               </span>
                            </td>
                            <td>

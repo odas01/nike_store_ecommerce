@@ -1,8 +1,8 @@
 import * as zod from 'zod';
+import { ColorPicker } from 'antd';
+import { FC, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { ChromePicker } from 'react-color';
 import { useTranslation } from 'react-i18next';
-import { FC, useEffect, useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
@@ -10,10 +10,9 @@ import { Error, Input } from '@/components';
 import Footer from '@/components/drawer/Footer';
 import Heading from '@/components/drawer/Header';
 
-import { notify } from '@/helpers';
-import { ErrorResponse, IColor, ColorFormValues } from '@/types';
 import { colorApi } from '@/api';
-import { ColorPicker } from 'antd';
+import { notify } from '@/helpers';
+import { IColor, ColorFormValues } from '@/types';
 
 const formSchema = zod.object({
    name: zod.string().nonempty('Name is required'),
@@ -51,8 +50,8 @@ const ColorForm: FC<ColorFormProps> = ({ data, closeDrawer }) => {
       mode: 'onChange',
    });
 
-   const { t } = useTranslation(['dashboard', 'mutual']);
-   const [color, setColor] = useState<string>('#ffffff');
+   const { t, i18n } = useTranslation(['dashboard', 'mutual']);
+   const isVnLang = i18n.language === 'vi';
 
    useEffect(() => {
       if (data) {
@@ -66,12 +65,13 @@ const ColorForm: FC<ColorFormProps> = ({ data, closeDrawer }) => {
       mutationFn: (values: ColorFormValues) => {
          return colorApi.create(values);
       },
-      onSuccess: () => {
-         notify('success', 'Created successfully');
+      onSuccess: ({ message }) => {
+         notify('success', isVnLang ? message.vi : message.en);
          queryClient.invalidateQueries({ queryKey: ['colors'] });
       },
-      onError: (error: ErrorResponse) => {
-         notify('error', error.message);
+
+      onError: ({ message }) => {
+         notify('error', isVnLang ? message.vi : message.en);
       },
    });
 
@@ -79,12 +79,13 @@ const ColorForm: FC<ColorFormProps> = ({ data, closeDrawer }) => {
       mutationFn: (values: ColorFormValues) => {
          return colorApi.update(data?._id!, values);
       },
-      onSuccess: () => {
-         notify('success', 'Update successfully');
+      onSuccess: ({ message }) => {
+         notify('success', isVnLang ? message.vi : message.en);
          queryClient.invalidateQueries({ queryKey: ['colors'] });
       },
-      onError: (error: ErrorResponse) => {
-         notify('error', error.message);
+
+      onError: ({ message }) => {
+         notify('error', isVnLang ? message.vi : message.en);
       },
    });
 

@@ -2,19 +2,18 @@ import Category from '../models/category.model';
 import responseHandler from '../handlers/response.handler';
 
 import { Request, Response } from 'express';
+import Product from '../models/product.model';
 
 export const create = async (req: Request, res: Response) => {
    try {
-      const isExist = await Category.findOne({
-         name: req.body.name,
-      });
-
-      if (isExist)
-         return responseHandler.badrequest(res, 'Category already exist');
-
       const category = await Category.create(req.body);
-
-      responseHandler.created(res, { category });
+      responseHandler.created(res, {
+         category,
+         message: {
+            vi: 'Thêm danh mục thành công',
+            en: 'Successfully added category',
+         },
+      });
    } catch {
       responseHandler.error(res);
    }
@@ -31,6 +30,7 @@ export const getAll = async (req: Request, res: Response) => {
       const lastPage = Math.ceil(total / limit) || 1;
 
       const categories = await Category.find(filter)
+         .lean()
          .sort({ createdAt: -1 })
          .skip(skip)
          .limit(limit);
@@ -64,10 +64,14 @@ export const updateOne = async (req: Request, res: Response) => {
       const category = await Category.findOneAndUpdate(
          { _id: req.params.id },
          req.body
-      );
+      ).lean();
 
       responseHandler.ok(res, {
          category,
+         message: {
+            vi: 'Cập nhật danh mục thành công',
+            en: 'Successfully updated category',
+         },
       });
    } catch {
       responseHandler.error(res);
@@ -76,26 +80,21 @@ export const updateOne = async (req: Request, res: Response) => {
 
 export const deleteOne = async (req: Request, res: Response) => {
    try {
-      Category.findByIdAndDelete(req.params.id)
-         .then(() =>
-            responseHandler.ok(res, { msg: 'Delete category successfully' })
-         )
-         .catch(() => responseHandler.notfound(res));
-   } catch {
-      responseHandler.error(res);
-   }
-};
-
-export const search = async (req: Request, res: Response) => {
-   const value = req.query.q;
-   try {
-      if (value) {
-         const categories = await Category.find({
-            name: { $regex: new RegExp(value.toString()), $options: 'i' },
-         }).sort({ _id: 1 });
-         responseHandler.ok(res, { categories });
+      const canDelete = await Product.find({ category: req.params.id }).lean();
+      if (canDelete.length > 0) {
+         return responseHandler.badrequest(res, {
+            vi: 'Không thể xóa danh mục đã có sản phẩm',
+            en: 'Cannot delete categories that already have products',
+         });
       }
-      return responseHandler.badrequest(res, 'No search value');
+
+      await Category.findByIdAndDelete(req.params.id);
+      responseHandler.ok(res, {
+         message: {
+            vi: 'Xóa danh mục thành công',
+            en: 'Successfully deleted category',
+         },
+      });
    } catch {
       responseHandler.error(res);
    }

@@ -1,19 +1,17 @@
-import { Button, Error, Input } from '@/components';
-import { BsGoogle } from 'react-icons/bs';
-import { useGoogleLogin } from '@react-oauth/google';
 import * as zod from 'zod';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import authStore from '@/stores/authStore';
-import { useMutation } from '@tanstack/react-query';
-import { authApi } from '@/api';
-import { ErrorResponse, ILogin } from '@/types';
-import { notify } from '@/helpers';
-import DotLoader from 'react-spinners/DotLoader';
 import { twMerge } from 'tailwind-merge';
+import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import cartStore from '@/stores/cartStore';
-import { Link, useNavigate } from 'react-router-dom';
+import DotLoader from 'react-spinners/DotLoader';
+import { useMutation } from '@tanstack/react-query';
+import { zodResolver } from '@hookform/resolvers/zod';
+
+import { Button, Error, Input } from '@/components';
+
+import { authApi } from '@/api';
+import { notify } from '@/helpers';
+import { ErrorResponse } from '@/types';
 
 const formSchema = zod.object({
    email: zod.string().nonempty('Email is required!').email('Invalid email'),
@@ -22,9 +20,9 @@ const formSchema = zod.object({
 type ForgotPasswordFormValue = zod.infer<typeof formSchema>;
 
 const ForgotPassword = () => {
-   const { t } = useTranslation(['home', 'mutual']);
    const navigate = useNavigate();
-
+   const { t, i18n } = useTranslation(['home', 'mutual']);
+   const isVnLang = i18n.language === 'vi';
    const {
       register,
       handleSubmit,
@@ -36,16 +34,12 @@ const ForgotPassword = () => {
 
    const forgotPasswordMutation = useMutation({
       mutationFn: (email: string) => authApi.forgotPassword(email),
-      onSuccess: async () => {
-         //    saveToken(token);
-         //    setCurrentUser(user);
-         //    getCart();
-         //    notify('success', `Welcome ${user.name} to Nike Store`);
-         //    navigate('/');
+      onSuccess: async ({ message }) => {
+         notify('success', isVnLang ? message.vi : message.en);
       },
 
-      onError: (error: ErrorResponse) => {
-         notify('error', error.message);
+      onError: ({ message }) => {
+         notify('error', isVnLang ? message.vi : message.en);
       },
    });
 
@@ -55,8 +49,8 @@ const ForgotPassword = () => {
 
    return (
       <div className='space-y-10'>
-         <h3 className='text-2xl text-center'>Forgot password</h3>
-         <div className='w-full rounded-md shadow-lg px-7 py-8 bg-white'>
+         <h3 className='text-2xl text-center'>{t('auth.forgotPass')}</h3>
+         <div className='w-full py-8 bg-white rounded-md shadow-lg px-7'>
             <div className='space-y-3'>
                <div className='flex flex-col'>
                   <span className='text-13'>Email</span>
@@ -81,13 +75,13 @@ const ForgotPassword = () => {
                {forgotPasswordMutation.isLoading && (
                   <DotLoader color='#fff' size={20} />
                )}
-               <span>Send</span>
+               <span>{t('action.send', { ns: 'mutual' })}</span>
             </Button>
             <div className='mt-8 text-xs text-center'>
                <span
                   className='text-[#4f4f4f] font-semibold hover:text-[#3c3c3c] cursor-pointer'
                   onClick={() =>
-                     !forgotPasswordMutation.isLoading && navigate('/signup')
+                     !forgotPasswordMutation.isLoading && navigate('/login')
                   }
                >
                   {t('action.login', { ns: 'mutual' })}

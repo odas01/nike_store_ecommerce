@@ -1,6 +1,14 @@
 {
    "orders": "Order",
    "myAccount": "My account",
+   "home": {
+      "home": "Home",
+      "trenyP": "Trendy products",
+      "topP": "Top products",
+      "bestSeller": "Best sellers",
+      "uLike": "You might also like",
+      "shopNow": "Shop now"
+   },
    "placeHolder": {
       "typeYourName": "Type your name",
       "typePasswordAgain": "Type password again",
@@ -15,40 +23,41 @@
    "haveAccount?": "Already have an account?",
    "navbar": {
       "home": "Home",
+      "all": "All",
+      "shoes": "Shoes",
+      "clothing": "Clothing",
+      "accessories": "Accessories",
       "about": "About",
       "contact": "Contact"
    },
    "cart": {
       "cart": "Cart",
+      "yourCart": "Your cart",
       "productName": "Product name",
       "variations": "Variations",
       "unitPrice": "Unit price",
       "totalPrice": "Total price",
-      "proceedCheckOut": "Proceed to checkout"
+      "proceedCheckOut": "Proceed to checkout",
+      "cartEmpty": "Your shopping cart is empty",
+      "findAndAdd": "Search for items to start addding them to your cart",
+      "startShopping": "Start shopping"
    },
-   "category": {
-      "filter": {
-         "under": "Under",
-         "over": "Over"
-      },
-      "sort": {
-         "sortBy": "Sort by",
-         "lowHigh": "Low to High",
-         "highLow": "High to Low",
-         "latest": "Latest"
-      }
+   "filter": {
+      "under": "Under",
+      "over": "Over"
    },
-   "home": {
-      "trenyP": "Trendy products",
-      "topP": "Top products",
-      "bestSeller": "Best sellers",
-      "uLike": "You might also like"
+   "sort": {
+      "sortBy": "Sort by",
+      "lowHigh": "Low to High",
+      "highLow": "High to Low",
+      "latest": "Latest"
    },
    "rating": {
       "productRatings": "Product ratings",
       "noRatings": "No ratings",
       "rating": "rating",
-      "ratings": "ratings"
+      "ratings": "ratings",
+      "pleaseChooes": "Please choose a rating"
    },
    "allProducts": "All products",
    "noProductsMatch": "No products match",
@@ -60,11 +69,13 @@
    "items": "items",
    "item": "item",
    "checkout": {
+      "checkout": "Check out",
       "personalDetails": "Personal details",
       "shippingDetails": "Shipping details",
       "paymentMethod": "Payment method",
       "cashPayment": "Cash payment",
       "paypalPayment": "Paypal payment",
+      "vnpayPayment": "VnPay payment",
       "express": "Express",
       "fast": "Fast",
       "normal": "Normal",
@@ -78,6 +89,12 @@
       "pay": "Pay",
       "thanksForShop": "Thanks for shopping at NikeShose"
    },
+   "search": {
+      "search": "Search",
+      "count": "There are {{count}} products to search",
+      "result": "Search result for"
+   },
+
    "method": "Method",
    "profile": "Profile",
    "updateProfile": "Update profile",
@@ -88,5 +105,13 @@
    "confirmPass": "Confirm password",
    "dontOrder": "You don't have any orders yet",
    "enterNewPass": "Enter new password",
-   "enterConfirmPass": "Enter confirm password"
+   "enterConfirmPass": "Enter confirm password",
+   "onlyItemDetail": "Only {{count}} item!",
+   "auth": {
+      "loginYourAcc": "Login your account",
+      "forgotPass": "Forgot password",
+      "resetPass": "Reset password"
+   },
+   "history": "Purchase history",
+   "coupon": "Coupon"
 }

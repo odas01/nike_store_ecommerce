@@ -1,7 +1,6 @@
 import { authApi } from '@/api';
-import { Button, Error, Input } from '@/components';
+import { Button, Error, Input, LoadingOverlay, PageTitle } from '@/components';
 import { notify } from '@/helpers';
-import { ErrorResponse } from '@/types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
@@ -21,7 +20,9 @@ const formSchema = z
 type FormValues = z.infer<typeof formSchema>;
 
 const ChangePw = () => {
-   const { t } = useTranslation(['home', 'dashboard']);
+   const { t, i18n } = useTranslation(['home', 'mutual']);
+   const isVnLang = i18n.language === 'vi';
+
    const {
       register,
       handleSubmit,
@@ -32,60 +33,63 @@ const ChangePw = () => {
    });
 
    const onSubmit = handleSubmit((values) => {
-      console.log(values);
-
-      updateProfileMutation.mutate({
+      changePassMutation.mutate({
          currentPass: values.currentPass,
          newPass: values.newPass,
       });
    });
 
-   const updateProfileMutation = useMutation({
+   const changePassMutation = useMutation({
       mutationFn: (values: any) => authApi.changePassword(values),
-      onSuccess: () => {
-         notify('success', 'Change password success');
+      onSuccess: ({ message }) => {
+         notify('success', isVnLang ? message.vi : message.en);
       },
-      onError: (err: ErrorResponse) => {
-         notify('error', err.message);
+
+      onError: ({ message }) => {
+         notify('error', isVnLang ? message.vi : message.en);
       },
    });
 
    return (
-      <div>
-         <h2 className='mb-4 text-xl font-semibold'>{t('changePass')}</h2>
-         <div className='space-y-2'>
-            <div className='flex flex-col space-y-1'>
-               <span className='text-13'>{t('currentPass')}</span>
-               <Input
-                  className='rounded-md'
-                  {...register('currentPass')}
-                  isError={!!errors.currentPass}
-               />
-               <Error message={errors.currentPass?.message} />
+      <>
+         <PageTitle title='Change password' />
+         <div>
+            {changePassMutation.isLoading && <LoadingOverlay />}
+            <h2 className='mb-4 text-xl font-semibold'>{t('changePass')}</h2>
+            <div className='space-y-2'>
+               <div className='flex flex-col space-y-1'>
+                  <span className='text-13'>{t('currentPass')}</span>
+                  <Input
+                     type='password'
+                     {...register('currentPass')}
+                     isError={!!errors.currentPass}
+                  />
+                  <Error message={errors.currentPass?.message} />
+               </div>
+               <div className='flex flex-col space-y-1'>
+                  <span className='text-13'>{t('newPass')}</span>
+                  <Input
+                     type='password'
+                     {...register('newPass')}
+                     isError={!!errors.newPass}
+                  />
+                  <Error message={errors.newPass?.message} />
+               </div>
+               <div className='flex flex-col space-y-1'>
+                  <span className='text-13'>{t('confirmPass')}</span>
+                  <Input
+                     type='password'
+                     {...register('confirmPass')}
+                     isError={!!errors.confirmPass}
+                  />
+                  <Error message={errors.confirmPass?.message} />
+               </div>
             </div>
-            <div className='flex flex-col space-y-1'>
-               <span className='text-13'>{t('newPass')}</span>
-               <Input
-                  className='rounded-md'
-                  {...register('newPass')}
-                  isError={!!errors.newPass}
-               />
-               <Error message={errors.newPass?.message} />
-            </div>
-            <div className='flex flex-col space-y-1'>
-               <span className='text-13'>{t('confirmPass')}</span>
-               <Input
-                  className='rounded-md'
-                  {...register('confirmPass')}
-                  isError={!!errors.confirmPass}
-               />
-               <Error message={errors.confirmPass?.message} />
-            </div>
+            <Button onClick={onSubmit}>
+               {t('action.save', { ns: 'mutual' })}
+            </Button>
          </div>
-         <Button onClick={onSubmit}>
-            {t('action.save', { ns: 'dashboard' })}
-         </Button>
-      </div>
+      </>
    );
 };
 

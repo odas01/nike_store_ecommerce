@@ -1,5 +1,13 @@
-import { privateClient } from '@/api/config';
-import { AllOrders, IOrder, OrderUpload } from '@/types/orderType';
+import { privateClient, publicClient } from '@/api/config';
+import {
+   AllOrders,
+   OrderUpload,
+   OrderResponse,
+   DbCount,
+   DbAmount,
+   DbChart,
+   IMessage,
+} from '@/types';
 
 export const orderApi = {
    get: async (id: string) => (await privateClient.get(`orders/${id}`)).data,
@@ -7,18 +15,26 @@ export const orderApi = {
       (await privateClient.get<AllOrders>('orders', { params })).data,
 
    create: async (data: OrderUpload) =>
-      (await privateClient.post<IOrder>('orders', data)).data,
-   delete: async (id: string) =>
-      (await privateClient.delete(`orders/${id}`)).data,
+      (await privateClient.post<OrderResponse>('orders', data)).data,
    update: async (id: string, data: any) =>
-      (await privateClient.put(`orders/${id}`, data)).data,
+      (await privateClient.put<OrderResponse>(`orders/${id}`, data)).data,
+   delete: async (id: string) =>
+      (await privateClient.delete<IMessage>(`orders/${id}`)).data,
+
+   createPayment: async (data: any) =>
+      (
+         await privateClient.post<{ vnpUrl: string }>(
+            `orders/create-payment`,
+            data
+         )
+      ).data,
 
    dashboardCount: async () =>
-      (await privateClient.get(`orders/dashboard-count`)).data,
+      (await privateClient.get<DbCount>(`orders/dashboard-count`)).data,
 
    dashboardAmount: async () =>
-      (await privateClient.get(`orders/dashboard-amount`)).data,
+      (await privateClient.get<DbAmount>(`orders/dashboard-amount`)).data,
 
    dashboardChart: async () =>
-      (await privateClient.get(`orders/dashboard-chart`)).data,
+      (await privateClient.get<DbChart>(`orders/dashboard-chart`)).data,
 };

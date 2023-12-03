@@ -1,9 +1,10 @@
 import { useRef } from 'react';
-
-import { Image } from '@/types/imageTyppe';
-import { fileToBase64 } from '@/helpers';
 import { twMerge } from 'tailwind-merge';
+
 import { LuImagePlus } from 'react-icons/lu';
+
+import { fileToBase64 } from '@/helpers';
+import { Image } from '@/types';
 
 interface UploadButtonProps {
    multiple?: boolean;

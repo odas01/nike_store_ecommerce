@@ -1,5 +1,4 @@
-import { Image } from '.';
-import { ListWithParams } from './listWithParamsType';
+import { Image, ListWithParams, Message } from '.';
 
 export interface IUser {
    _id: string;
@@ -20,3 +19,13 @@ export interface AllUsers extends ListWithParams {
 export type UserFormUpdate = Partial<Omit<IUser, 'avatar'>> & {
    avatar?: string;
 };
+
+export interface UserResponse {
+   user: IUser;
+   message: Message;
+}
+
+export interface UserCount {
+   role: string;
+   count: number;
+}

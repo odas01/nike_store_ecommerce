@@ -1,13 +1,13 @@
-import TopHeader from './components/TopHeader';
-import Header from './components/Header';
-import { Link, Outlet, useLocation } from 'react-router-dom';
-import { BsArrowRight } from 'react-icons/bs';
-import images from '@/assets/images';
-import Footer from './components/Footer';
 import { useEffect } from 'react';
-import { useQuery } from '@tanstack/react-query';
-import { cartApi } from '@/api';
+import { Outlet, useLocation } from 'react-router-dom';
+
+import Header from './components/Header';
+import Footer from './components/Footer';
+import TopHeader from './components/TopHeader';
+
 import cartStore from '@/stores/cartStore';
+
+import DiaflowBot from './components/DiaflowBot';
 
 const HomeLayout = () => {
    const { pathname } = useLocation();
@@ -25,16 +25,16 @@ const HomeLayout = () => {
          });
       }
    }, [pathname]);
+
    return (
       <div className='flex flex-col min-h-screen'>
          <TopHeader />
          <Header />
-         <div className='min-h-[80vh] pb-14 pt-5'>
+         <main className='min-h-[80vh] pb-20 flex flex-col'>
             <Outlet />
-         </div>
-         <div className='mt-auto'>
-            <Footer />
-         </div>
+         </main>
+
+         <Footer />
       </div>
    );
 };

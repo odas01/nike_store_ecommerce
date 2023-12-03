@@ -1,19 +1,22 @@
-import { Button, Error, Input } from '@/components';
-import { BsGoogle } from 'react-icons/bs';
-import { useGoogleLogin } from '@react-oauth/google';
 import * as zod from 'zod';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import authStore from '@/stores/authStore';
-import { useMutation } from '@tanstack/react-query';
-import { authApi } from '@/api';
-import { ErrorResponse, ILogin } from '@/types';
-import { notify } from '@/helpers';
-import DotLoader from 'react-spinners/DotLoader';
 import { twMerge } from 'tailwind-merge';
+import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import cartStore from '@/stores/cartStore';
+import DotLoader from 'react-spinners/DotLoader';
+import { useMutation } from '@tanstack/react-query';
 import { Link, useNavigate } from 'react-router-dom';
+import { useGoogleLogin } from '@react-oauth/google';
+import { zodResolver } from '@hookform/resolvers/zod';
+
+import { BsGoogle } from 'react-icons/bs';
+
+import { Button, Error, Input } from '@/components';
+
+import { authApi } from '@/api';
+import { notify } from '@/helpers';
+import authStore from '@/stores/authStore';
+import cartStore from '@/stores/cartStore';
+import { ILogin } from '@/types';
 
 const formSchema = zod.object({
    email: zod.string().nonempty('Email is required!').email('Invalid email'),
@@ -24,11 +27,11 @@ type LoginFormValues = zod.infer<typeof formSchema>;
 
 const Login = () => {
    const { getCart } = cartStore();
-   const { setCurrentUser, saveToken } = authStore();
+   const { setCurrentUser, saveToken, previousLocation } = authStore();
 
-   const { t } = useTranslation(['home', 'mutual']);
+   const { t, i18n } = useTranslation(['home', 'mutual']);
    const navigate = useNavigate();
-
+   const isVnLang = i18n.language === 'vi';
    const {
       register,
       handleSubmit,
@@ -40,16 +43,16 @@ const Login = () => {
 
    const loginMutation = useMutation({
       mutationFn: (values: ILogin) => authApi.login(values),
-      onSuccess: async ({ user, token }) => {
+      onSuccess: async ({ user, token, message }) => {
          saveToken(token);
          setCurrentUser(user);
          getCart();
-         notify('success', `Welcome ${user.name} to Nike Store`);
-         navigate('/');
+         navigate(previousLocation);
+         notify('success', isVnLang ? message.vi : message.en);
       },
 
-      onError: (error: ErrorResponse) => {
-         notify('error', error.message);
+      onError: ({ message }) => {
+         notify('error', isVnLang ? message.vi : message.en);
       },
    });
 
@@ -60,11 +63,11 @@ const Login = () => {
          setCurrentUser(user);
          getCart();
          notify('success', `Welcome ${user.name} to Nike Store`);
-         navigate('/');
+         navigate(previousLocation);
       },
 
-      onError: (error: ErrorResponse) => {
-         notify('error', error.message);
+      onError: ({ message }) => {
+         notify('error', isVnLang ? message.vi : message.en);
       },
    });
 
@@ -80,8 +83,8 @@ const Login = () => {
 
    return (
       <div className='space-y-10'>
-         <h3 className='text-2xl text-center'>Login your account</h3>
-         <div className='w-full rounded-md shadow-lg px-7 py-8 bg-white'>
+         <h3 className='text-2xl text-center'>{t('auth.loginYourAcc')}</h3>
+         <div className='w-full py-8 bg-white rounded-md shadow-lg px-7'>
             <div className='space-y-3'>
                <div className='flex flex-col'>
                   <span className='text-13'>Email</span>
@@ -106,7 +109,7 @@ const Login = () => {
                   />
                   <Error message={errors.password?.message} />
                   <Link to='/forgot-password' className='ml-auto text-13'>
-                     Forgot password?
+                     {t('auth.forgotPass')}?
                   </Link>
                </div>
             </div>

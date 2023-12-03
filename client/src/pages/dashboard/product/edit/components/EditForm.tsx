@@ -1,5 +1,5 @@
+import * as z from 'zod';
 import { Col, Row } from 'antd';
-import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from '@tanstack/react-query';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -14,10 +14,9 @@ import {
    Skeleton,
 } from '@/components';
 
-import { ProductEdit } from '@/types';
 import { categoryApi } from '@/api';
+import { ProductEdit } from '@/types';
 import { genders, store as storeConst } from '@/constants';
-import * as z from 'zod';
 
 type Gender = (typeof genders)[number];
 
@@ -43,7 +42,7 @@ interface EditFormProps {
    submit: (value: ProductEdit) => void;
 }
 
-const EditForm: FC<EditFormProps> = ({ value, submit }) => {
+const EditForm: React.FC<EditFormProps> = ({ value, submit }) => {
    const { t, i18n } = useTranslation(['dashboard', 'mutual']);
    const isVnLang = i18n.language === 'vi';
    const props = useForm<ProductEdit>({
@@ -120,7 +119,7 @@ const EditForm: FC<EditFormProps> = ({ value, submit }) => {
                   </Col>
 
                   {/* STORE */}
-                  <Col span={12} order={4}>
+                  <Col span={12} order={5}>
                      <div className='flex flex-col space-y-1'>
                         <label htmlFor='store' className='font-medium'>
                            {t('label.store', { ns: 'mutual' })}
@@ -138,7 +137,7 @@ const EditForm: FC<EditFormProps> = ({ value, submit }) => {
                                        clearErrors('store');
                                     }}
                                  >
-                                    {t(`store.${store}`, { ns: 'mutual' })}
+                                    {store}
                                  </div>
                               ),
                            }))}
@@ -179,7 +178,7 @@ const EditForm: FC<EditFormProps> = ({ value, submit }) => {
                                           clearErrors('category');
                                        }}
                                     >
-                                       {isVnLang ? item.vnName : item.name}
+                                       {item.name}
                                     </div>
                                  ),
                               }))}
@@ -200,7 +199,7 @@ const EditForm: FC<EditFormProps> = ({ value, submit }) => {
                   </Col>
 
                   {/* GENDERS */}
-                  <Col span={12} order={2}>
+                  <Col span={12} order={4}>
                      <div className='flex flex-col space-y-1'>
                         <label htmlFor='genders' className='font-medium'>
                            {t('label.gender', { ns: 'mutual' })}
@@ -216,9 +215,10 @@ const EditForm: FC<EditFormProps> = ({ value, submit }) => {
                                        clearErrors('genders');
                                     }}
                                  >
-                                    {t(`gender.${gender as Gender}`, {
+                                    {gender}
+                                    {/* {t(`gender.${gender as Gender}`, {
                                        ns: 'mutual',
-                                    })}
+                                    })} */}
                                  </div>
                               ),
                            }))}
@@ -266,7 +266,7 @@ const EditForm: FC<EditFormProps> = ({ value, submit }) => {
                   </Col>
 
                   {/* DISCOUNT */}
-                  <Col span={12} order={5}>
+                  <Col span={12} order={3}>
                      <div className='relative flex flex-col space-y-1'>
                         <label htmlFor='price' className='font-medium'>
                            {t('label.discount', { ns: 'mutual' })}
@@ -292,7 +292,7 @@ const EditForm: FC<EditFormProps> = ({ value, submit }) => {
                      </div>
                   </Col>
 
-                  <Col span={12} order={6}>
+                  <Col span={24} order={6}>
                      <div className='flex flex-col space-y-1'>
                         <label htmlFor='desc' className='font-medium'>
                            {t('label.desc', { ns: 'mutual' })}

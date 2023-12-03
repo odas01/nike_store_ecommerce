@@ -22,8 +22,6 @@ export const sendMailForgotPassword = async (
    userId: string,
    token: string
 ) => {
-   console.log(email, userId, token);
-
    await transporter.sendMail({
       from: process.env.EMAIL_NAME,
       to: email,

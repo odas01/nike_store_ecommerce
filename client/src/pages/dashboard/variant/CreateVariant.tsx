@@ -1,13 +1,13 @@
+import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { useQuery } from '@tanstack/react-query';
 
-import Title from '@/layouts/dashboard/components/Title';
-import { Button, LoadingOverlay, PageTitle } from '@/components';
-import { VariantForm as VariantFormValue } from '@/types';
 import VariantForm from './components/VariantForm';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { useNavigate, useParams } from 'react-router-dom';
+import Title from '@/layouts/dashboard/components/Title';
+import { LoadingOverlay, PageTitle } from '@/components';
+
 import { productApi } from '@/api';
-import { Spin } from 'antd';
+import { VariantForm as VariantFormValue } from '@/types';
 
 const DEFAULT_FORM_VALUE: VariantFormValue = {
    product_id: '',
@@ -22,7 +22,6 @@ const DEFAULT_FORM_VALUE: VariantFormValue = {
 
 function CreateVariant() {
    const { slug } = useParams();
-   const navigate = useNavigate();
    const { t } = useTranslation(['dashboard']);
 
    const { data, isLoading } = useQuery({
@@ -34,11 +33,7 @@ function CreateVariant() {
       <>
          <PageTitle title='Add variant' />
          <Title title={t('variant.createTitle')} />
-         {isLoading && (
-            <LoadingOverlay>
-               <Spin size='large' />
-            </LoadingOverlay>
-         )}
+         {isLoading && <LoadingOverlay />}
          {data && (
             <>
                <div className='flex items-center justify-between h-8 mt-4'>

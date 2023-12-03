@@ -6,8 +6,8 @@ import { FiTrash } from 'react-icons/fi';
 
 import { UploadButton } from '@/components';
 
-import { ProductFormValue, Image as IImage } from '@/types';
 import { VariantFormContext } from './VariantForm';
+import { ProductFormValue, Image as IImage } from '@/types';
 
 export const UploadImages = () => {
    const { control } = useFormContext<ProductFormValue>();

@@ -10,6 +10,7 @@ router.post('/signup', auth.signup);
 
 router.post('/admin/login', auth.adminLogin);
 router.post('/admin/signup', checkAuth, verifyRoot, auth.adminSignup);
+router.post('/admin/change-password', checkAuth, auth.adminChangePassword);
 
 router.post('/change-password', checkAuth, auth.changePassword);
 router.post('/forgot-password', auth.forgotPassword);

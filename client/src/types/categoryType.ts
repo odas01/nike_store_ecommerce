@@ -1,4 +1,4 @@
-import { ListWithParams } from './listWithParamsType';
+import { Message, ListWithParams } from '.';
 
 export interface ICategory {
    _id: string;
@@ -14,3 +14,8 @@ export interface AllCategories extends ListWithParams {
 }
 
 export type CagtegoryFormValue = Omit<ICategory, '_id' | 'createdAt'>;
+
+export interface CategoryResponse {
+   category: ICategory;
+   message: Message;
+}

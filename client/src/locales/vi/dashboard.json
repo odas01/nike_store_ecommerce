@@ -2,8 +2,7 @@
    "placeholderSearch": {
       "searchByName": "Tìm kiếm theo tên...",
       "searchByNamePhoneEmail": "Tìm kiếm tên, số điện thoại hoặc email...",
-      "colorName": "Color name",
-      "chooesColorBelow": "Choose color hex below"
+      "searchByPhone": "Tìm kiếm theo số điện thoại..."
    },
    "role": {
       "root": "Root",
@@ -11,8 +10,8 @@
       "customer": "Khách hàng"
    },
    "overview": {
-      "title": "Tổng quan",
-      "aside": "Tổng quan",
+      "title": "Thống kê",
+      "aside": "Thống kê",
       "todayOrder": "Đơn hôm nay",
       "yesdOrder": "Đơn hôm qua",
       "thisM": "Tháng này",
@@ -20,6 +19,9 @@
       "all": "Tất cả đơn",
       "cash": "Tiền mặt",
       "totalOrder": "Tổng đơn hàng",
+      "totalProduct": "Tổng sản phẩm",
+      "totalAdmin": "Tổng admin",
+      "totalCustomer": "Tổng khách hàng",
       "pending": "Chờ xác nhận",
       "processing": "Đang giao",
       "delivered": "Đã giao",
@@ -72,7 +74,13 @@
       "passwordDefault": "Mật khẩu mặc định"
    },
    "order": {
-      "title": "Danh sách đơn hàng",
+      "title": {
+         "orders": "Danh sách đơn hàng",
+         "pending": "Danh sách đơn hàng chờ duyệt",
+         "processing": "Danh sách đơn hàng đang giao",
+         "delivered": "Danh sách đơn hàng hoàn thành",
+         "cancel": "Danh sách đơn hàng đã hủy"
+      },
       "aside": "Đơn hàng",
       "customerName": "Tên khách hàng",
       "totalAmout": "Tổng tiền",
@@ -80,6 +88,9 @@
       "cancel": "Hủy",
       "order": "Đơn hàng",
       "invoice": "Hóa đơn"
+   },
+   "profile": {
+      "title": "Hồ sơ"
    },
    "action": {
       "addVariant": "Thêm biến thể",
@@ -106,5 +117,7 @@
          "phone": "Số điện thoại quản trị viên",
          "address": "Địa chỉ quản trị viên"
       }
-   }
+   },
+
+   "catalog": "Mục lục"
 }

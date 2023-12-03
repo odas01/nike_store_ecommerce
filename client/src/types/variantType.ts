@@ -1,4 +1,4 @@
-import { Image } from '.';
+import { Image, Message } from '.';
 
 interface Size {
    size: string;
@@ -23,3 +23,8 @@ export type VariantForm = Omit<Variant, 'color'> & {
    color: string;
    product_id: string;
 };
+
+export interface VariantResponse {
+   variant: Variant;
+   message: Message;
+}

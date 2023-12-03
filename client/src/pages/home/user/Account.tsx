@@ -1,14 +1,15 @@
-import authStore from '@/stores/authStore';
 import { Col, Row } from 'antd';
-import { AiOutlineProfile } from 'react-icons/ai';
+import { useTranslation } from 'react-i18next';
+import { NavLink, Outlet, useNavigate } from 'react-router-dom';
+import authStore from '@/stores/authStore';
+
 import { FiLogOut } from 'react-icons/fi';
 import { MdPassword } from 'react-icons/md';
 import { TfiMenuAlt } from 'react-icons/tfi';
-import { Link, Outlet, useNavigate } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
+import { AiOutlineProfile } from 'react-icons/ai';
+
 import images from '@/assets/images';
 import cartStore from '@/stores/cartStore';
-import { BsChatDots, BsFillChatDotsFill } from 'react-icons/bs';
 
 const Account = () => {
    const { deleteCart } = cartStore();
@@ -30,36 +31,41 @@ const Account = () => {
                      <span className='font-semibold '>{currentUser?.name}</span>
                   </div>
                   <div className='flex flex-col space-y-4'>
-                     <Link
+                     <NavLink
                         to='profile'
-                        className='flex items-center space-x-2 duration-75 hover:opacity-80'
+                        className={({ isActive }) =>
+                           `flex items-center space-x-2 duration-100 hover:font-medium ${
+                              isActive ? 'font-medium' : ''
+                           }`
+                        }
                      >
                         <AiOutlineProfile size={16} />
 
                         <span>{t('updateProfile')}</span>
-                     </Link>
-                     <Link
-                        to='chat'
-                        className='flex items-center space-x-2 duration-75 hover:opacity-80'
-                     >
-                        <BsChatDots size={16} />
-                        <span>Chat</span>
-                     </Link>
-                     <Link
+                     </NavLink>
+                     <NavLink
                         to='my-orders'
-                        className='flex items-center space-x-2 duration-75 hover:opacity-80'
+                        className={({ isActive }) =>
+                           `flex items-center space-x-2 duration-100 hover:font-medium ${
+                              isActive ? 'font-medium' : ''
+                           }`
+                        }
                      >
                         <TfiMenuAlt size={16} />
-                        <span>{t('orders')}</span>
-                     </Link>
-                     <Link
+                        <span>{t('history')}</span>
+                     </NavLink>
+                     <NavLink
                         to='change-password'
-                        className='flex items-center space-x-2 duration-75 hover:opacity-80'
+                        className={({ isActive }) =>
+                           `flex items-center space-x-2 duration-100 hover:font-medium ${
+                              isActive ? 'font-medium' : ''
+                           }`
+                        }
                      >
                         <MdPassword size={16} />
 
                         <span>{t('changePass')}</span>
-                     </Link>
+                     </NavLink>
                      <div
                         className='flex items-center space-x-2 duration-75 cursor-pointer hover:opacity-80'
                         onClick={() => {

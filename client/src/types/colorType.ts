@@ -1,4 +1,4 @@
-import { ListWithParams } from './listWithParamsType';
+import { Message, ListWithParams } from '.';
 
 export interface IColor {
    _id: string;
@@ -13,3 +13,8 @@ export interface AllColors extends ListWithParams {
 }
 
 export type ColorFormValues = Omit<IColor, '_id' | 'createdAt'>;
+
+export interface ColorResponse {
+   color: IColor;
+   message: Message;
+}

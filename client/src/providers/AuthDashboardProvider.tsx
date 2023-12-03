@@ -1,13 +1,13 @@
-import authStore from '@/stores/authStore';
-import { FC, ReactNode } from 'react';
-import images from '@/assets/images';
 import LoginForm from '@/pages/dashboard/auth/LoginForm';
 
+import authStore from '@/stores/authStore';
+import images from '@/assets/images';
+
 interface AuthDashboardProviderProps {
-   children: ReactNode;
+   children: React.ReactNode;
 }
 
-const AuthDashboardProvider: FC<AuthDashboardProviderProps> = ({
+const AuthDashboardProvider: React.FC<AuthDashboardProviderProps> = ({
    children,
 }) => {
    const { isLogin } = authStore();

@@ -13,9 +13,15 @@ export interface ICartItem {
    isMax?: boolean;
 }
 
-export interface CartUpload {
+export interface CartItemUpLoad {
    variant: string;
    qty: number;
    size: string;
 }
-export type CartItemUpdate = Omit<CartUpload, 'product'>;
+
+export type CartItemUpdate = Omit<CartItemUpLoad, 'product'>;
+
+export interface CartResponse {
+   items: ICartItem[];
+   total: number;
+}

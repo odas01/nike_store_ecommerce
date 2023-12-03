@@ -79,8 +79,4 @@ productSchema.pre('save', function (next) {
    next();
 });
 
-productSchema.method('addSlug', function () {
-   this.slug = '1234';
-});
-
 export default model<IProduct>('Product', productSchema);

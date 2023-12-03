@@ -6,6 +6,7 @@ import { IVariant } from '../types/product.type';
 import { uploadMultiple, uploadSingle } from '../middleware/images.middleware';
 import Variant from '../models/variant.model';
 import Order from '../models/order.model';
+import slugify from 'slugify';
 
 const createVariant = async (variants: IVariant) => {
    const thumbnail = await uploadSingle(variants.thumbnail.url);
@@ -27,7 +28,10 @@ export const create = async (req: Request, res: Response) => {
    try {
       const foundProduct = await Product.findOne({ name: value.name });
       if (foundProduct) {
-         return responseHandler.badrequest(res, 'Product name already exists');
+         return responseHandler.badrequest(res, {
+            vi: 'Tên sản phẩm đã tồn tại',
+            en: 'Product name already exists',
+         });
       }
 
       const variant = await createVariant({
@@ -42,7 +46,13 @@ export const create = async (req: Request, res: Response) => {
          variants: [variant._id],
       });
 
-      responseHandler.created(res, product);
+      responseHandler.created(res, {
+         product,
+         message: {
+            vi: 'Thêm sản phẩm thành công',
+            en: 'Successfully added product',
+         },
+      });
    } catch (err) {
       responseHandler.error(res);
    }
@@ -75,10 +85,10 @@ export const getAll = async (req: Request, res: Response) => {
                },
             },
          ])
+         .lean()
          .sort(res.locals.sort)
          .skip(skip)
-         .limit(limit)
-         .lean();
+         .limit(limit);
 
       responseHandler.ok(res, { products, page, lastPage, total });
    } catch (err) {
@@ -88,8 +98,16 @@ export const getAll = async (req: Request, res: Response) => {
 
 export const getOne = async (req: Request, res: Response) => {
    const slug = req.params.slug;
+   const status = req.query.status;
+   const filter: any = {
+      slug,
+   };
+   if (status) {
+      filter.status = status;
+   }
    try {
-      const product = await Product.findOne({ slug })
+      const product = await Product.findOne(filter)
+         .lean()
          .populate({
             path: 'category',
             select: '-_id name vnName store',
@@ -101,6 +119,9 @@ export const getOne = async (req: Request, res: Response) => {
                select: '-_id name vnName value',
             },
          });
+      if (!product) {
+         return responseHandler.notfound(res);
+      }
 
       responseHandler.ok(res, product);
    } catch (err) {
@@ -110,11 +131,37 @@ export const getOne = async (req: Request, res: Response) => {
 
 export const updateOne = async (req: Request, res: Response) => {
    const { slug } = req.params;
+
    try {
+      if (req.body.name) {
+         const foundProduct = await Product.findOne({ name: req.body.name });
+
+         if (foundProduct) {
+            return responseHandler.badrequest(res, {
+               vi: 'Tên sản phẩm đã tồn tại',
+               en: 'Product name already exists',
+            });
+         }
+
+         const foundProduct2 = await Product.findOne({ slug }).lean();
+         if (foundProduct2 && foundProduct2.name !== req.body.name) {
+            req.body.slug = slugify(req.body.name, {
+               lower: true,
+            });
+         }
+      }
+
       const product = await Product.findOneAndUpdate({ slug }, req.body, {
          new: true,
+      }).lean();
+
+      return responseHandler.ok(res, {
+         product,
+         message: {
+            vi: 'Cập nhật sản phẩm thành công',
+            en: 'Successfully updated product',
+         },
       });
-      return responseHandler.ok(res, product);
    } catch (err) {
       responseHandler.error(res);
    }
@@ -123,23 +170,28 @@ export const updateOne = async (req: Request, res: Response) => {
 export const deleteOne = async (req: Request, res: Response) => {
    const _id = req.params.slug;
    try {
-      const order = await Order.find({ 'products.product': _id });
+      const order = await Order.find({ 'products.product': _id }).lean();
       if (order.length > 0) {
-         return responseHandler.badrequest(
-            res,
-            'Paid products cannot be deleted'
-         );
+         return responseHandler.badrequest(res, {
+            vi: 'Khổng thể xóa sản phẩm đã thanh toán',
+            en: 'Paid products cannot be deleted',
+         });
       }
 
-      const product = await Product.findByIdAndDelete({ _id });
+      const product = await Product.findByIdAndDelete({ _id }).lean();
       await Variant.deleteMany({
          _id: {
             $in: product?.variants,
          },
       });
-      responseHandler.ok(res, {});
+      responseHandler.ok(res, {
+         message: {
+            vi: 'Xóa sản phẩm thành công',
+            en: 'Successfully deleted product',
+         },
+      });
    } catch (err) {
-      console.log(err);
+      responseHandler.error(res);
    }
 };
 
@@ -152,4 +204,17 @@ export const similar = async (
    res.locals.filter.slug = { $ne: slug };
 
    next();
+};
+
+export const count = async (
+   req: Request,
+   res: Response,
+   next: NextFunction
+) => {
+   try {
+      const count = await Product.countDocuments({});
+      responseHandler.ok(res, { count });
+   } catch (err) {
+      responseHandler.error(res);
+   }
 };

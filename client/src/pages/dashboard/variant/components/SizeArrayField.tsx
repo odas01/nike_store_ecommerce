@@ -117,7 +117,7 @@ const SizeArrayField: FC<{
                }}
             >
                <IoIosAddCircleOutline color='inherit' size={18} />
-               <span>{t('action.addColor')}</span>
+               <span>{t('action.addSize')}</span>
             </Button>
          </div>
       </div>

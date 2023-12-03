@@ -1,4 +1,3 @@
-import { Spin } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -9,7 +8,7 @@ import { LoadingOverlay, PageTitle } from '@/components';
 
 import { notify } from '@/helpers';
 import { productApi } from '@/api';
-import { ErrorResponse, ProductFormValue } from '@/types';
+import { ProductFormValue } from '@/types';
 
 const DEFAULT_FORM_VALUE: ProductFormValue = {
    name: '',
@@ -39,20 +38,22 @@ const DEFAULT_FORM_VALUE: ProductFormValue = {
 function CreateProduct() {
    const navigate = useNavigate();
    const queryClient = useQueryClient();
-   const { t } = useTranslation(['dashboard', 'mutual']);
-
+   const { t, i18n } = useTranslation(['dashboard', 'mutual']);
+   const isVnLang = i18n.language === 'vi';
    const createProductMutation = useMutation({
       mutationFn: (values: ProductFormValue) => {
          return productApi.create(values);
       },
-      onSuccess: () => {
-         navigate(-1);
+      onSuccess: ({ message }) => {
+         // navigate(-1);
          queryClient.invalidateQueries({
             queryKey: ['products'],
          });
+         notify('success', isVnLang ? message.vi : message.en);
       },
-      onError: (error: ErrorResponse) => {
-         notify('error', error.message);
+
+      onError: ({ message }) => {
+         notify('error', isVnLang ? message.vi : message.en);
       },
    });
 
@@ -64,11 +65,7 @@ function CreateProduct() {
       <>
          <PageTitle title='Create product' />
          <Title title={t('product.createTitle')} />
-         {createProductMutation.isLoading && (
-            <LoadingOverlay>
-               <Spin size='large' />
-            </LoadingOverlay>
-         )}
+         {createProductMutation.isLoading && <LoadingOverlay />}
          <div className='py-4 mt-4'>
             <CreateForm value={DEFAULT_FORM_VALUE} submit={submit} />
          </div>

@@ -42,6 +42,13 @@ module.exports = {
             13: '13px',
             15: '15px',
          },
+         container: {
+            center: true,
+            padding: {
+               DEFAULT: '1rem',
+               '2xl': '5rem',
+            },
+         },
       },
    },
 };

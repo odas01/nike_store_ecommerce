@@ -1,14 +1,16 @@
 import React from 'react';
-import { AiOutlineLoading3Quarters } from 'react-icons/ai';
+import { ScaleLoader } from 'react-spinners';
 
-type Props = {
-   children?: React.ReactNode;
-};
-
-const LoadingOverlay: React.FC<Props> = ({ children }) => {
+const LoadingOverlay = () => {
    return (
-      <div className='h-[100vh] bg-[rgba(0,0,0,0.5)] fixed z-50 inset-0 flex justify-center items-center'>
-         {children}
+      <div className='h-[100vh] bg-[rgba(0,0,0,0.5)] fixed z-[20000] inset-0 flex justify-center items-center'>
+         <ScaleLoader
+            color='white'
+            width={6}
+            height={40}
+            loading={true}
+            speedMultiplier={2}
+         />
       </div>
    );
 };

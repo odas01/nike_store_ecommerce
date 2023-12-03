@@ -1,6 +1,6 @@
 import express from 'express';
 import * as product from '../controllers/product.controller';
-import * as productColor from '../controllers/variant.controller';
+import * as variant from '../controllers/variant.controller';
 
 import { checkAuth, verifyAdminRoot } from '../middleware/verify.middleware';
 import filterProduct from '../middleware/filterProduct.mdw';
@@ -26,26 +26,10 @@ router
    .route('/d/:slug/similar')
    .get(sortProduct, filterProduct, product.similar, product.getAll);
 
-router.route('/color').post(checkAuth, verifyAdminRoot, productColor.create);
-
 router
-   .route('/color/:id')
-   .put(checkAuth, verifyAdminRoot, productColor.updateOne)
-   .delete(checkAuth, verifyAdminRoot, productColor.deleteOne);
+   .route('/deleteImages')
+   .post(checkAuth, verifyAdminRoot, variant.deleteImages);
 
-router
-   .route('/color/:id')
-   .put(checkAuth, verifyAdminRoot, productColor.updateOne)
-   .delete(checkAuth, verifyAdminRoot, productColor.deleteOne);
-
-router
-   .route('/color/deleteImages')
-   .post(checkAuth, verifyAdminRoot, productColor.deleteImages);
-
-router
-   .route('/d/:slug/images')
-   .get(product.getOne)
-   .put(checkAuth, verifyAdminRoot, product.updateOne)
-   .delete(checkAuth, verifyAdminRoot, product.deleteOne);
+router.route('/count').get(checkAuth, verifyAdminRoot, product.count);
 
 export default router;

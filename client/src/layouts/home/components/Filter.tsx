@@ -1,18 +1,20 @@
-import { memo, useEffect, useState } from 'react';
-import { Link, NavLink, useParams } from 'react-router-dom';
-import { Checkbox, Row, Col } from 'antd';
-import { FaCheck } from 'react-icons/fa';
-import { Collapse } from 'antd';
-import { AiOutlinePlus, AiOutlineMinus } from 'react-icons/ai';
-import { CheckboxValueType } from 'antd/es/checkbox/Group';
-import { useQueries } from '@tanstack/react-query';
-import { categoryApi, colorApi, sizeApi } from '@/api';
-import { IColor } from '@/types';
-import { Filter } from '@/pages/home/Shop';
-import { store } from '@/constants';
 import { useTranslation } from 'react-i18next';
+import { memo, useEffect, useState } from 'react';
+import { Checkbox, Row, Col, Collapse } from 'antd';
+import { useQueries } from '@tanstack/react-query';
+import { CheckboxValueType } from 'antd/es/checkbox/Group';
+import { Link, NavLink, useParams } from 'react-router-dom';
+
+import { FaCheck } from 'react-icons/fa';
+import { AiOutlinePlus, AiOutlineMinus } from 'react-icons/ai';
+
 import { Spinner } from '@/components';
+
+import { IColor } from '@/types';
+import { store } from '@/constants';
 import { priceFormat } from '@/helpers';
+import { Filter } from '@/pages/home/Shop';
+import { categoryApi, colorApi, sizeApi } from '@/api';
 
 type Props = {
    setFilter: React.Dispatch<React.SetStateAction<Partial<Filter>>>;
@@ -24,7 +26,7 @@ const Filter: React.FC<Props> = ({ setFilter }) => {
    const [colorOptions, setColorOptions] = useState<string[]>([]);
 
    const { t, i18n } = useTranslation(['home', 'mutual']);
-   const isVn = i18n.language === 'vi';
+   const isVnLang = i18n.language === 'vi';
 
    const params = useParams();
    const results = useQueries({
@@ -105,13 +107,13 @@ const Filter: React.FC<Props> = ({ setFilter }) => {
    };
 
    return (
-      <div className='text-sm max-h-[670px] space-y-6 overflow-hidden overflow-y-auto scrollbar-hide flex flex-col'>
+      <div className='text-sm max-h-[670px] space-y-6 overflow-hidden overflow-y-auto scrollbar-short flex flex-col pr-2'>
          {/* CATEGORY */}
          {loading1 ? (
             <Spinner />
          ) : (
             categoryData && (
-               <div className='space-y-1 '>
+               <div className='space-y-1 font-medium'>
                   <Link to={`/shop`} className='capitalize text-[15px]'>
                      {t('allProducts')}
                   </Link>
@@ -134,12 +136,12 @@ const Filter: React.FC<Props> = ({ setFilter }) => {
                                        className={({ isActive }) =>
                                           `capitalize mb-1  ${
                                              isActive
-                                                ? 'font-semibold duration-150 transition-all text-[15px] !underline !underline-offset-4 !decoration-gray-600'
-                                                : ''
+                                                ? 'font-medium duration-150 transition-all text-[15px] !underline !underline-offset-4 !decoration-gray-600'
+                                                : 'font-normal'
                                           }`
                                        }
                                     >
-                                       {isVn ? item.vnName : item.name}
+                                       {isVnLang ? item.vnName : item.name}
                                     </NavLink>
                                  ))}
                            </div>
@@ -162,7 +164,7 @@ const Filter: React.FC<Props> = ({ setFilter }) => {
                {
                   key: '1',
                   label: (
-                     <span className='text-[15px] text-[#252a2b] inline-block mb-2'>
+                     <span className='text-[15px] text-[#252a2b] inline-block mb-2 font-semibold'>
                         {t('label.price', { ns: 'mutual' })}
                      </span>
                   ),
@@ -174,9 +176,11 @@ const Filter: React.FC<Props> = ({ setFilter }) => {
                               label: (
                                  <div className='space-x-1'>
                                     <span className='text-xs'>
-                                       {t('category.filter.under')}
+                                       {t('filter.under')}
                                     </span>
-                                    <span>{priceFormat(1000000, isVn)}</span>
+                                    <span>
+                                       {priceFormat(1000000, isVnLang)}
+                                    </span>
                                  </div>
                               ),
                               value: '0:1000000',
@@ -184,9 +188,13 @@ const Filter: React.FC<Props> = ({ setFilter }) => {
                            {
                               label: (
                                  <div className='space-x-1'>
-                                    <span>{priceFormat(1000000, isVn)}</span>
+                                    <span>
+                                       {priceFormat(1000000, isVnLang)}
+                                    </span>
                                     <span>-</span>
-                                    <span>{priceFormat(2999999, isVn)}</span>
+                                    <span>
+                                       {priceFormat(2999999, isVnLang)}
+                                    </span>
                                  </div>
                               ),
                               value: '1000000:2999999',
@@ -194,9 +202,13 @@ const Filter: React.FC<Props> = ({ setFilter }) => {
                            {
                               label: (
                                  <div className='space-x-1'>
-                                    <span>{priceFormat(3000000, isVn)}</span>
+                                    <span>
+                                       {priceFormat(3000000, isVnLang)}
+                                    </span>
                                     <span>-</span>
-                                    <span>{priceFormat(4999999, isVn)}</span>
+                                    <span>
+                                       {priceFormat(4999999, isVnLang)}
+                                    </span>
                                  </div>
                               ),
                               value: '3000000:4999999',
@@ -205,9 +217,11 @@ const Filter: React.FC<Props> = ({ setFilter }) => {
                               label: (
                                  <div className='space-x-1'>
                                     <span className='text-xs'>
-                                       {t('category.filter.over')}
+                                       {t('filter.over')}
                                     </span>
-                                    <span>{priceFormat(5000000, isVn)}</span>
+                                    <span>
+                                       {priceFormat(5000000, isVnLang)}
+                                    </span>
                                  </div>
                               ),
                               value: '5000000',
@@ -239,7 +253,7 @@ const Filter: React.FC<Props> = ({ setFilter }) => {
                         {
                            key: '1',
                            label: (
-                              <span className='text-[15px] text-[#252a2b]'>
+                              <span className='text-[15px] text-[#252a2b] font-semibold'>
                                  {t('label.size', { ns: 'mutual' })}
                               </span>
                            ),
@@ -293,7 +307,7 @@ const Filter: React.FC<Props> = ({ setFilter }) => {
                      {
                         key: '1',
                         label: (
-                           <span className='text-[15px] text-[#252a2b] inline-block mb-4'>
+                           <span className='text-[15px] text-[#252a2b] inline-block mb-4 font-semibold'>
                               {t('label.color', { ns: 'mutual' })} (
                               {colorData?.total})
                            </span>
@@ -320,8 +334,8 @@ const Filter: React.FC<Props> = ({ setFilter }) => {
                                              />
                                           )}
                                        </div>
-                                       <span className='text-xs font-semibold capitalize'>
-                                          {isVn ? item.vnName : item.name}
+                                       <span className='text-xs font-medium capitalize'>
+                                          {isVnLang ? item.vnName : item.name}
                                        </span>
                                     </div>
                                  </Col>

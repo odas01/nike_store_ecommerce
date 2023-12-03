@@ -19,7 +19,9 @@
       "buyNow": "Buy now",
       "addToCart": "Add to cart",
       "deleteAll": "Delete all",
-      "changePasswordd": "Change password"
+      "send": "Send",
+      "changePasswordd": "Change password",
+      "refresh": "Refresh"
    },
    "status": {
       "status": "Status",
@@ -70,11 +72,12 @@
    "store": {
       "shoes": "Shoes",
       "clothing": "Clothing",
-      "gear": "Gear"
+      "accessories": "Accessories"
    },
    "notify": {
       "createSuccess": "Create successful",
-      "updateSuccess": "Update successful"
+      "updateSuccess": "Update successful",
+      "deleteSuccess": "Update successful"
    },
 
    "pagination": {
@@ -89,5 +92,11 @@
       "men": "Men",
       "women": "Women",
       "child": "Child"
+   },
+   "cash": "Cash",
+   "notfound": {
+      "pageNotFound": "Page not found",
+      "goHome": "Go home",
+      "previousPage": "Back to previous page"
    }
 }

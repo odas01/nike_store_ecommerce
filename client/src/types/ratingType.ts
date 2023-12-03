@@ -23,3 +23,9 @@ export type AllRatings = ListWithParams & {
    ratings: IRating[];
    rateCount: RateCount[];
 };
+
+export interface AvgRating {
+   avg: number;
+   length: number;
+   rateCount: RateCount[];
+}

@@ -1,25 +1,30 @@
-import images from '@/assets/images';
-import { Dropdown } from '@/components';
-import authStore from '@/stores/authStore';
 import { useTranslation } from 'react-i18next';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+
+import { BiLogIn } from 'react-icons/bi';
 import { TfiWorld } from 'react-icons/tfi';
 import { FiChevronDown, FiUser } from 'react-icons/fi';
-import { BiLogIn } from 'react-icons/bi';
-import { Link, useNavigate } from 'react-router-dom';
+
+import { Dropdown } from '@/components';
+
+import images from '@/assets/images';
+import authStore from '@/stores/authStore';
 import cartStore from '@/stores/cartStore';
 
 const TopHeader = () => {
    const navigate = useNavigate();
    const { t, i18n } = useTranslation(['mutual']);
-   const { currentUser, logOut } = authStore();
+   const { currentUser, logOut, setPreviousLocation } = authStore();
    const { deleteCart } = cartStore();
    const changeLng = (lng: 'vi' | 'en') => {
       i18n.changeLanguage(lng);
    };
    const lng = i18n.language === 'vi' ? 'Tiếng việt' : 'English';
 
+   const { pathname } = useLocation();
+
    return (
-      <div className='text-xs bg-[#E5E7EB]'>
+      <div className='text-xs'>
          <div className='container'>
             <div className='flex items-center justify-end space-x-5 h-9'>
                <Dropdown
@@ -31,7 +36,7 @@ const TopHeader = () => {
                      {
                         label: (
                            <div
-                              className='flex items-center px-2 py-1 space-x-2 cursor-pointer'
+                              className='flex items-center px-3 py-2 space-x-2 cursor-pointer'
                               onClick={() => changeLng('vi')}
                            >
                               <img
@@ -46,7 +51,7 @@ const TopHeader = () => {
                      {
                         label: (
                            <div
-                              className='flex items-center px-2 py-1 space-x-2 cursor-pointer'
+                              className='flex items-center px-3 py-2 space-x-2 cursor-pointer'
                               onClick={() => changeLng('en')}
                            >
                               <img
@@ -77,7 +82,7 @@ const TopHeader = () => {
                            label: (
                               <Link
                                  to='/account/profile'
-                                 className='inline-block py-2 pl-3 space-x-2 text-sm cursor-pointer pr-7'
+                                 className='inline-block px-3 py-2 space-x-2 text-sm font-medium cursor-pointer pr-7'
                               >
                                  {t('myAccount', { ns: 'home' })}
                               </Link>
@@ -87,7 +92,7 @@ const TopHeader = () => {
                            label: (
                               <Link
                                  to='/account/my-orders'
-                                 className='inline-block py-2 pl-3 space-x-2 text-sm cursor-pointer pr-7'
+                                 className='inline-block px-3 py-2 space-x-2 text-sm font-medium cursor-pointer pr-7'
                               >
                                  {t('orders', { ns: 'home' })}
                               </Link>
@@ -96,7 +101,7 @@ const TopHeader = () => {
                         {
                            label: (
                               <span
-                                 className='inline-block py-2 pl-3 space-x-2 text-sm cursor-pointer pr-7'
+                                 className='inline-block px-3 py-2 space-x-2 text-sm font-medium cursor-pointer pr-7'
                                  onClick={() => {
                                     logOut();
                                     deleteCart();
@@ -127,7 +132,10 @@ const TopHeader = () => {
                   <>
                      <div
                         className='flex items-center space-x-1 cursor-pointer'
-                        onClick={() => navigate('/login')}
+                        onClick={() => {
+                           navigate('/login');
+                           setPreviousLocation(pathname);
+                        }}
                      >
                         <BiLogIn size={18} />
                         <span>{t('action.login')}</span>

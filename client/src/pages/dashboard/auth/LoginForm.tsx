@@ -1,9 +1,15 @@
 import * as zod from 'zod';
 import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
+import { useMutation } from '@tanstack/react-query';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import authStore from '@/stores/authStore';
 import { Input, Error, Button } from '@/components';
+
+import authStore from '@/stores/authStore';
+import { authApi } from '@/api';
+import { ILogin } from '@/types';
+import { notify } from '@/helpers';
 
 const formSchema = zod.object({
    email: zod.string().nonempty('Email is required!').email('Invalid email'),
@@ -21,11 +27,26 @@ const LoginForm = () => {
       resolver: zodResolver(formSchema),
       mode: 'onChange',
    });
+   const { i18n, t } = useTranslation(['mutual', 'home']);
+   const isVnLang = i18n.language === 'vi';
 
-   const { adminLogin } = authStore();
+   const { saveToken, setCurrentUser } = authStore();
+
+   const loginMutation = useMutation({
+      mutationFn: (values: ILogin) => authApi.adminLogin(values),
+      onSuccess: async ({ user, token, message }) => {
+         saveToken(token);
+         setCurrentUser(user);
+         notify('success', isVnLang ? message.vi : message.en);
+      },
+
+      onError: ({ message }) => {
+         notify('error', isVnLang ? message.vi : message.en);
+      },
+   });
 
    const onSubmit = handleSubmit(async (values) => {
-      await adminLogin(values);
+      loginMutation.mutate(values);
    });
 
    return (
@@ -34,23 +55,24 @@ const LoginForm = () => {
             <div className='flex flex-col'>
                <label htmlFor='email'>Email</label>
                <Input
-                  placeholder='Type your email'
+                  placeholder={t('placeHolder.typeEmail', { ns: 'home' })}
                   {...register('email')}
                   isError={!!errors.email}
                />
                <Error message={errors?.email && errors.email.message} />
             </div>
             <div className='flex flex-col'>
-               <label htmlFor='password'>Password</label>
+               <label htmlFor='password'>{t('label.password')}</label>
                <Input
-                  placeholder='Type your password'
+                  type='password'
+                  placeholder={t('placeHolder.typePassword', { ns: 'home' })}
                   {...register('password')}
                   isError={!!errors.password}
                />
                <Error message={errors?.password && errors.password.message} />
             </div>
          </div>
-         <Button className='w-full py-3 mt-4'>Log in</Button>
+         <Button className='w-full py-3 mt-4'>{t('action.login')}</Button>
       </form>
    );
 };

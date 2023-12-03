@@ -1,24 +1,29 @@
 import { useContext } from 'react';
-import { BsSun, BsMoon } from 'react-icons/bs';
 import { useTranslation } from 'react-i18next';
-import { Dropdown } from '@/components';
-import { LuLayoutDashboard } from 'react-icons/lu';
-import { CiLogout, CiSettings } from 'react-icons/ci';
-import { GiWorld } from 'react-icons/gi';
 
-import { ThemeContext } from '@/route/ThemeRoute';
+import { CiLogout } from 'react-icons/ci';
+import { BsSun, BsMoon } from 'react-icons/bs';
+import { GiWorld } from 'react-icons/gi';
+import { LuLayoutDashboard } from 'react-icons/lu';
+
+import { Dropdown } from '@/components';
+
 import images from '@/assets/images';
 import authStore from '@/stores/authStore';
+import { ThemeContext } from '@/route/ThemeRoute';
+import { BiUser } from 'react-icons/bi';
+import { Link } from 'react-router-dom';
 
 function Header() {
    const { isDarkMode, setIsDarkMode } = useContext(ThemeContext);
-   const { logOut } = authStore();
+   const { currentUser, logOut } = authStore();
+
    const { t, i18n } = useTranslation(['dashboard', 'mutual']);
+   const lng = i18n.language === 'vi' ? 'Tiếng việt' : 'English';
 
    const changeLng = (lng: 'vi' | 'en') => {
       i18n.changeLanguage(lng);
    };
-   const lng = i18n.language === 'vi' ? 'Tiếng việt' : 'English';
 
    return (
       <div className='flex justify-end items-center py-4 mb-4 border-b border-[#e8e8e8] dark:border-[rgb(58,58,58)]'>
@@ -79,16 +84,32 @@ function Header() {
                   items={[
                      {
                         label: (
-                           <div className='flex items-center px-3 py-2 space-x-2'>
+                           <Link
+                              to='/dashboard'
+                              className='flex items-center py-2 pl-3 pr-6 space-x-2'
+                           >
                               <LuLayoutDashboard />
                               <span>Dashboard</span>
-                           </div>
+                           </Link>
+                        ),
+                     },
+                     {
+                        label: (
+                           <Link
+                              to={`/dashboard/profile/${currentUser?._id}`}
+                              className='flex items-center py-2 pl-3 pr-6 space-x-2'
+                           >
+                              <BiUser />
+                              <span>
+                                 {t('action.profileSetting', { ns: 'mutual' })}
+                              </span>
+                           </Link>
                         ),
                      },
                      {
                         label: (
                            <div
-                              className='flex items-center px-3 py-2 space-x-2'
+                              className='flex items-center py-2 pl-3 pr-6 space-x-2'
                               onClick={logOut}
                            >
                               <CiLogout />
@@ -102,7 +123,7 @@ function Header() {
                   placement='top'
                >
                   <img
-                     src={images.avatar}
+                     src={currentUser?.avatar?.url || ''}
                      className='w-8 aspect-square'
                      alt='avatar'
                   />

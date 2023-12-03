@@ -1,10 +1,10 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-import { IUser, TokenUser } from '@/types';
 import { notify } from '@/helpers';
 import { token } from '@/constants';
 import { authApi, userApi } from '@/api';
+import { IUser, TokenUser } from '@/types';
 
 const ACCESS_TOKEN = token.access_token;
 const REFRESH_TOKEN = token.refresh_token;
@@ -12,6 +12,7 @@ const REFRESH_TOKEN = token.refresh_token;
 type Store = {
    currentUser: IUser | null;
    isLogin: boolean;
+   previousLocation: string;
 };
 
 type Actions = {
@@ -20,15 +21,16 @@ type Actions = {
    removeToken: () => void;
    setCurrentUser: (values: IUser) => void;
    updateInfo: (values: Partial<IUser>) => void;
+   setPreviousLocation: (location: string) => void;
    adminLogin: (value: any) => void;
    updateUser: (userId: string, data: any) => void;
    signinWithGoogle: (token: string) => any;
-   adminAuthChecker: () => void;
 };
 
 const initialState = {
    currentUser: null,
    isLogin: false,
+   previousLocation: '/',
 };
 
 const authStore = create<Store & Actions>()(
@@ -65,10 +67,11 @@ const authStore = create<Store & Actions>()(
                }));
             }
          },
+         setPreviousLocation: (location: string) =>
+            set({ previousLocation: location }),
          adminLogin: async (value) => {
             try {
                const { user, token } = await authApi.adminLogin(value);
-               console.log(user, token);
 
                get().saveToken(token);
 
@@ -79,14 +82,12 @@ const authStore = create<Store & Actions>()(
 
                notify('success', 'Welcome to dashboard');
             } catch (err: any) {
-               console.log(err);
-
                notify('error', err.message);
             }
          },
          updateUser: async (userId, value) => {
             try {
-               const user = await userApi.update(userId, value);
+               const { user } = await userApi.update(userId, value);
 
                set({
                   currentUser: user,
@@ -112,23 +113,13 @@ const authStore = create<Store & Actions>()(
                };
             }
          },
-         adminAuthChecker: async () => {
-            try {
-               const res: any = await authApi.authChecker();
-               if (res.role === 'customer') {
-                  get().logOut();
-               }
-            } catch (err) {
-               console.log(err);
-            }
-         },
       }),
       {
          name: 'auth-store',
-         // partialize: (state) => ({
-         //    currentUser: state.currentUser,
-         //    isLogin: state.isLogin,
-         // }),
+         partialize: (state) => ({
+            currentUser: state.currentUser,
+            isLogin: state.isLogin,
+         }),
       }
    )
 );
