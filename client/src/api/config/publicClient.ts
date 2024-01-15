@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const publicClient = axios.create({
-   baseURL: 'https://mern-nikestore-api.vercel.app/api/',
+   baseURL: import.meta.env.VITE_APP_API,
 });
 
 console.log(import.meta.env.VITE_APP_API);

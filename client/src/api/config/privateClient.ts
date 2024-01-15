@@ -3,7 +3,7 @@ import axios from 'axios';
 import { authApi } from '@/api';
 
 const privateClient = axios.create({
-   baseURL: 'https://mern-nikestore-api.vercel.app/api/',
+   baseURL: import.meta.env.VITE_APP_API,
 });
 
 privateClient.interceptors.request.use((config) => {
