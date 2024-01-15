@@ -17,6 +17,8 @@ export const couponApi = {
       (await privateClient.put<CouponResponse>(`coupons/${id}`, values)).data,
    delete: async (id: string) =>
       (await privateClient.delete<IMessage>(`coupons/${id}`)).data,
+   send: async (id: string) =>
+      (await privateClient.post<IMessage>(`coupons/${id}/send`)).data,
    check: async (code: string) =>
       (await privateClient.get<ICoupon>(`coupons/${code}`)).data,
 };

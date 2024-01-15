@@ -27,7 +27,7 @@ import {
 import cartStore from '@/stores/cartStore';
 import authStore from '@/stores/authStore';
 import { couponApi, orderApi } from '@/api';
-import { OrderUpload } from '@/types/orderType';
+import { OrderUpload } from '@/types/order';
 import { notify, priceFormat } from '@/helpers';
 import images from '@/assets/images';
 // import SweetAlert2 from 'react-sweetalert2';
@@ -122,6 +122,8 @@ const CheckOut = () => {
    const createPaymentVnPayMutation = useMutation({
       mutationFn: (values: OrderUpload) => orderApi.createPayment(values),
       onSuccess: ({ vnpUrl }) => {
+         console.log(vnpUrl);
+
          window.location.assign(vnpUrl);
       },
       onError: ({ message }) => {

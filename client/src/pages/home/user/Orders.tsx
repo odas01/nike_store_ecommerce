@@ -10,6 +10,8 @@ import { orderApi } from '@/api';
 import authStore from '@/stores/authStore';
 import { dateFormat, priceFormat } from '@/helpers';
 import moment from 'moment';
+import { BiSearch } from 'react-icons/bi';
+import { Link } from 'react-router-dom';
 
 type Status = 'pending' | 'processing' | 'delivered' | 'cancel';
 
@@ -139,169 +141,85 @@ const Orders = () => {
                               {t('label.date', { ns: 'mutual' })}
                            </p>
                         </Col>
-                        <Col span={3}></Col>
-                        <Col span={6}>
+                        <Col span={1}></Col>
+                        <Col span={4}>
                            <p className='px-4 py-3 text-15'>{t('coupon')}</p>
                         </Col>
                         <Col span={4}>
                            <p className='px-4 py-3 text-15'>{t('total')}</p>
                         </Col>
-                        <Col span={3}>
-                           <p className='px-4 py-3 text-end text-15'>
+                        <Col span={4}>
+                           <p className='px-4 py-3 text-15'>
                               {t('status.status', { ns: 'mutual' })}
                            </p>
                         </Col>
+
+                        <Col span={3}></Col>
                      </Row>
                   </div>
+                  {data.orders.map((order, index) => {
+                     const isNew =
+                        moment(order.createdAt).format('DDMMYY') ===
+                        moment().format('DDMMYY');
 
-                  <Collapse
-                     accordion
-                     ghost
-                     destroyInactivePanel
-                     items={data.orders.map((order, index) => ({
-                        key: index,
-                        showArrow: false,
-                        label: (
-                           <div
-                              className={twMerge(
-                                 'border-t hover:bg-[rgba(0,0,0,0.024)] duration-150',
-                                 order.status === 'cancel' &&
-                                    'opacity-50 line-through'
-                              )}
-                           >
-                              <Row>
-                                 <Col span={3}>
-                                    <p className='px-4 py-3'>
-                                       {'#' + order._id.slice(-6, -1)}
-                                    </p>
-                                 </Col>
-                                 <Col span={5}>
-                                    <p className='px-4 py-3'>
-                                       {moment(order.createdAt).format(
-                                          'DD/MM YYYY HH:mm'
-                                       )}
-                                    </p>
-                                 </Col>
-                                 <Col span={3}></Col>
-                                 <Col span={6}>
-                                    <p className='px-4 py-3 capitalize'>
-                                       {order?.coupon?.code}
-                                    </p>
-                                 </Col>
-                                 <Col span={4}>
-                                    <p className='px-4 py-3 font-semibold capitalize'>
-                                       {priceFormat(order.total, isVnLang)}
-                                    </p>
-                                 </Col>
-                                 <Col span={3}>
-                                    <p className='px-4 py-3 capitalize text-end'>
-                                       {t(`status.${order.status as Status}`, {
-                                          ns: 'mutual',
-                                       })}
-                                    </p>
-                                 </Col>
-                              </Row>
-                           </div>
-                        ),
-                        children: (
-                           <div className='border-t bg-[#F3F4F6]'>
-                              {order.products.map((item, index) => (
-                                 <div key={index} className='border-gray-200'>
-                                    <Row
-                                       className='flex items-center'
-                                       justify='end'
-                                       key={index}
-                                    >
-                                       <Col xl={8}>
-                                          <div className='flex items-center p-2 space-x-3'>
-                                             <img
-                                                src={item.thumbnail}
-                                                className='w-16 aspect-square'
-                                                alt={item.product.name}
-                                             />
-                                             <div className='flex flex-col'>
-                                                <span className='text-15 line-clamp-1'>
-                                                   {item.product.name}
-                                                </span>
-                                                <span className='text-xs italic uppercase'>
-                                                   {item.variant.color.name} /{' '}
-                                                   {item.size}
-                                                </span>
-                                             </div>
-                                          </div>
-                                       </Col>
-                                       <Col span={2}>
-                                          <p className='px-3 text-center'>
-                                             x{item.qty}
-                                          </p>
-                                       </Col>
-                                       <Col xl={3}>
-                                          <p className='px-3 text-sm text-end'>
-                                             {priceFormat(
-                                                item.price * item.qty,
-                                                isVnLang
-                                             )}
-                                          </p>
-                                       </Col>
-                                    </Row>
+                     return (
+                        <div
+                           className={twMerge(
+                              'border-t hover:bg-[rgba(0,0,0,0.024)] duration-150',
+                              order.status === 'cancel' &&
+                                 'opacity-50 line-through'
+                           )}
+                           key={index}
+                        >
+                           <Row>
+                              <Col span={3}>
+                                 <p className='relative p-4'>
+                                    {'#' + order._id.slice(-6, -1)}
+                                    {isNew && (
+                                       <span className='absolute top-2 right-4 px-1.5 py-0.5 rounded rotate-6 text-xs bg-red-400 border'>
+                                          {t('new', { ns: 'mutual' })}
+                                       </span>
+                                    )}
+                                 </p>
+                              </Col>
+                              <Col span={5}>
+                                 <p className='p-4'>
+                                    {moment(order.createdAt).format(
+                                       'DD/MM YYYY HH:mm'
+                                    )}
+                                 </p>
+                              </Col>
+                              <Col span={1}></Col>
+                              <Col span={4}>
+                                 <p className='p-4 capitalize'>
+                                    {order?.coupon?.code}
+                                 </p>
+                              </Col>
+                              <Col span={4}>
+                                 <p className='p-4 font-semibold capitalize'>
+                                    {priceFormat(order.total, isVnLang)}
+                                 </p>
+                              </Col>
+                              <Col span={4}>
+                                 <p className='p-4 capitalize'>
+                                    {t(`status.${order.status as Status}`, {
+                                       ns: 'mutual',
+                                    })}
+                                 </p>
+                              </Col>
+
+                              <Col span={3}>
+                                 <div className='flex items-center justify-center h-full text-[#45a9f0]'>
+                                    <Link to={order._id}>
+                                       {t('viewDetail')}
+                                    </Link>
                                  </div>
-                              ))}
-                              <Row justify='end'>
-                                 <Col span={8}>
-                                    <div className='flex justify-between p-3'>
-                                       <div className='space-y-1'>
-                                          <p>{t('checkout.subTotal')}: </p>
-                                          <p>
-                                             {t('order.shippingCost', {
-                                                ns: 'mutual',
-                                             })}
-                                             :{' '}
-                                          </p>
-                                          <p>
-                                             {t('label.discount', {
-                                                ns: 'mutual',
-                                             })}
-                                             :{' '}
-                                          </p>
-                                          <p className='font-semibold'>
-                                             {t('total')}:{' '}
-                                          </p>
-                                       </div>
-                                       <div className='space-y-1 [&>p]:text-end'>
-                                          <p>
-                                             {priceFormat(
-                                                order.subTotal,
-                                                isVnLang
-                                             )}
-                                          </p>
-                                          <p>
-                                             +
-                                             {priceFormat(
-                                                order.shippingCost || 0,
-                                                isVnLang
-                                             )}
-                                          </p>
-                                          <p>
-                                             -
-                                             {priceFormat(
-                                                order.discount || 0,
-                                                isVnLang
-                                             )}
-                                          </p>
-                                          <p className='text-base font-semibold'>
-                                             {priceFormat(
-                                                order.total || 0,
-                                                isVnLang
-                                             )}
-                                          </p>
-                                       </div>
-                                    </div>
-                                 </Col>
-                              </Row>
-                           </div>
-                        ),
-                     }))}
-                  />
+                              </Col>
+                           </Row>
+                        </div>
+                     );
+                  })}
+
                   <Pagination
                      page={data.page}
                      lastPage={data.lastPage}

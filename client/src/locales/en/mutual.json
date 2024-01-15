@@ -98,5 +98,12 @@
       "pageNotFound": "Page not found",
       "goHome": "Go home",
       "previousPage": "Back to previous page"
-   }
+   },
+   "rating": "Rating",
+   "noRating": "No rating",
+   "ratingProduct": "Product rating",
+   "new": "New",
+   "product": "Product",
+   "orderDetail": "Order detail",
+   "cancelOrder": "Cancel order"
 }

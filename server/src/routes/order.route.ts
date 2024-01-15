@@ -19,7 +19,8 @@ router.route('/dashboard-chart').get(checkAuth, order.dashboardChart);
 
 router
    .route('/:id')
-   .put(checkAuth, verifyAdminRoot, order.updateOne)
+   .get(checkAuth, order.getOne)
+   .put(checkAuth, order.updateOne)
    .delete(checkAuth, verifyAdminRoot, order.deleteOne);
 
 export default router;

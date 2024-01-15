@@ -17,4 +17,6 @@ router
    .put(checkAuth, verifyAdminRoot, coupon.updateOne)
    .delete(checkAuth, verifyAdminRoot, coupon.deleteOne);
 
+router.route('/:id/send').post(checkAuth, coupon.send);
+
 export default router;

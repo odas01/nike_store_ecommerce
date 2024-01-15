@@ -1,6 +1,6 @@
 import { Schema, model } from 'mongoose';
 
-import { ISize } from '../types/category.type';
+import { ISize } from '../types/category';
 
 const sizeSchema = new Schema(
    {

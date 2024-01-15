@@ -6,9 +6,10 @@ import { AiOutlineRollback } from 'react-icons/ai';
 import Menu from './Menu';
 
 import authStore from '@/stores/authStore';
+import images from '@/assets/images';
 
 function Aside() {
-   const { logOut } = authStore();
+   const { logOut, currentUser } = authStore();
    const navigate = useNavigate();
    const { t } = useTranslation(['dashboard', 'mutual']);
 
@@ -20,9 +21,16 @@ function Aside() {
    return (
       <div
          className='flex flex-col h-full p-5
-      space-y-8 text-[#393939] bg-[#FAFAFA] dark:text-[rgb(157,157,157)]  dark:bg-[#1A1C23]'
+      space-y-8 text-[#393939] bg-[#e4e4e4] dark:text-[rgb(157,157,157)]  dark:bg-[#1A1C23]'
       >
-         <h2 className='p-2 text-lg'>DASHBOARD</h2>
+         <div className='flex items-center p-2 space-x-2'>
+            <img
+               src={currentUser?.avatar?.url || images.avatar}
+               alt='avatar'
+               className='w-10 border rounded-full aspect-square'
+            />
+            <span>Hi, {currentUser?.name}</span>
+         </div>
          <div className='flex-1 overflow-y-auto'>
             <Menu />
          </div>

@@ -97,5 +97,12 @@
       "pageNotFound": "Không tìm thấy trang",
       "goHome": "Về trang chủ",
       "previousPage": "Về trang trước"
-   }
+   },
+   "rating": "Đánh giá",
+   "noRating": "Chưa đánh giá",
+   "ratingProduct": "Đánh giá sản phẩm",
+   "new": "Mới",
+   "product": "Sản phẩm",
+   "orderDetail": "Chi tiết đơn hàng",
+   "cancelOrder": "Hủy đơn hàng"
 }

@@ -7,10 +7,12 @@ import {
    DbAmount,
    DbChart,
    IMessage,
+   IOrder,
 } from '@/types';
 
 export const orderApi = {
-   get: async (id: string) => (await privateClient.get(`orders/${id}`)).data,
+   get: async (id: string) =>
+      (await privateClient.get<IOrder>(`orders/${id}`)).data,
    getAll: async (params?: any) =>
       (await privateClient.get<AllOrders>('orders', { params })).data,
 
@@ -20,6 +22,8 @@ export const orderApi = {
       (await privateClient.put<OrderResponse>(`orders/${id}`, data)).data,
    delete: async (id: string) =>
       (await privateClient.delete<IMessage>(`orders/${id}`)).data,
+
+   product: async () => (await privateClient.get(`orders/products`)).data,
 
    createPayment: async (data: any) =>
       (

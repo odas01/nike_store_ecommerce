@@ -2,3 +2,4 @@
 
 # Secret file
 .env
+.env.local

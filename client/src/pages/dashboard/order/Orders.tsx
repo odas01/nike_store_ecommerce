@@ -4,7 +4,11 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQuery } from '@tanstack/react-query';
 
+import { FaCheck } from 'react-icons/fa';
+import { RxShadowNone } from 'react-icons/rx';
+import { IoIosRefresh } from 'react-icons/io';
 import { BiSearchAlt, BiSort } from 'react-icons/bi';
+import { MdOutlineLocalShipping } from 'react-icons/md';
 import { AiOutlineCheck, AiOutlineClose } from 'react-icons/ai';
 
 import OrderDetail from './OrderDetail';
@@ -14,11 +18,8 @@ import Title from '@/layouts/dashboard/components/Title';
 import { Button, Dropdown, Input, Loading, Pagination } from '@/components';
 
 import { orderApi } from '@/api';
-import { IOrder } from '@/types/orderType';
+import { IOrder } from '@/types/order';
 import { notify, priceFormat } from '@/helpers';
-import { RxShadowNone } from 'react-icons/rx';
-import { FaCheck } from 'react-icons/fa';
-import { MdOutlineLocalShipping } from 'react-icons/md';
 
 type Params = {
    search: string;
@@ -151,9 +152,10 @@ const Orders: React.FC<{
                      setSort({});
                      setParams({});
                   }}
-                  className='h-full  w-[20%]'
+                  className='h-full w-[20%] flex items-center justify-center space-x-1'
                >
-                  {t('action.refresh', { ns: 'mutual' })}
+                  <IoIosRefresh />
+                  <span>{t('action.refresh', { ns: 'mutual' })}</span>
                </Button>
             </div>
             {isLoading ? (

@@ -1,8 +1,9 @@
-import { IProduct, IUser, ListWithParams } from '.';
+import { IOrder, IProduct, IUser, ListWithParams } from '.';
 
 export interface IRating {
    _id: string;
    user: IUser;
+   order: IOrder;
    product: IProduct;
    rate: number;
    comment: string;
@@ -11,6 +12,7 @@ export interface IRating {
 
 export type RatingUpload = Pick<IRating, 'rate' | 'comment'> & {
    user: string;
+   order: string;
    product: string;
 };
 

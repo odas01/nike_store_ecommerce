@@ -12,7 +12,7 @@ export interface IOrder extends Document {
 
 export interface IOrderDetail extends Document {
    order: ObjectId;
-   product_option: ObjectId;
+   product: ObjectId;
    price: number;
    size: number;
    quantity: number;

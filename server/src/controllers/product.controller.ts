@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 
 import Product from '../models/product.model';
 import responseHandler from '../handlers/response.handler';
-import { IVariant } from '../types/product.type';
+import { IVariant } from '../types/product';
 import { uploadMultiple, uploadSingle } from '../middleware/images.middleware';
 import Variant from '../models/variant.model';
 import Order from '../models/order.model';

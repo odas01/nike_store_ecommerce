@@ -109,13 +109,10 @@ function Colors() {
                   heading={
                      <tr className='[&>*:not(:last-child)]:px-4 [&>*]:py-3'>
                         <td className='w-[5%]'></td>
-                        <td className='w-[25%]'>
+                        <td className='w-[40%]'>
                            {t('label.name', { ns: 'mutual' })}
                         </td>
-                        <td className='w-[25%]'>
-                           {t('label.vnName', { ns: 'mutual' })}
-                        </td>
-                        <td className='w-[20%]'>
+                        <td className='w-[30%]'>
                            {t('label.hexCode', { ns: 'mutual' })}
                         </td>
                         <td className='w-[20%]'>
@@ -157,14 +154,14 @@ function Colors() {
                            </td>
                            <td>
                               <span className='capitalize line-clamp-1'>
-                                 {color.name}
+                                 {isVnLang ? color.vnName : color.name}
                               </span>
                            </td>
-                           <td>
+                           {/* <td>
                               <span className='capitalize line-clamp-1'>
                                  {color.vnName}
                               </span>
-                           </td>
+                           </td> */}
                            <td>
                               <div className='flex items-center space-x-2 uppercase'>
                                  <span

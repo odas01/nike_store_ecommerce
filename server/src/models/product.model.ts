@@ -1,7 +1,7 @@
 import slugify from 'slugify';
 import { Schema, model } from 'mongoose';
 
-import { IProduct } from '../types/product.type';
+import { IProduct } from '../types/product';
 
 const productSchema = new Schema<IProduct>(
    {

@@ -45,7 +45,7 @@ function CreateProduct() {
          return productApi.create(values);
       },
       onSuccess: ({ message }) => {
-         // navigate(-1);
+         navigate(-1);
          queryClient.invalidateQueries({
             queryKey: ['products'],
          });

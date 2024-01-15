@@ -17,6 +17,7 @@ import { orderApi, productApi, userApi } from '@/api';
 import { FiUsers } from 'react-icons/fi';
 import { RiAdminLine } from 'react-icons/ri';
 import { GiSonicShoes } from 'react-icons/gi';
+import { Link } from 'react-router-dom';
 
 const labels = Array(6)
    .fill(0)
@@ -77,7 +78,9 @@ function Overviews() {
          {orderAmount && orderCount && orderChart && (
             <div className='min-h-full mt-6 space-y-6'>
                <div>
-                  <h2 className='text-[20px] font-medium'>Doanh thu</h2>
+                  <h2 className='text-[20px] font-medium'>
+                     {t('overview.revenue')}
+                  </h2>
                   <Row gutter={8}>
                      <Col
                         style={{
@@ -168,10 +171,12 @@ function Overviews() {
                   </Row>
                </div>
                <div>
-                  <h2 className='text-[20px] font-medium'>Thông tin chung</h2>
+                  <h2 className='text-[20px] font-medium'>
+                     {t('overview.info')}
+                  </h2>
                   <Row gutter={8}>
                      <Col span={6}>
-                        <div className='flex items-center space-x-4 p-5 rounded-lg h-22 bg-gray-300 text-wh dark:bg-[#1A1C23]'>
+                        <div className='flex items-center space-x-4 p-5 rounded-lg h-22 bg-gray-200 text-wh dark:bg-[#1A1C23]'>
                            <div className='p-4 rounded-full bg-[#ED7D31]'>
                               <BsCartCheck size={20} color='#fff' />
                            </div>
@@ -190,7 +195,7 @@ function Overviews() {
                         </div>
                      </Col>
                      <Col span={6}>
-                        <div className='flex items-center space-x-4 p-5 rounded-lg h-22 bg-gray-300 text-wh dark:bg-[#1A1C23]'>
+                        <div className='flex items-center space-x-4 p-5 rounded-lg h-22 bg-gray-200 text-wh dark:bg-[#1A1C23]'>
                            <div className='p-4 rounded-full bg-[#3B82F6]'>
                               <GiSonicShoes size={20} color='#fff' />
                            </div>
@@ -205,7 +210,7 @@ function Overviews() {
                         </div>
                      </Col>
                      <Col span={6}>
-                        <div className='flex items-center space-x-4 p-5 rounded-lg h-22 bg-gray-300 text-wh dark:bg-[#1A1C23]'>
+                        <div className='flex items-center space-x-4 p-5 rounded-lg h-22 bg-gray-200 text-wh dark:bg-[#1A1C23]'>
                            <div className='p-4 rounded-full bg-[#14B8A6]'>
                               <RiAdminLine size={20} color='#fff' />
                            </div>
@@ -224,7 +229,7 @@ function Overviews() {
                         </div>
                      </Col>
                      <Col span={6}>
-                        <div className='flex items-center space-x-4 p-5 rounded-lg h-22 bg-gray-300 text-wh dark:bg-[#1A1C23]'>
+                        <div className='flex items-center space-x-4 p-5 rounded-lg h-22 bg-gray-200 text-wh dark:bg-[#1A1C23]'>
                            <div className='p-4 rounded-full bg-[#10B981]'>
                               <FiUsers size={20} color='#fff' />
                            </div>
@@ -246,11 +251,14 @@ function Overviews() {
                </div>
                <div>
                   <h2 className='text-[20px] font-medium'>
-                     Thông tin đơn hàng
+                     {t('overview.orderInfo')}
                   </h2>
                   <Row gutter={8}>
                      <Col span={8}>
-                        <div className='flex items-center space-x-4 p-5 rounded-lg h-22 bg-gray-300 dark:bg-[#1A1C23]'>
+                        <Link
+                           to='orders/pending'
+                           className='flex items-center space-x-4 p-5 rounded-lg h-22 bg-gray-200 dark:bg-[#1A1C23]'
+                        >
                            <div className='p-4 rounded-full bg-[#3B82F6]'>
                               <RxSymbol size={20} color='#fff' />
                            </div>
@@ -266,10 +274,13 @@ function Overviews() {
                                  }
                               </span>
                            </div>
-                        </div>
+                        </Link>
                      </Col>
                      <Col span={8}>
-                        <div className='flex items-center space-x-4 p-5 rounded-lg h-22 bg-gray-300 dark:bg-[#1A1C23]'>
+                        <Link
+                           to='orders/processing'
+                           className='flex items-center space-x-4 p-5 rounded-lg h-22 bg-gray-200 dark:bg-[#1A1C23]'
+                        >
                            <div className='p-4 rounded-full bg-[#14B8A6]'>
                               <LiaShippingFastSolid size={20} color='#fff' />
                            </div>
@@ -285,10 +296,13 @@ function Overviews() {
                                  }
                               </span>
                            </div>
-                        </div>
+                        </Link>
                      </Col>
                      <Col span={8}>
-                        <div className='flex items-center space-x-4 p-5 rounded-lg h-22 bg-gray-300 dark:bg-[#1A1C23]'>
+                        <Link
+                           to='orders/delivered'
+                           className='flex items-center space-x-4 p-5 rounded-lg h-22 bg-gray-200 dark:bg-[#1A1C23]'
+                        >
                            <div className='p-4 rounded-full bg-[#10B981]'>
                               <BsCheckLg size={20} color='#fff' />
                            </div>
@@ -304,13 +318,13 @@ function Overviews() {
                                  }
                               </span>
                            </div>
-                        </div>
+                        </Link>
                      </Col>
                   </Row>
                </div>
                <Row gutter={8}>
                   <Col span={12}>
-                     <div className='relative h-full p-4 flex items-end bg-gray-300 dark:bg-[#1A1C23] rounded-lg'>
+                     <div className='relative h-full p-4 flex items-end bg-gray-200 dark:bg-[#1A1C23] rounded-lg'>
                         <span className='absolute text-base top-4 left-4'>
                            {t('overview.weeklyOrder')}
                         </span>
@@ -345,7 +359,7 @@ function Overviews() {
                      </div>
                   </Col>
                   <Col span={12}>
-                     <div className='relative flex justify-center bg-gray-300 dark:bg-[#1A1C23] rounded-lg'>
+                     <div className='relative flex justify-center bg-gray-200 dark:bg-[#1A1C23] rounded-lg'>
                         <span className='absolute text-base top-4 left-4'>
                            {t('overview.bestSellingProduct')}
                         </span>

@@ -9,7 +9,7 @@ import { IoIosAddCircleOutline } from 'react-icons/io';
 import { Button, Dropdown, Input, Error } from '@/components';
 
 import { ISize } from '@/types';
-import { ProductFormValue } from '@/types/productType';
+import { ProductFormValue } from '@/types/product';
 
 const SizeArrayField: FC<{
    sizeList: ISize[];

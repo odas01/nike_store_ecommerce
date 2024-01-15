@@ -1,6 +1,6 @@
 import { Schema, model } from 'mongoose';
 
-import { IColor } from '../types/category.type';
+import { IColor } from '../types/category';
 
 const colorSchema = new Schema(
    {

@@ -1,6 +1,6 @@
 import { model, Schema } from 'mongoose';
 
-import { ICoupon } from '../types/order.type';
+import { ICoupon } from '../types/order';
 
 const schema = new Schema(
    {

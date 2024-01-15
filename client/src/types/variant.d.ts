@@ -1,9 +1,4 @@
-import { Image, Message } from '.';
-
-interface Size {
-   size: string;
-   stock: number;
-}
+import { Image, Message, Size } from '.';
 
 interface Color {
    name: string;

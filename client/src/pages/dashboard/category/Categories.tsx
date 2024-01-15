@@ -100,13 +100,13 @@ function Categories() {
                   heading={
                      <tr className='[&>*:not(:last-child)]:px-4 [&>*]:py-3'>
                         <td className='w-[5%]'></td>
-                        <td className='w-[25%]'>
+                        <td className='w-[40%]'>
                            {t('label.name', { ns: 'mutual' })}
                         </td>
-                        <td className='w-[25%]'>
+                        {/* <td className='w-[25%]'>
                            {t('label.vnName', { ns: 'mutual' })}
-                        </td>
-                        <td className='w-[20%]'>
+                        </td> */}
+                        <td className='w-[30%]'>
                            {t('label.store', { ns: 'mutual' })}
                         </td>
                         <td className='w-[20%]'>
@@ -147,14 +147,14 @@ function Categories() {
                            </td>
                            <td>
                               <span className='capitalize'>
-                                 {category.name}
+                                 {isVnLang ? category.vnName : category.name}
                               </span>
                            </td>
-                           <td>
+                           {/* <td>
                               <span className='capitalize'>
                                  {category.vnName}
                               </span>
-                           </td>
+                           </td> */}
                            <td>
                               <span className='capitalize'>
                                  {t(`store.${category.store as Store}`, {

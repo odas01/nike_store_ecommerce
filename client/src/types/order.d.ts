@@ -1,14 +1,25 @@
-import { ICoupon, IProduct, IUser, ListWithParams, Message, Variant } from '.';
+import {
+   ICoupon,
+   IProduct,
+   IRating,
+   IUser,
+   ListWithParams,
+   Message,
+   Variant,
+} from '.';
 
-interface Product {
+export interface Product {
    product: IProduct;
    variant: Variant;
+   rating: IRating;
    name: string;
    thumbnail: string;
    price: number;
    qty: number;
    size: string;
+   isRating?: boolean;
 }
+
 type OrderProductUpload = Omit<Product, 'product' | 'variant'> & {
    product: string;
    variant: string;

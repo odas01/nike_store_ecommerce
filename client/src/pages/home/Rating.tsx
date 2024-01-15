@@ -38,22 +38,6 @@ const Rating: FC<RatingProps> = ({ productId }) => {
       staleTime: 0,
    });
 
-   const createRatingMutation = useMutation({
-      mutationFn: (comment: string) =>
-         ratingApi.create({
-            user: currentUser?._id!,
-            product: productId,
-            rate,
-            comment,
-         }),
-      onSuccess: () => {
-         if (skip !== 0) {
-            setSkip(0);
-         } else refetch();
-         queryClient.invalidateQueries({ queryKey: ['avgRating'] });
-      },
-   });
-
    const deleteRatingMutation = useMutation({
       mutationFn: (id: string) => ratingApi.delete(id),
       onSuccess: () => {
@@ -154,53 +138,6 @@ const Rating: FC<RatingProps> = ({ productId }) => {
                         </Col>
                      </Row>
                      <div className='relative flex flex-col mt-8'>
-                        <div className='flex items-center justify-center mb-4 space-x-2'>
-                           <span className='text-sm font-medium'>
-                              {t('rating.pleaseChooes')}:{' '}
-                           </span>
-                           <StarRatings
-                              rating={rate}
-                              starRatedColor='#F8DE22'
-                              starHoverColor='#F8DE22'
-                              starDimension='20px'
-                              starSpacing='2px'
-                              changeRating={(newRate) => setRate(newRate)}
-                              numberOfStars={5}
-                              name='rating'
-                           />
-                        </div>
-                        <div className='flex items-center space-x-6'>
-                           <span className='text-sm'>{t('comments')}</span>
-                           <TextArea
-                              className='flex-1'
-                              rows={3}
-                              value={cmtValue}
-                              onChange={(e) =>
-                                 setCmtValue(e.currentTarget.value)
-                              }
-                              onKeyDown={(e) => {
-                                 if (e.key === 'Enter') {
-                                    createRatingMutation.mutate(cmtValue);
-                                    setCmtValue('');
-                                 }
-                              }}
-                           />
-                           <Button
-                              className={twMerge(
-                                 'flex items-center px-3 space-x-1 text-xs rounded h-8',
-                                 createRatingMutation.isLoading &&
-                                    'pointer-events-none'
-                              )}
-                              onClick={() => {
-                                 createRatingMutation.mutate(cmtValue);
-                                 setCmtValue('');
-                              }}
-                           >
-                              <AiFillEdit />
-                              {t('share')}
-                           </Button>
-                        </div>
-
                         <div className='flex flex-col mt-6 space-y-4 divide-y divide-gray-300'>
                            {data?.ratings.map((item, index) => {
                               const rateOfUser =
@@ -245,7 +182,7 @@ const Rating: FC<RatingProps> = ({ productId }) => {
                                     <p className='pl-10 mt-2'>
                                        {item.comment || ' no message'}
                                     </p>
-                                    {rateOfUser && (
+                                    {/* {rateOfUser && (
                                        <div className='absolute right-0 top-4'>
                                           <Dropdown
                                              arrow={true}
@@ -272,7 +209,7 @@ const Rating: FC<RatingProps> = ({ productId }) => {
                                              <BsThreeDots />
                                           </Dropdown>
                                        </div>
-                                    )}
+                                    )} */}
                                  </div>
                               );
                            })}

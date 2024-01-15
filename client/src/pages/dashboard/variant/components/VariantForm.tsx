@@ -309,19 +309,19 @@ const VariantForm: FC<VariantFormProps> = ({
                      {!isEdit ? (
                         <div className='flex items-center space-x-3'>
                            <div
-                              className='p-1.5 bg-white rounded cursor-pointer'
+                              className='p-1.5 dark:bg-white bg-black text-white dark:text-black  rounded cursor-pointer'
                               title={t('action.edit', { ns: 'mutual' })}
                               onClick={() => setIsEdit(true)}
                            >
-                              <AiTwotoneEdit size={16} color='#000' />
+                              <AiTwotoneEdit size={16} color='inherit' />
                            </div>
                            {isDelete && (
                               <div
                                  title={t('action.delete', { ns: 'mutual' })}
-                                 className='p-1.5 bg-red-500 rounded cursor-pointer'
+                                 className='p-1.5 bg-red-500 text-white rounded cursor-pointer'
                                  onClick={() => deleteVariantMutation.mutate()}
                               >
-                                 <BsTrash size={16} />
+                                 <BsTrash size={16} color='#fff' />
                               </div>
                            )}
                         </div>
@@ -331,7 +331,7 @@ const VariantForm: FC<VariantFormProps> = ({
                               <Button
                                  onClick={() => setIsEdit(false)}
                                  className={twMerge(
-                                    ' h-10 space-x-2 border border-gray-700 opacity-75 bg-transparent hover:bg-transparent',
+                                    ' h-10 space-x-2 border border-gray-700 text-black dark:text-white opacity-75 bg-transparent hover:bg-transparent',
                                     (createProductMutation.isLoading ||
                                        updateVariantMutation.isLoading) &&
                                        'pointer-events-none cursor-default'

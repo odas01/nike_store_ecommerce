@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { useState, KeyboardEvent } from 'react';
 import { useMutation, useQuery } from '@tanstack/react-query';
 
-import { FiTrash2 } from 'react-icons/fi';
+import { FiSend, FiTrash2 } from 'react-icons/fi';
 import { BsThreeDots } from 'react-icons/bs';
 import { BiMessageSquareEdit } from 'react-icons/bi';
 
@@ -25,6 +25,7 @@ import {
 import { ICoupon } from '@/types';
 import { couponApi } from '@/api';
 import { dateFormat, notify, priceFormat } from '@/helpers';
+import { IoIosSend } from 'react-icons/io';
 
 const DEFAULT_LIMIT = import.meta.env.VITE_APP_LIMIT || 15;
 
@@ -59,6 +60,19 @@ function Coupons() {
       },
       onSuccess: ({ message }) => {
          refetch();
+         notify('success', isVnLang ? message.vi : message.en);
+      },
+
+      onError: ({ message }) => {
+         notify('error', isVnLang ? message.vi : message.en);
+      },
+   });
+
+   const sendMailCouponMutation = useMutation({
+      mutationFn: (id: string) => {
+         return couponApi.send(id);
+      },
+      onSuccess: ({ message }) => {
          notify('success', isVnLang ? message.vi : message.en);
       },
 
@@ -209,6 +223,25 @@ function Coupons() {
                               {' '}
                               <Dropdown
                                  items={[
+                                    {
+                                       label: (
+                                          <div
+                                             className='flex items-center px-2 py-1 space-x-2'
+                                             onClick={() =>
+                                                sendMailCouponMutation.mutate(
+                                                   coupon._id
+                                                )
+                                             }
+                                          >
+                                             <FiSend />
+                                             <span>
+                                                {t('action.send', {
+                                                   ns: 'mutual',
+                                                })}
+                                             </span>
+                                          </div>
+                                       ),
+                                    },
                                     {
                                        label: (
                                           <div

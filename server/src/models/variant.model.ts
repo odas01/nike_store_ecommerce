@@ -1,6 +1,6 @@
 import { Schema, model } from 'mongoose';
 
-import { IVariant } from '../types/product.type';
+import { IVariant } from '../types/product';
 
 const schema = new Schema<IVariant>({
    color: {

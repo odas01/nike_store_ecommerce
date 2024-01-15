@@ -4,6 +4,40 @@ import Coupon from '../models/coupon.model';
 import responseHandler from '../handlers/response.handler';
 import Order from '../models/order.model';
 import moment from 'moment';
+import User from '../models/user.model';
+import { sendMultipleEmail } from '../config/sendMail';
+
+export const send = async (req: Request, res: Response) => {
+   try {
+      const coupon = await Coupon.findById(req.params.id);
+      const users = await User.find({ role: 'customer', status: 'active' });
+
+      if (users.length > 0 && coupon) {
+         const emails = users.map((item) => item.email);
+         const value =
+            coupon.type === 'percent'
+               ? `${coupon.value}%`
+               : `${coupon.value}vnd`;
+         await sendMultipleEmail(
+            emails,
+            coupon.name,
+            coupon.code,
+            value,
+            coupon.expirationDate
+         );
+      }
+
+      responseHandler.created(res, {
+         coupon,
+         message: {
+            vi: 'Gửi mã giảm giá đến khách hàng thành công',
+            en: 'Successfully sent coupon to customers',
+         },
+      });
+   } catch {
+      responseHandler.error(res);
+   }
+};
 
 export const create = async (req: Request, res: Response) => {
    try {

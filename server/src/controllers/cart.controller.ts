@@ -47,12 +47,12 @@ export const create = async (req: Request, res: Response) => {
          if (stock) {
             if (req.body.qty > stock) {
                return responseHandler.badrequest(res, {
-                  vi: `Sorry, you can only buy a maximum of ${
+                  en: `Sorry, you can only buy a maximum of ${
                      stock > 1
                         ? `${stock + ' products'}`
                         : `${stock + ' product'}`
                   }`,
-                  en: `Xin lỗi, bạn chỉ có thể mua tối đa ${stock} sản phẩm`,
+                  vi: `Xin lỗi, bạn chỉ có thể mua tối đa ${stock} sản phẩm`,
                });
             }
          }
@@ -72,8 +72,8 @@ export const create = async (req: Request, res: Response) => {
 
          return responseHandler.created(res, {
             message: {
-               vi: 'Added to cart',
-               en: 'Đã thêm vào giỏ hàng',
+               en: 'Added to cart',
+               vi: 'Đã thêm vào giỏ hàng',
             },
          });
       }
@@ -96,12 +96,12 @@ export const updateItem = async (req: Request, res: Response) => {
          if (stock) {
             if (req.body.qty > stock) {
                return responseHandler.badrequest(res, {
-                  vi: `Sorry, you can only buy a maximum of ${
+                  en: `Sorry, you can only buy a maximum of ${
                      stock > 1
                         ? `${stock + ' products'}`
                         : `${stock + ' product'}`
                   }`,
-                  en: `Xin lỗi, bạn chỉ có thể mua tối đa ${stock} sản phẩm`,
+                  vi: `Xin lỗi, bạn chỉ có thể mua tối đa ${stock} sản phẩm`,
                });
             } else {
                const item = await CartItem.findOneAndUpdate(

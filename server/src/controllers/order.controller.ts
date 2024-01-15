@@ -10,6 +10,7 @@ import Product from '../models/product.model';
 import Variant from '../models/variant.model';
 import { sendMailOrder } from '../config/sendMail';
 import Coupon from '../models/coupon.model';
+import Rating from '../models/rating.model';
 
 export const vnPay = async (
    req: Request,
@@ -159,7 +160,6 @@ export const create = async (req: Request, res: Response) => {
 export const getAll = async (req: Request, res: Response) => {
    const filter = filterOrder(req.query);
    const sort = sortOrder(req.query);
-   console.log(filter);
 
    const skip = res.locals.skip;
    const limit = res.locals.limit;
@@ -214,6 +214,24 @@ export const getAll = async (req: Request, res: Response) => {
          ]);
       responseHandler.ok(res, { page, lastPage, orders, total });
    } catch (err) {
+      responseHandler.error(res);
+   }
+};
+
+export const getOne = async (req: Request, res: Response) => {
+   const id = req.params.id;
+   try {
+      const order = await Order.findById(id)
+         .populate([
+            'products.product',
+            'products.rating',
+            'user',
+            { path: 'products.variant', populate: 'color' },
+         ])
+         .lean();
+
+      responseHandler.ok(res, order);
+   } catch {
       responseHandler.error(res);
    }
 };

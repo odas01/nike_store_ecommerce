@@ -21,7 +21,10 @@
       "processing": "Processing",
       "delivered": "Delivered",
       "bestSellingProduct": "Best selling products",
-      "weeklyOrder": "Weekly orders"
+      "weeklyOrder": "Weekly orders",
+      "info": "Information",
+      "revenue": "Revenue",
+      "orderInfo": "Orders information"
    },
    "product": {
       "title": "Products",
@@ -118,5 +121,8 @@
       "searchByNamePhoneEmail": "Search by name phone number or email...",
       "searchByPhone": "Search by phone..."
    },
-   "catalog": "Catalog"
+   "catalog": "Catalog",
+   "confirmCancel": "Confirm order cancellation",
+   "confirmApproval": "Confirm order approval",
+   "confirmSuccess": "Order confirmation successful"
 }

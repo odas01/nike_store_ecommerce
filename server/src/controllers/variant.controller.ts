@@ -7,7 +7,7 @@ import {
    uploadMultiple,
    destroyMultiple,
 } from '../middleware/images.middleware';
-import { Image } from '../types/product.type';
+import { Image } from '../types/product';
 import Variant from '../models/variant.model';
 import Order from '../models/order.model';
 

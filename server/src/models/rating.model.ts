@@ -12,6 +12,11 @@ const schema = new Schema(
          ref: 'User',
          required: true,
       },
+      order: {
+         type: Schema.Types.ObjectId,
+         ref: 'Order',
+         required: true,
+      },
       rate: {
          type: Number,
          min: 0,

@@ -57,6 +57,7 @@ const ResetPassword = () => {
                <div className='flex flex-col'>
                   <span className='text-13'>{t('newPass')}</span>
                   <Input
+                     type='password'
                      placeholder={t('enterNewPass')}
                      {...register('password')}
                      isError={!!errors.password}

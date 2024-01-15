@@ -13,7 +13,7 @@ const Table: FC<TableProps> = ({ heading, children, pagination }) => {
             <thead className='font-medium border-b border-inherit text-table_db_thead'>
                {heading}
             </thead>
-            <tbody className='divide-y divide-gray-300 dark:divide-[#343434] font-normal'>
+            <tbody className='divide-y divide-gray-300 dark:divide-[#343434]'>
                {children}
             </tbody>
          </table>

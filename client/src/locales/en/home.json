@@ -113,5 +113,14 @@
       "resetPass": "Reset password"
    },
    "history": "Purchase history",
-   "coupon": "Coupon"
+   "coupon": "Coupon",
+   "viewDetail": "View detail",
+   "support": "Support",
+   "abc": "Submit a warranty claim",
+   "abc1": "Submit a return request",
+   "abc2": "Customer support",
+   "abus": "About us",
+   "contact": "Contact",
+   "company": "Company",
+   "introduce": "Introduce"
 }

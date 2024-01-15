@@ -3,5 +3,7 @@ export const priceFormat = (price: number, isVn: boolean) => {
       price = +Math.ceil(price / 24500);
    }
 
-   return `${isVn ? '₫' : '$'}${price.toLocaleString('en-ES')}`;
+   return `${!isVn ? '$' : ''}${price.toLocaleString('en-ES')}${
+      isVn ? 'đ' : ''
+   }`;
 };

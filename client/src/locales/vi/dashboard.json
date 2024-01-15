@@ -26,7 +26,11 @@
       "processing": "Đang giao",
       "delivered": "Đã giao",
       "bestSellingProduct": "Sản phẩm bán chạy",
-      "weeklyOrder": "Đơn hàng hàng tuần"
+      "weeklyOrder": "Đơn hàng hàng tuần",
+
+      "info": "Thông tin chung",
+      "revenue": "Doanh thu",
+      "orderInfo": "Thông tin đơn hàng"
    },
    "product": {
       "title": "Danh sách sản phẩm",
@@ -119,5 +123,9 @@
       }
    },
 
-   "catalog": "Mục lục"
+   "catalog": "Mục lục",
+
+   "confirmCancel": "Xác nhận hủy đơn hàng",
+   "confirmApproval": "Xác nhận duyệt đơn hàng",
+   "confirmSuccess": "Xác nhận đơn hàng thành công"
 }

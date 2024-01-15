@@ -16,13 +16,14 @@ import DashboardLayout from '@/layouts/dashboard/DashboardLayout';
 import Home from '@/pages/home/Home';
 import Shop from '@/pages/home/Shop';
 import Cart from '@/pages/home/Cart';
-import Detail from '@/pages/home/Detail';
+import Detail from '@/pages/home/ProductDetail';
 import Search from '@/pages/home/Search';
 import CheckOut from '@/pages/home/CheckOut';
 import Profile from '@/pages/home/user/Profile';
 import MyOrders from '@/pages/home/user/Orders';
 import Account from '@/pages/home/user/Account';
 import ChangePw from '@/pages/home/user/ChangePw';
+import OrderDetail from './pages/home/user/OrderDetail';
 import CheckOutSuccess from '@/pages/home/CheckOutSuccess';
 
 //AUTH
@@ -90,6 +91,7 @@ function App() {
                   <Route index element={<Navigate to='profile' />} />
                   <Route path='profile' element={<Profile />} />
                   <Route path='my-orders' element={<MyOrders />} />
+                  <Route path='my-orders/:orderId' element={<OrderDetail />} />
                   <Route path='change-password' element={<ChangePw />} />
                </Route>
             </Route>

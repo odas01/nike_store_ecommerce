@@ -114,5 +114,15 @@
    },
 
    "history": "Lịch sử mua hàng",
-   "coupon": "Mã giảm"
+   "coupon": "Mã giảm",
+   "viewDetail": "Xem chi tiết",
+
+   "support": "Hỗ trợ",
+   "abc": "Gửi yêu cầu bảo hành",
+   "abc1": "Gửi yêu cầu đổi trả",
+   "abc2": "Hỗ trợ khách hàng",
+   "abus": "Về chúng tôi",
+   "contact": "Liên hệ",
+   "company": "Công ty",
+   "introduce": "Giới thiệu"
 }

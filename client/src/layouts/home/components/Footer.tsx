@@ -4,8 +4,10 @@ import { MdOutlinePlace } from 'react-icons/md';
 import { AiOutlineMail, AiOutlinePhone } from 'react-icons/ai';
 
 import images from '@/assets/images';
+import { useTranslation } from 'react-i18next';
 
 const Footer = () => {
+   const { t } = useTranslation('home');
    return (
       <footer className='bg-[#f1f1f1] mt-auto'>
          <div className='container py-2'>
@@ -47,15 +49,14 @@ const Footer = () => {
                      </div> */}
                   </Col>
                   <Col span={6}>
-                     <h2 className='text-lg font-medium'>Company</h2>
+                     <h2 className='text-lg font-medium'>{t('company')}</h2>
                      <div className='pt-2 space-y-1 font-normal'>
-                        <p>About Us</p>
-                        <p>Press</p>
-                        <p>Contact</p>
+                        <p>{t('abus')}</p>
+                        <p>{t('contact')}</p>
                      </div>
                   </Col>
                   <Col span={6}>
-                     <h2 className='text-lg font-medium'>Introduce</h2>
+                     <h2 className='text-lg font-medium'>{t('introduce')}</h2>
                      <div className='pt-2 pr-6 space-y-1 font-normal'>
                         <p className='flex items-center '>
                            <AiOutlinePhone className='mr-2' /> 0123789456
@@ -72,12 +73,12 @@ const Footer = () => {
                      </div>
                   </Col>
                   <Col span={6}>
-                     <h2 className='text-lg font-medium'>Support</h2>
+                     <h2 className='text-lg font-medium'>{t('support')}</h2>
                      <div className='pt-2 space-y-1 font-normal'>
-                        <p>Submit a warranty claim</p>
-                        <p>Submit a return request</p>
+                        <p>{t('abc')}</p>
+                        <p>{t('abc1')}</p>
                         <p>
-                           Customer support:{' '}
+                           {t('abc2')}:{' '}
                            <span className='text-gray-800 '>
                               lntthanh3317@gmail.com
                            </span>
@@ -87,7 +88,7 @@ const Footer = () => {
                </Row>
             </div>
             <span className='pt-2 text-xs border-t border-gray-500'>
-               © Copyright 2022 By lntthanh3317
+               © Copyright 2023 By lntthanh3317
             </span>
          </div>
       </footer>

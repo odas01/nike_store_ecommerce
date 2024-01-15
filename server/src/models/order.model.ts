@@ -1,6 +1,6 @@
 import { Schema, model } from 'mongoose';
 
-import { IOrder } from '../types/order.type';
+import { IOrder } from '../types/order';
 
 const schema = new Schema(
    {
@@ -43,6 +43,12 @@ const schema = new Schema(
                type: Schema.Types.ObjectId,
                ref: 'Variant',
             },
+            rating: {
+               type: Schema.Types.ObjectId,
+               ref: 'Rating',
+               default: null,
+            },
+
             name: {
                type: String,
                required: true,
@@ -62,6 +68,11 @@ const schema = new Schema(
             size: {
                type: String,
                required: true,
+            },
+            isRating: {
+               type: Boolean,
+               requried: true,
+               default: false,
             },
          },
       ],

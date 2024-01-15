@@ -1,6 +1,6 @@
 import jsonwebtoken from 'jsonwebtoken';
 import User from '../models/user.model';
-import { IUser } from '../types/user.type';
+import { IUser } from '../types/user';
 
 import responseHandler from '../handlers/response.handler';
 import { NextFunction, Request, Response } from 'express';

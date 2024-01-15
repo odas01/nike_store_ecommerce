@@ -123,7 +123,7 @@ function Header() {
                   placement='top'
                >
                   <img
-                     src={currentUser?.avatar?.url || ''}
+                     src={currentUser?.avatar?.url || images.avatar}
                      className='w-8 aspect-square'
                      alt='avatar'
                   />

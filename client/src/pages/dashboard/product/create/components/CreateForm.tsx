@@ -504,7 +504,7 @@ const CreateForm: FC<CreateFormProps> = ({ value, submit, deleteImages }) => {
                      onClick={onSubmit}
                      className='w-32 h-8 bg-blue-800 hover:bg-blue-900'
                   >
-                     {t('action.next', { ns: 'mutual' })}
+                     {t('action.create', { ns: 'mutual' })}
                   </Button>
                </div>
             </FormProvider>

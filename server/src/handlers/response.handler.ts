@@ -1,5 +1,5 @@
 import { Response } from 'express';
-import { Message } from '../types/message.type';
+import { Message } from '../types/message';
 
 const responseWithData = (res: Response, statusCode: number, data: any) =>
    res.status(statusCode).json(data);
