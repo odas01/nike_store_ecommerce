@@ -7,8 +7,6 @@ import TopHeader from './components/TopHeader';
 
 import cartStore from '@/stores/cartStore';
 
-import DiaflowBot from './components/DiaflowBot';
-
 const HomeLayout = () => {
    const { pathname } = useLocation();
    const { getCart } = cartStore();

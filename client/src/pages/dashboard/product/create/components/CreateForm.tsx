@@ -78,9 +78,7 @@ interface CreateFormProps {
 const CreateForm: FC<CreateFormProps> = ({ value, submit, deleteImages }) => {
    const [imagesDelete, setImagesDelete] = useState<string[]>([]);
 
-   const { t, i18n } = useTranslation(['dashboard', 'mutual']);
-
-   const isVnLang = i18n.language === 'vi';
+   const { t } = useTranslation(['dashboard', 'mutual']);
 
    const props = useForm<ProductFormValue>({
       defaultValues: value,

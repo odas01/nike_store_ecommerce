@@ -21,12 +21,7 @@ import {
    Pagination,
 } from 'swiper/modules';
 
-import {
-   AiFillStar,
-   AiOutlineMinus,
-   AiOutlinePlus,
-   AiOutlineStar,
-} from 'react-icons/ai';
+import { AiFillStar, AiOutlineMinus, AiOutlinePlus } from 'react-icons/ai';
 
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
@@ -61,28 +56,26 @@ const Detail = () => {
    });
 
    const categoryId = detail?.category;
-   const [
-      { data: similarProduct, isLoading: loading2 },
-      { data: avgRating, isLoading: loading3 },
-   ] = useQueries({
-      queries: [
-         {
-            queryKey: ['product', categoryId],
-            queryFn: () =>
-               productApi.similar(slug!, {
-                  skip: 0,
-                  limit: 15,
-                  category: categoryId,
-               }),
-            enabled: !!categoryId && !!slug,
-         },
-         {
-            queryKey: ['avgRating'],
-            queryFn: () => ratingApi.avg(detail?._id!),
-            enabled: !!detail?._id,
-         },
-      ],
-   });
+   const [{ data: similarProduct, isLoading: loading2 }, { data: avgRating }] =
+      useQueries({
+         queries: [
+            {
+               queryKey: ['product', categoryId],
+               queryFn: () =>
+                  productApi.similar(slug!, {
+                     skip: 0,
+                     limit: 15,
+                     category: categoryId,
+                  }),
+               enabled: !!categoryId && !!slug,
+            },
+            {
+               queryKey: ['avgRating'],
+               queryFn: () => ratingApi.avg(detail?._id!),
+               enabled: !!detail?._id,
+            },
+         ],
+      });
 
    const { t, i18n } = useTranslation(['home', 'mutual']);
    const isVnLang = i18n.language === 'vi';

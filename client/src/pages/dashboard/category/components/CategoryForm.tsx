@@ -14,7 +14,7 @@ import { Button, Dropdown, Error, Input, Spinner } from '@/components';
 import { notify } from '@/helpers';
 import { store } from '@/constants';
 import { categoryApi } from '@/api';
-import { CagtegoryFormValue, ErrorResponse, ICategory } from '@/types';
+import { CagtegoryFormValue, ICategory } from '@/types';
 
 const formSchema = zod.object({
    name: zod.string().nonempty('Name is required!'),

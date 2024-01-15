@@ -1,4 +1,4 @@
-import { privateClient, publicClient } from '@/api/config';
+import { privateClient } from '@/api/config';
 import {
    AllOrders,
    OrderUpload,

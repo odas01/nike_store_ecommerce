@@ -6,7 +6,7 @@ import { AiOutlineCheck, AiOutlineClose } from 'react-icons/ai';
 import Table from '@/layouts/dashboard/components/Table';
 
 import { IOrder } from '@/types/order';
-import { dateFormat, notify, priceFormat } from '@/helpers';
+import { notify, priceFormat } from '@/helpers';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { orderApi } from '@/api';
 import { BiTrash } from 'react-icons/bi';

@@ -7,7 +7,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { CheckboxChangeEvent } from 'antd/es/checkbox';
 
 import { RiDeleteBin5Line } from 'react-icons/ri';
-import { AiFillCaretDown, AiOutlineMinus, AiOutlinePlus } from 'react-icons/ai';
+import { AiOutlineMinus, AiOutlinePlus } from 'react-icons/ai';
 
 import { Button, PageTitle } from '@/components';
 

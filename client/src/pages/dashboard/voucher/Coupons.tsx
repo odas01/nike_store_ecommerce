@@ -25,7 +25,6 @@ import {
 import { ICoupon } from '@/types';
 import { couponApi } from '@/api';
 import { dateFormat, notify, priceFormat } from '@/helpers';
-import { IoIosSend } from 'react-icons/io';
 
 const DEFAULT_LIMIT = import.meta.env.VITE_APP_LIMIT || 15;
 

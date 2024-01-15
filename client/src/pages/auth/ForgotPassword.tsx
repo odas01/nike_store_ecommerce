@@ -11,7 +11,6 @@ import { Button, Error, Input } from '@/components';
 
 import { authApi } from '@/api';
 import { notify } from '@/helpers';
-import { ErrorResponse } from '@/types';
 
 const formSchema = zod.object({
    email: zod.string().nonempty('Email is required!').email('Invalid email'),

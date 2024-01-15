@@ -19,7 +19,7 @@ import {
 
 import { userApi } from '@/api';
 import { dateFormat, notify } from '@/helpers';
-import { ErrorResponse, UserFormUpdate } from '@/types';
+import { UserFormUpdate } from '@/types';
 
 const DEFAULT_LIMIT = import.meta.env.VITE_APP_LIMIT || 15;
 

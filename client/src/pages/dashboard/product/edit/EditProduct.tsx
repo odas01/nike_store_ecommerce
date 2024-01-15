@@ -8,7 +8,7 @@ import { Button, LoadingOverlay, PageTitle, Skeleton } from '@/components';
 
 import { notify } from '@/helpers';
 import { productApi } from '@/api';
-import { IProduct, ErrorResponse, ProductEdit } from '@/types';
+import { IProduct, ProductEdit } from '@/types';
 
 function EditProduct() {
    const { slug } = useParams();

@@ -5,7 +5,7 @@ import { Product } from '@/types';
 import { useTranslation } from 'react-i18next';
 import StarRatings from 'react-star-ratings';
 import { Button, TextArea } from '@/components';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { ratingApi } from '@/api';
 import { useParams } from 'react-router-dom';
 import authStore from '@/stores/authStore';
@@ -17,8 +17,7 @@ interface Props {
 }
 
 const RatingProduct: FC<Props> = ({ data, setProductActive }) => {
-   const { t, i18n } = useTranslation(['home', 'mutual', 'dashboard']);
-   const isVnLang = i18n.language === 'vi';
+   const { t } = useTranslation(['home', 'mutual', 'dashboard']);
    const { orderId } = useParams();
 
    const [rate, setRate] = useState<number>(5);

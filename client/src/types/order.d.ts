@@ -20,9 +20,14 @@ export interface Product {
    isRating?: boolean;
 }
 
-type OrderProductUpload = Omit<Product, 'product' | 'variant'> & {
+type OrderProductUpload = {
    product: string;
    variant: string;
+   name: string;
+   price: number;
+   thumbnail: string;
+   qty: number;
+   size: string;
 };
 
 export interface IOrder {

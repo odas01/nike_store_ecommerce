@@ -1,33 +1,22 @@
 import moment from 'moment';
 import { FC, useState } from 'react';
-import { twMerge } from 'tailwind-merge';
-import { AiFillEdit } from 'react-icons/ai';
-import StarRatings from 'react-star-ratings';
 import { useTranslation } from 'react-i18next';
 import { Col, Pagination, Progress, Row, Spin } from 'antd';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 
-import { BsStarFill, BsThreeDots } from 'react-icons/bs';
-
-import { Button, Dropdown, TextArea } from '@/components';
+import { BsStarFill } from 'react-icons/bs';
 
 import { ratingApi } from '@/api';
-import authStore from '@/stores/authStore';
 
 interface RatingProps {
    productId: string;
 }
 
 const Rating: FC<RatingProps> = ({ productId }) => {
-   const [rate, setRate] = useState<number>(5);
-   const [cmtValue, setCmtValue] = useState<string>('');
    const [skip, setSkip] = useState(0);
    const { t } = useTranslation('home');
-   const queryClient = useQueryClient();
 
-   const { currentUser } = authStore();
-
-   const { data, isLoading, refetch } = useQuery({
+   const { data, isLoading } = useQuery({
       queryKey: ['ratings', productId, skip],
       queryFn: () =>
          ratingApi.getAll({
@@ -36,14 +25,6 @@ const Rating: FC<RatingProps> = ({ productId }) => {
             product: productId,
          }),
       staleTime: 0,
-   });
-
-   const deleteRatingMutation = useMutation({
-      mutationFn: (id: string) => ratingApi.delete(id),
-      onSuccess: () => {
-         refetch();
-         queryClient.invalidateQueries({ queryKey: ['avgRating'] });
-      },
    });
 
    const avgRatings = data
@@ -140,10 +121,6 @@ const Rating: FC<RatingProps> = ({ productId }) => {
                      <div className='relative flex flex-col mt-8'>
                         <div className='flex flex-col mt-6 space-y-4 divide-y divide-gray-300'>
                            {data?.ratings.map((item, index) => {
-                              const rateOfUser =
-                                 item?.user?.email === currentUser?.email ||
-                                 currentUser?.role === 'root';
-
                               return (
                                  <div
                                     key={index}

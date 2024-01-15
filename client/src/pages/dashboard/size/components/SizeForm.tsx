@@ -13,7 +13,7 @@ import { Button, Error, Spinner, Input, Dropdown } from '@/components';
 import { sizeApi } from '@/api';
 import { notify } from '@/helpers';
 import { store } from '@/constants';
-import { ErrorResponse, ISize, SizeFormValues } from '@/types';
+import { ISize, SizeFormValues } from '@/types';
 
 const formSchema = zod.object({
    name: zod.string().nonempty('Size name is required!'),

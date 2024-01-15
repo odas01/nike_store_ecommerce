@@ -1,5 +1,4 @@
 import * as z from 'zod';
-import moment from 'moment';
 import { Row, Col } from 'antd';
 import { useState } from 'react';
 import { twMerge } from 'tailwind-merge';
@@ -131,7 +130,7 @@ const CheckOut = () => {
       },
    });
 
-   const handleSaveOrder = async (paid: boolean) => {
+   const handleSaveOrder = async () => {
       const newCart = cart.map((item) => ({
          product: item.product._id,
          variant: item.variant._id,
@@ -549,7 +548,7 @@ const CheckOut = () => {
                                  )}
                                  onClick={async () =>
                                     (await trigger(['address', 'phone'])) &&
-                                    handleSaveOrder(false)
+                                    handleSaveOrder()
                                  }
                               >
                                  {t('checkout.pay')}
@@ -588,7 +587,7 @@ const CheckOut = () => {
                            )}
                            onClick={async () =>
                               (await trigger(['address', 'phone'])) &&
-                              handleSaveOrder(false)
+                              handleSaveOrder()
                            }
                         >
                            <img

@@ -2,8 +2,7 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
 import { cartApi } from '@/api';
-import { notify } from '@/helpers';
-import { CartItemUpLoad, ICartItem } from '@/types';
+import { ICartItem } from '@/types';
 
 type Store = {
    qty: number;

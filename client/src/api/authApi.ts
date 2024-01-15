@@ -2,8 +2,6 @@ import axios from 'axios';
 
 import { privateClient, publicClient } from '@/api/config';
 import {
-   AuthResponse,
-   IUser,
    ILogin,
    ISignUp,
    TokenUser,
@@ -11,7 +9,6 @@ import {
    LoginResponse,
    SignupResponse,
    AuthCheckResponse,
-   UserResponse,
    IMessage,
 } from '@/types';
 

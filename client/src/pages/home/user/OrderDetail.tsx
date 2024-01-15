@@ -1,11 +1,10 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { Button, PageTitle } from '@/components';
 import { orderApi } from '@/api';
 import { Col, Modal, Row, Spin } from 'antd';
 import { useTranslation } from 'react-i18next';
-import { IProduct } from '@/types';
 import RatingProduct from './RatingProduct';
 import { AiFillStar, AiOutlineClose } from 'react-icons/ai';
 import { notify, priceFormat } from '@/helpers';

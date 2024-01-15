@@ -15,7 +15,7 @@ import { authApi } from '@/api';
 import { notify } from '@/helpers';
 import authStore from '@/stores/authStore';
 import cartStore from '@/stores/cartStore';
-import { ErrorResponse, ISignUp } from '@/types';
+import { ISignUp } from '@/types';
 
 const formSchema = zod
    .object({

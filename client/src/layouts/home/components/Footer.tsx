@@ -3,7 +3,6 @@ import { Col, Row } from 'antd';
 import { MdOutlinePlace } from 'react-icons/md';
 import { AiOutlineMail, AiOutlinePhone } from 'react-icons/ai';
 
-import images from '@/assets/images';
 import { useTranslation } from 'react-i18next';
 
 const Footer = () => {

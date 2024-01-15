@@ -4,7 +4,6 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import { authApi } from '@/api';
-import { ErrorResponse } from '@/types';
 import { notify } from '@/helpers';
 import DotLoader from 'react-spinners/DotLoader';
 import { twMerge } from 'tailwind-merge';

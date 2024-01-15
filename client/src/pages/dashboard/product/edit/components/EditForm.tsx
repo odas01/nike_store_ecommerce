@@ -18,8 +18,6 @@ import { categoryApi } from '@/api';
 import { ProductEdit } from '@/types';
 import { genders, store as storeConst } from '@/constants';
 
-type Gender = (typeof genders)[number];
-
 const productSchema = z.object({
    name: z.string().nonempty('Name is required'),
    discount: z.number(),
@@ -43,8 +41,7 @@ interface EditFormProps {
 }
 
 const EditForm: React.FC<EditFormProps> = ({ value, submit }) => {
-   const { t, i18n } = useTranslation(['dashboard', 'mutual']);
-   const isVnLang = i18n.language === 'vi';
+   const { t } = useTranslation(['dashboard', 'mutual']);
    const props = useForm<ProductEdit>({
       defaultValues: value,
       resolver: zodResolver(productSchema),

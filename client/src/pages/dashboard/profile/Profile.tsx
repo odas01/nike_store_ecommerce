@@ -1,8 +1,6 @@
 import { userApi } from '@/api';
-import { useMutation, useQuery } from '@tanstack/react-query';
-import React from 'react';
+import { useMutation } from '@tanstack/react-query';
 import * as z from 'zod';
-import { useParams } from 'react-router-dom';
 import authStore from '@/stores/authStore';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';

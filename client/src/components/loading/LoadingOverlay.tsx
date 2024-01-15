@@ -1,4 +1,3 @@
-import React from 'react';
 import { ScaleLoader } from 'react-spinners';
 
 const LoadingOverlay = () => {
