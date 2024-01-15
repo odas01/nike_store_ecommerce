@@ -4,6 +4,8 @@ const publicClient = axios.create({
    baseURL: import.meta.env.VITE_APP_API,
 });
 
+console.log(import.meta.env.VITE_APP_API)
+
 publicClient.interceptors.request.use((config) => {
    return config;
 });
