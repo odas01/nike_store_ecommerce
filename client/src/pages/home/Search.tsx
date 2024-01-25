@@ -5,7 +5,7 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import InfiniteScroll from 'react-infinite-scroll-component';
 
 import { PageTitle } from '@/components';
-import ProductCard from '@/layouts/home/components/ProductCard';
+import ProductCard from '@/components/ProductCard';
 
 import { productApi } from '@/api';
 import { IProduct } from '@/types';

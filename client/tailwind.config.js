@@ -3,6 +3,9 @@ module.exports = {
    darkMode: 'class',
    theme: {
       extend: {
+         backgroundImage: {
+            banner: 'linear-gradient(45deg, #1b1f24 50%, #2b3138 50%)',
+         },
          colors: {
             aside_db: '#111315',
             table_db: '#dadada',
@@ -45,7 +48,8 @@ module.exports = {
          container: {
             center: true,
             padding: {
-               DEFAULT: '1rem',
+               DEFAULT: '8px',
+               md: '16px',
                '2xl': '5rem',
             },
          },

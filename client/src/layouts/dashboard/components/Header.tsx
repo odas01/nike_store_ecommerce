@@ -10,7 +10,7 @@ import { Dropdown } from '@/components';
 
 import images from '@/assets/images';
 import authStore from '@/stores/authStore';
-import { ThemeContext } from '@/route/ThemeRoute';
+import { ThemeContext } from '@/providers/ThemeProvider';
 import { BiUser } from 'react-icons/bi';
 import { Link } from 'react-router-dom';
 

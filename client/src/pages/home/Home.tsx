@@ -12,7 +12,7 @@ import { BsArrowRight } from 'react-icons/bs';
 import 'swiper/css/scrollbar';
 
 import { PageTitle } from '@/components';
-import ProductCard from '@/layouts/home/components/ProductCard';
+import ProductCard from '@/components/ProductCard';
 
 import { productApi } from '@/api';
 import images from '@/assets/images';
@@ -49,41 +49,51 @@ const Home = () => {
    return (
       <>
          <PageTitle title='Nike Store' />
-         <div className='relative banner'>
+         <div className='relative xl:h-screen md:h-[75vh] h-[50vh] bg-banner bg-repeat bg-fixed'>
             <img
                src={images.bannerr}
                alt=''
-               className='w-[580px] absolute right-28 bottom-0 object-contain'
+               className='xl:w-[580px] md:w-64 w-40 absolute xl:right-28 right-2 object-contain'
             />
 
-            <div className='absolute text-white flex-column top-1/3 left-28'>
-               <span className='font-nikeFutura tracking-[8px] text-8xl overflow-hidden whitespace-nowrap animate-typing'>
+            <div className='absolute text-white w-min md:w-fit flex-column bottom-4 left-4 xl:top-1/3 xl:left-28'>
+               <span className='font-nikeFutura tracking-[8px] md:text-8xl text-3xl overflow-hidden whitespace-nowrap animate-typing'>
                   JUST DO IT
                </span>
-               <span className='mt-2 text-3xl italic font-nikeFutura'>
+               <span className='mt-2 text-2xl italic md:text-3xl font-nikeFutura'>
                   Play With Electric Nike Shoes
                </span>
                <Link
                   to='/shop'
-                  className='relative px-5 py-3 mt-24 text-black bg-white rounded-full cursor-pointer flex-center w-fit group'
+                  className='relative px-3 py-2 mt-16 text-black bg-white rounded-full cursor-pointer md:mt-24 md:px-5 md:py-3 flex-center w-fit group'
                >
-                  <span className='z-10 mr-4 text-lg font-medium duration-300 group-hover:text-white'>
+                  <span className='z-10 mr-4 font-medium duration-300 text-13 md:text-lg group-hover:text-white'>
                      {t('cart.startShopping')}
                   </span>
-                  <div className='z-10 p-2 pr-0 rounded-full flex-center'>
+                  <div className='z-10 p-1 rounded-full md:p-2 flex-center'>
                      <BsArrowRight color='#fff' />
                   </div>
-                  <div className='absolute right-[10px] w-10 h-10 bg-[#181823] rounded-full duration-300 group-hover:w-[102%] group-hover:h-[102%] group-hover:right-[-1px]'></div>
+                  <div className='absolute right-[10px] md:w-10 w-8 aspect-square bg-[#181823] rounded-full duration-300 group-hover:w-[102%] group-hover:h-[102%] group-hover:right-[-1px]' />
                </Link>
             </div>
          </div>
 
-         <div className='container py-10 space-y-16'>
+         <div className='container py-4 space-y-6 xl:py-10 md:space-y-16'>
             <div className='space-y-3'>
-               <h2 className='text-2xl font-medium'>{t('home.bestSeller')}</h2>
+               <h2 className='text-lg font-medium xl:text-2xl md:text-xl'>
+                  {t('home.bestSeller')}
+               </h2>
                <Swiper
                   spaceBetween={8}
-                  slidesPerView={5}
+                  slidesPerView={2}
+                  breakpoints={{
+                     768: {
+                        slidesPerView: 3,
+                     },
+                     1280: {
+                        slidesPerView: 5,
+                     },
+                  }}
                   modules={[Autoplay, FreeMode]}
                >
                   {newProduct?.data?.products.map((item, index) => (
@@ -94,12 +104,12 @@ const Home = () => {
                </Swiper>
             </div>
             <div className='text-center'>
-               <h1 className='text-5xl uppercase font-nikeFutura'>
+               <h1 className='text-3xl uppercase xl:text-5xl md:text-4xl font-nikeFutura'>
                   Just do it
                </h1>
                <Link
                   to='shop'
-                  className='mt-4 bg-[#181823] text-white inline-block px-5 py-2 rounded-full 
+                  className='md:mt-4 mt-1 bg-[#181823] text-white inline-block px-5 py-2 rounded-full 
                     cursor-pointer hover:opacity-80 hover:text-white'
                >
                   {t('home.shopNow')}
@@ -118,10 +128,10 @@ const Home = () => {
                </div>
             </div>
             <div className='relative border-t pt-7'>
-               <h2 className='text-3xl font-semibold text-center text-[#383838] absolute -top-5 bg-white px-4 italic left-1/2 -translate-x-1/2'>
+               <h2 className='xl:text-5xl md:text-3xl w-max text-2xl font-semibold text-center text-[#383838] absolute md:-top-5 -top-3 bg-white px-4 italic left-1/2 -translate-x-1/2'>
                   {t('home.trenyP')}
                </h2>
-               <div className='flex justify-center mt-3 mb-12 space-x-12 text-lg font-medium text-[#383838]'>
+               <div className='flex justify-center xl:mt-3 xl:mb-12 mb-8 space-x-12 xl:text-lg font-medium text-[#383838]'>
                   <span
                      className={twMerge(
                         'cursor-pointer',
@@ -151,13 +161,7 @@ const Home = () => {
                {data && (
                   <Row gutter={[8, 24]}>
                      {data.products.map((item) => (
-                        <Col
-                           style={{
-                              flexBasis: '20%',
-                              width: '20%',
-                           }}
-                           key={item._id}
-                        >
+                        <Col key={item._id} xs={{ span: 12 }} lg={{ span: 6 }}>
                            <ProductCard data={item} />
                         </Col>
                      ))}

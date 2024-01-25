@@ -42,7 +42,7 @@ const Rating: FC<RatingProps> = ({ productId }) => {
       data?.rateCount.find((item) => item.rate === rate)?.count || 0;
 
    return (
-      <div className=' pl-20 pr-[38%] py-12 border'>
+      <div className='xl:pl-20 xl:pr-[38%] px-4 py-12 border'>
          {isLoading ? (
             <div className='flex justify-center'>
                <Spin size='large' />
@@ -52,17 +52,17 @@ const Rating: FC<RatingProps> = ({ productId }) => {
                {data && (
                   <>
                      <Row gutter={12}>
-                        <Col span={9}>
+                        <Col xl={9} md={24} xs={24}>
                            <div className='flex flex-col items-center h-full py-2'>
-                              <h2 className='text-xl font-semibold'>
+                              <h2 className='text-lg font-semibold xl:text-xl'>
                                  {t('rating.productRatings')}
                               </h2>
-                              <span className='mt-2 text-3xl font-semibold text-red-500'>
+                              <span className='mt-2 text-2xl font-semibold text-red-500 xl:text-3xl'>
                                  {data.total > 0
                                     ? avgRatings + '/5.0'
                                     : t('rating.noRatings')}
                               </span>
-                              <span className='text-sm'>
+                              <span className='text-13 xl:text-sm'>
                                  ({data?.total}{' '}
                                  {data?.total! > 1
                                     ? t('rating.ratings')
@@ -71,16 +71,18 @@ const Rating: FC<RatingProps> = ({ productId }) => {
                               </span>
                            </div>
                         </Col>
-                        <Col span={15}>
+                        <Col xl={15} md={24} xs={24}>
                            <div className='flex flex-col flex-1 text-sm'>
                               {Array(5)
                                  .fill(5)
                                  .map((_, index) => (
                                     <div className='w-full' key={index}>
                                        <Row gutter={4}>
-                                          <Col span={4}>
+                                          <Col xl={4} md={2} xs={2}>
                                              <div className='flex items-center justify-center space-x-1'>
-                                                <span>{5 - index}</span>
+                                                <span className='text-12 md:text-sm'>
+                                                   {5 - index}
+                                                </span>
 
                                                 <BsStarFill
                                                    color='#F8DE22'
@@ -88,7 +90,7 @@ const Rating: FC<RatingProps> = ({ productId }) => {
                                                 />
                                              </div>
                                           </Col>
-                                          <Col span={14}>
+                                          <Col xl={14} md={17} xs={13}>
                                              <Progress
                                                 percent={
                                                    (countRate(5 - index) /
@@ -101,10 +103,12 @@ const Rating: FC<RatingProps> = ({ productId }) => {
                                              />
                                           </Col>
                                           <Col
-                                             span={6}
+                                             xl={6}
+                                             md={4}
+                                             xs={8}
                                              className='flex items-center'
                                           >
-                                             <p className='ml-2 text-xs text-end'>
+                                             <p className='w-full ml-2 text-10 md:text-xs text-end'>
                                                 ({countRate(5 - index)}{' '}
                                                 {countRate(5 - index) > 1
                                                    ? t('rating.ratings')
@@ -118,7 +122,7 @@ const Rating: FC<RatingProps> = ({ productId }) => {
                            </div>
                         </Col>
                      </Row>
-                     <div className='relative flex flex-col mt-8'>
+                     <div className='relative flex flex-col xl:mt-8'>
                         <div className='flex flex-col mt-6 space-y-4 divide-y divide-gray-300'>
                            {data?.ratings.map((item, index) => {
                               return (
@@ -156,7 +160,7 @@ const Rating: FC<RatingProps> = ({ productId }) => {
                                        </div>
                                     </div>
 
-                                    <p className='pl-10 mt-2'>
+                                    <p className='pl-10 mt-2 text-sm xl:text-base'>
                                        {item.comment || ' no message'}
                                     </p>
                                     {/* {rateOfUser && (

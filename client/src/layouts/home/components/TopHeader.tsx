@@ -24,7 +24,7 @@ const TopHeader = () => {
    const { pathname } = useLocation();
 
    return (
-      <div className='text-xs'>
+      <div className='text-xs border-b border-[rgba(239,231,235,1)] md:block hidden'>
          <div className='container'>
             <div className='flex items-center justify-end space-x-5 h-9'>
                <Dropdown

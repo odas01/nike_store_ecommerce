@@ -16,7 +16,7 @@ import DashboardLayout from '@/layouts/dashboard/DashboardLayout';
 import Home from '@/pages/home/Home';
 import Shop from '@/pages/home/Shop';
 import Cart from '@/pages/home/Cart';
-import Detail from '@/pages/home/ProductDetail';
+import Detail from '@/pages/home/productDetail/ProductDetail';
 import Search from '@/pages/home/Search';
 import CheckOut from '@/pages/home/CheckOut';
 import Profile from '@/pages/home/user/Profile';
@@ -51,7 +51,7 @@ import CreateProduct from '@/pages/dashboard/product/create/CreateProduct';
 import Notfound from '@/pages/NotFound';
 
 //ORDER ROUTE
-import ThemeRoute from '@/route/ThemeRoute';
+import ThemeProvider from '@/providers/ThemeProvider';
 import PrivateRoute from '@/route/PrivateRoute';
 import PrivateCheckOutRoute from '@/route/PrivateCheckOutRoute';
 
@@ -110,9 +110,9 @@ function App() {
                path='dashboard'
                element={
                   <AuthDashboardProvider>
-                     <ThemeRoute>
+                     <ThemeProvider>
                         <DashboardLayout />
-                     </ThemeRoute>
+                     </ThemeProvider>
                   </AuthDashboardProvider>
                }
             >

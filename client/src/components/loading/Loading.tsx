@@ -1,4 +1,4 @@
-import { ThemeContext } from '@/route/ThemeRoute';
+import { ThemeContext } from '@/providers/ThemeProvider';
 import { useContext } from 'react';
 import PulseLoader from 'react-spinners/PulseLoader';
 

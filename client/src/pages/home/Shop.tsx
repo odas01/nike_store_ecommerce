@@ -8,7 +8,7 @@ import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 
 import Sort from '@/layouts/home/components/Sort';
 import Filter from '@/layouts/home/components/Filter';
-import ProductCard from '@/layouts/home/components/ProductCard';
+import ProductCard from '@/components/ProductCard';
 
 import { IProduct } from '@/types';
 import { store } from '@/constants';

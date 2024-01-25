@@ -47,15 +47,15 @@ const ProductCard: React.FC<ProductCardProps> = ({ data }) => {
                {data.name}
             </span>
 
-            <span className='flex-1 text-xs capitalize line-clamp-1'>
+            <span className='flex-1 capitalize md:text-xs text-11 line-clamp-1'>
                {data.category.name} {data.category.store}
             </span>
             <div className='relative flex items-center mt-2 space-x-2'>
-               <span className='text-base font-semibold text-red-500'>
+               <span className='text-sm font-semibold text-red-500 xl:text-base'>
                   {priceFormat(data.prices.price, isVnLang)}
                </span>
                {isSale && (
-                  <span className='line-through italic text-[#707072] opacity-80'>
+                  <span className='line-through italic text-[#707072] opacity-80 xl:text-15 text-13'>
                      {priceFormat(data.prices.originalPrice, isVnLang)}
                   </span>
                )}

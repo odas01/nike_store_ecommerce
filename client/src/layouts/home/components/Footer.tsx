@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next';
 const Footer = () => {
    const { t } = useTranslation('home');
    return (
-      <footer className='bg-[#f1f1f1] mt-auto'>
+      <footer className='bg-[#f1f1f1] mt-auto hidden'>
          <div className='container py-2'>
             <div className='mt-4 mb-10'>
                <Row gutter={24}>

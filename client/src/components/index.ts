@@ -21,4 +21,5 @@ export { default as PageTitle } from './PageTitle';
 export { default as Pagination } from './Pagination';
 export { default as Dropdown } from './dropdown/Dropdown';
 
+export { default as ProductCard } from './ProductCard';
 export { default as Paypal } from './Paypal';
