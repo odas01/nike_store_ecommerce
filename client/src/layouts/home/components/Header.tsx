@@ -8,7 +8,8 @@ import { Input, Logo } from '@/components';
 
 import cartStore from '@/stores/cartStore';
 import { Col, Row } from 'antd';
-import { CiMenuBurger, CiShoppingCart } from 'react-icons/ci';
+import { CiShoppingCart } from 'react-icons/ci';
+import { RiMenu2Line } from 'react-icons/ri';
 
 const Header = () => {
    const { t } = useTranslation('home');
@@ -22,11 +23,12 @@ const Header = () => {
       <header
       //  className='bg-[#DFDFDF]'
       >
-         <div className='container pt-4 pb-3 xl:py-6'>
+         <div className='container pt-3 pb-2 mobile:px-2 xl:py-6'>
             <Row align='middle' justify='space-between'>
                <Col xl={8} md={6} xs={6}>
-                  <div className='xl:hidden'>
-                     <CiMenuBurger size={26} />
+                  <div className='p-1 xl:hidden'>
+                     <RiMenu2Line size={26} className='hidden md:block' />
+                     <RiMenu2Line size={20} className='md:hidden' />
                   </div>
                   <div className='items-center hidden text-sm space-x-6 xl:flex [&_span]:tracking-[1px] uppercase'>
                      <Link
@@ -77,7 +79,7 @@ const Header = () => {
                   </Link>
                </Col>
                <Col xl={8} md={6} xs={6}>
-                  <div className='flex items-center justify-end space-x-8'>
+                  <div className='flex items-center justify-end pr-3 space-x-8 md:pr-0'>
                      <div className='hidden xl:flex items-center bg-[#f5f5f5] rounded-lg xl:w-72 xl:h-10 w-64 h-8'>
                         <Input
                            className='flex-1 h-full pl-4 border-none placeholder:text-[13px]'

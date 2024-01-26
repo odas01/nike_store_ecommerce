@@ -212,8 +212,8 @@ const ProductDetail = () => {
                      <Spin size='large' />
                   </div>
                ) : (
-                  <div className='px-4 space-y-3 xl:px-0'>
-                     <h2 className='text-xl font-medium xl:text-2xl'>
+                  <div className='px-3 space-y-3 xl:px-0'>
+                     <h2 className='text-lg font-medium xl:text-2xl'>
                         {t('home.uLike')}
                      </h2>
                      <Swiper

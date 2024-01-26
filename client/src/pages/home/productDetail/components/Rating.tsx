@@ -42,7 +42,7 @@ const Rating: FC<RatingProps> = ({ productId }) => {
       data?.rateCount.find((item) => item.rate === rate)?.count || 0;
 
    return (
-      <div className='xl:pl-20 xl:pr-[38%] px-4 py-12 border'>
+      <div className='xl:pl-20 xl:pr-[38%] px-4 md:py-12 py-2 my-4 md:border mobile border-y'>
          {isLoading ? (
             <div className='flex justify-center'>
                <Spin size='large' />
@@ -76,48 +76,46 @@ const Rating: FC<RatingProps> = ({ productId }) => {
                               {Array(5)
                                  .fill(5)
                                  .map((_, index) => (
-                                    <div className='w-full' key={index}>
-                                       <Row gutter={4}>
-                                          <Col xl={4} md={2} xs={2}>
-                                             <div className='flex items-center justify-center space-x-1'>
-                                                <span className='text-12 md:text-sm'>
-                                                   {5 - index}
-                                                </span>
+                                    <Row gutter={4} key={index}>
+                                       <Col xl={4} md={2} xs={2}>
+                                          <div className='flex items-center justify-center space-x-1'>
+                                             <span className='text-12 md:text-sm'>
+                                                {5 - index}
+                                             </span>
 
-                                                <BsStarFill
-                                                   color='#F8DE22'
-                                                   size={14}
-                                                />
-                                             </div>
-                                          </Col>
-                                          <Col xl={14} md={17} xs={13}>
-                                             <Progress
-                                                percent={
-                                                   (countRate(5 - index) /
-                                                      data.total) *
-                                                   100
-                                                }
-                                                strokeColor='#F8DE22'
-                                                className='!m-0 flex [&>div]:!pr-0'
-                                                format={() => ''}
+                                             <BsStarFill
+                                                color='#F8DE22'
+                                                size={14}
                                              />
-                                          </Col>
-                                          <Col
-                                             xl={6}
-                                             md={4}
-                                             xs={8}
-                                             className='flex items-center'
-                                          >
-                                             <p className='w-full ml-2 text-10 md:text-xs text-end'>
-                                                ({countRate(5 - index)}{' '}
-                                                {countRate(5 - index) > 1
-                                                   ? t('rating.ratings')
-                                                   : t('rating.rating')}
-                                                )
-                                             </p>
-                                          </Col>
-                                       </Row>
-                                    </div>
+                                          </div>
+                                       </Col>
+                                       <Col xl={14} md={18} xs={16}>
+                                          <Progress
+                                             percent={
+                                                (countRate(5 - index) /
+                                                   data.total) *
+                                                100
+                                             }
+                                             strokeColor='#F8DE22'
+                                             className='!m-0 flex [&>div]:!pr-0'
+                                             format={() => ''}
+                                          />
+                                       </Col>
+                                       <Col
+                                          xl={6}
+                                          md={4}
+                                          xs={6}
+                                          className='flex items-center'
+                                       >
+                                          <span className='w-full ml-2 text-10 md:text-xs text-end line-clamp-1'>
+                                             ({countRate(5 - index)}{' '}
+                                             {countRate(5 - index) > 1
+                                                ? t('rating.ratings')
+                                                : t('rating.rating')}
+                                             )
+                                          </span>
+                                       </Col>
+                                    </Row>
                                  ))}
                            </div>
                         </Col>

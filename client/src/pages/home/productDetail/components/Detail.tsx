@@ -94,29 +94,29 @@ const Detail: React.FC<IDetailProps> = ({ detail, avgRating, num, setNum }) => {
       <>
          <LoadingOverlay show={addItemMutation.isLoading} />
 
-         <div className='px-4'>
-            <h1 className='text-xl font-medium capitalize xl:text-4xl md:text-2xl'>
+         <div className='px-3'>
+            <h1 className='text-lg font-medium capitalize xl:text-4xl md:text-2xl'>
                {detail.name}
             </h1>
 
-            <span className='capitalize md:text-sm'>
+            <span className='capitalize md:text-sm text-13'>
                {isVnLang ? detail.category.vnName : detail.category.name}
             </span>
-            <div className='flex items-center py-2 mt-1 space-x-2 font-medium text-13 xl:text-sm'>
-               <div className='flex items-center space-x-1'>
-                  <span className='text-yellow-500 text-15'>{avgRating}</span>
+            <div className='flex items-center py-2 space-x-2 font-medium md:mt-1 text-13 xl:text-sm'>
+               <div className='flex items-center md:space-x-1 space-x-0.5'>
+                  <span className='text-yellow-500'>{avgRating}</span>
                   <AiFillStar color='#F8DE22' size={20} />
                </div>
-               <div className='flex items-center space-x-1 italic'>
+               <div className='flex items-center space-x-1 italic mobile:font-normal'>
                   ({`${t('sold')}: ${detail.sold}`})
                </div>
             </div>
             <div className='flex items-center mt-2 space-x-2'>
-               <span className='text-xl font-medium text-red-500 xl:text-2xl'>
+               <span className='text-lg font-medium text-red-500 xl:text-2xl'>
                   {priceFormat(detail.prices.price, isVnLang)}
                </span>
                {detail.discount !== 0 && (
-                  <span className='line-through italic text-[#808081] text-base font-normal'>
+                  <span className='line-through italic text-[#808081] md:text-base text-sm font-normal'>
                      {priceFormat(detail.prices.originalPrice, isVnLang)}
                   </span>
                )}
@@ -148,12 +148,12 @@ const Detail: React.FC<IDetailProps> = ({ detail, avgRating, num, setNum }) => {
             </Swiper>
          </div>
 
-         <div className='px-4'>
-            <p className='mt-4 font-medium text-justify text-13 xl:text-sm line-clamp-5'>
+         <div className='px-3'>
+            <p className='mt-4 text-justify text-13 xl:text-sm line-clamp-5'>
                {detail.desc}
             </p>
             <div className='flex flex-col w-1/2 mt-4 space-y-1'>
-               <span className='font-medium text-13 xl:text-base'>
+               <span className='text-sm font-medium xl:text-base'>
                   {t('label.color', { ns: 'mutual' })}
                </span>
                <Row gutter={[18, 6]}>
@@ -164,7 +164,7 @@ const Detail: React.FC<IDetailProps> = ({ detail, avgRating, num, setNum }) => {
                         className='flex flex-col items-center space-y-1'
                      >
                         <div
-                           className='w-8 rounded-full cursor-pointer aspect-square'
+                           className='w-8 border border-gray-400 rounded-full cursor-pointer aspect-square'
                            style={{
                               backgroundColor: item.color.value,
                            }}
@@ -178,7 +178,7 @@ const Detail: React.FC<IDetailProps> = ({ detail, avgRating, num, setNum }) => {
                </Row>
             </div>
             <div className='flex flex-col mt-4 space-y-1'>
-               <span className='font-medium text-13 xl:text-base'>
+               <span className='text-sm font-medium xl:text-base'>
                   {t('label.size', { ns: 'mutual' })}
                </span>
                <div className='flex-1 space-x-2'>
@@ -218,13 +218,13 @@ const Detail: React.FC<IDetailProps> = ({ detail, avgRating, num, setNum }) => {
                </div>
             </div>
             <div className='mt-2 space-y-1'>
-               <span className='font-medium text-13 xl:text-base'>
+               <span className='text-sm font-medium xl:text-base'>
                   {t('label.quantity', { ns: 'mutual' })}
                </span>
                <div className='flex items-center space-x-6'>
                   <div className='flex items-center justify-between'>
                      <button
-                        className='flex items-center justify-center w-10 rounded-full aspect-square shadow-db'
+                        className='flex items-center justify-center w-8 rounded-full md:w-10 aspect-square shadow-db'
                         onClick={() => {
                            if (!size) setError(true);
                            else if (qty > 1) setQty((qty) => qty - 1);
@@ -235,11 +235,11 @@ const Detail: React.FC<IDetailProps> = ({ detail, avgRating, num, setNum }) => {
                      <input
                         type='number'
                         value={qty}
-                        className='w-20 text-sm font-medium text-center xl:text-base'
+                        className='w-12 text-sm text-center md:w-20 xl:text-base'
                         onChange={handleChangeQty}
                      />
                      <button
-                        className='flex items-center justify-center w-10 rounded-full aspect-square shadow-db'
+                        className='flex items-center justify-center w-8 rounded-full md:w-10 aspect-square shadow-db'
                         onClick={() => {
                            if (!size) setError(true);
                            else if (stock && qty < stock)
@@ -260,10 +260,10 @@ const Detail: React.FC<IDetailProps> = ({ detail, avgRating, num, setNum }) => {
                   )}
                </div>
             </div>
-            <div className='flex mt-6 h-14 gap-x-4'>
+            <div className='flex h-12 mt-6 md:h-14 gap-x-4'>
                <div className='flex-1 rounded-lg flex-center bg-[#3085C3] text-white duration-200 hover:-translate-y-1 hover:shadow-[0_8px_8px_-6px_#3085C3]'>
                   <button
-                     className='w-full h-full text-base font-bold cursor-pointer text-inherit'
+                     className='w-full h-full text-sm font-bold cursor-pointer md:text-base text-inherit'
                      onClick={() => addToCart('cart')}
                   >
                      {t('action.addToCart', { ns: 'mutual' })}
@@ -271,7 +271,7 @@ const Detail: React.FC<IDetailProps> = ({ detail, avgRating, num, setNum }) => {
                </div>
                <div className='flex-1 rounded-lg flex-center text-[#3085C3] border-[3px] border-current duration-200 hover:-translate-y-1 hover:shadow-[0_8px_8px_-6px_currentcolor]'>
                   <button
-                     className='w-full h-full text-base font-bold cursor-pointer text-inherit'
+                     className='w-full h-full text-sm font-bold cursor-pointer md:text-base text-inherit'
                      onClick={() => addToCart('checkout')}
                   >
                      {t('action.buyNow', { ns: 'mutual' })}

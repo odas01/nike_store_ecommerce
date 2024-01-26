@@ -26,9 +26,9 @@ const ProductCard: React.FC<ProductCardProps> = ({ data }) => {
          onClick={() => navigate('/d/' + data.slug)}
       >
          {isSale && (
-            <div className='absolute z-50 px-3 py-1 text-xs text-white bg-orange-500 rounded-sm top-2 right-2 w-fit'>
+            <span className='absolute z-50 px-2 py-1 text-white bg-orange-500 rounded-sm md:px-3 xl:text-xs text-10 top-2 right-2 w-fit'>
                -{saleValue}
-            </div>
+            </span>
          )}
          <div className='w-full overflow-hidden rounded-sm aspect-square group'>
             <Swiper modules={[Pagination]} spaceBetween={4}>
@@ -42,15 +42,15 @@ const ProductCard: React.FC<ProductCardProps> = ({ data }) => {
                ))}
             </Swiper>
          </div>
-         <div className='flex flex-col flex-1 p-3 rounded-bl rounded-br'>
-            <span className='flex-1 font-medium text-15 line-clamp-1'>
+         <div className='flex flex-col flex-1 p-1 rounded-bl rounded-br md:p-3'>
+            <span className='flex-1 text-sm font-medium md:text-15 line-clamp-1'>
                {data.name}
             </span>
 
             <span className='flex-1 capitalize md:text-xs text-11 line-clamp-1'>
                {data.category.name} {data.category.store}
             </span>
-            <div className='relative flex items-center mt-2 space-x-2'>
+            <div className='relative flex items-center mt-1 space-x-2 md:mt-2'>
                <span className='text-sm font-semibold text-red-500 xl:text-base'>
                   {priceFormat(data.prices.price, isVnLang)}
                </span>

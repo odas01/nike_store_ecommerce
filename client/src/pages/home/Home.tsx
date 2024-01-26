@@ -49,7 +49,7 @@ const Home = () => {
    return (
       <>
          <PageTitle title='Nike Store' />
-         <div className='relative xl:h-screen md:h-[75vh] h-[50vh] bg-banner bg-repeat bg-fixed'>
+         <div className='relative xl:h-screen md:h-[75vh] h-[42vh] bg-banner bg-repeat bg-fixed'>
             <img
                src={images.bannerr}
                alt=''
@@ -109,7 +109,7 @@ const Home = () => {
                </h1>
                <Link
                   to='shop'
-                  className='md:mt-4 mt-1 bg-[#181823] text-white inline-block px-5 py-2 rounded-full 
+                  className='md:mt-4 mt-1 bg-[#181823] text-white inline-block px-5 py-2 rounded-full mobile:text-xs mobile:px-4 mobile:py-1.5
                     cursor-pointer hover:opacity-80 hover:text-white'
                >
                   {t('home.shopNow')}
@@ -128,7 +128,7 @@ const Home = () => {
                </div>
             </div>
             <div className='relative border-t pt-7'>
-               <h2 className='xl:text-5xl md:text-3xl w-max text-2xl font-semibold text-center text-[#383838] absolute md:-top-5 -top-3 bg-white px-4 italic left-1/2 -translate-x-1/2'>
+               <h2 className='xl:text-5xl md:text-3xl w-max text-xl font-semibold text-center text-[#383838] absolute md:-top-5 -top-3.5 bg-white px-4 italic left-1/2 -translate-x-1/2'>
                   {t('home.trenyP')}
                </h2>
                <div className='flex justify-center xl:mt-3 xl:mb-12 mb-8 space-x-12 xl:text-lg font-medium text-[#383838]'>

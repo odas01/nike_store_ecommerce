@@ -53,6 +53,11 @@ module.exports = {
                '2xl': '5rem',
             },
          },
+         screens: {
+            mobile: {
+               max: '576px',
+            },
+         },
       },
    },
 };
