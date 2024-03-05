@@ -83,11 +83,22 @@ const Profile = () => {
          <PageTitle title='My profile' />
          <div className='relative'>
             {updateProfileMutation.isLoading && <LoadingOverlay />}
-            <h2 className='mb-4 text-xl font-semibold'>{t('profile')}</h2>
+            <h2 className='pb-2 text-lg font-semibold text-center uppercase xl:normal-case md:pb-4 xl:text-start md:text-xl'>
+               {t('profile')}
+            </h2>
 
-            <Row gutter={60}>
-               <Col span={12}>
-                  <div className='space-y-2'>
+            <Row
+               gutter={[
+                  {
+                     xl: 60,
+                  },
+                  {
+                     xs: 4,
+                  },
+               ]}
+            >
+               <Col xl={12} xs={24}>
+                  <div className='space-y-1 md:space-y-2'>
                      <div className='flex flex-col space-y-1'>
                         <label htmlFor='name' className='text-13'>
                            {t('label.name', { ns: 'mutual' })}
@@ -141,7 +152,7 @@ const Profile = () => {
                      </div>
                   </div>
                </Col>
-               <Col span={12}>
+               <Col xl={12} xs={24}>
                   <div className='flex flex-col space-y-1'>
                      <label htmlFor='name' className='text-13'>
                         {t('avatar')}
@@ -150,12 +161,12 @@ const Profile = () => {
                         <Image
                            url={watch('avatar')}
                            onRemove={() => setValue('avatar', '')}
-                           className='w-64'
+                           className='w-48 md:w-64'
                         />
                      ) : (
                         <UploadButton
                            setValue={(data) => setValue('avatar', data[0].url)}
-                           className='w-64 h-64'
+                           className='w-48 h-48 md:w-64 md:h-64'
                         />
                      )}
 
@@ -164,7 +175,7 @@ const Profile = () => {
                </Col>
             </Row>
 
-            <Button onClick={onSubmit} className='mt-8'>
+            <Button onClick={onSubmit} className='mt-2 xl:mt-8 md:mt-4'>
                {t('action.save', { ns: 'mutual' })}
             </Button>
          </div>

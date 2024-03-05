@@ -42,8 +42,10 @@ const Orders = () => {
       <>
          <PageTitle title='My orders' />
          <div className='space-y-2'>
-            <h2 className='text-xl font-semibold '>{t('orders')}</h2>
-            <div className='flex justify-end'>
+            <h2 className='pb-2 text-lg font-semibold text-center uppercase xl:normal-case xl:pb-4 xl:text-start md:text-xl'>
+               {t('orders')}
+            </h2>
+            <div className='flex justify-end w-full mobile:hidden'>
                <Dropdown
                   items={[
                      {
@@ -130,7 +132,7 @@ const Orders = () => {
                </div>
             ) : data && data.orders.length > 0 ? (
                <div className='overflow-hidden font-medium border rounded-lg'>
-                  <div className='bg-[#dedfe3]'>
+                  <div className='bg-[#dedfe3] xl:block hidden'>
                      <Row>
                         <Col span={3}>
                            <p className='px-4 py-3'>ID</p>
@@ -160,18 +162,20 @@ const Orders = () => {
                      const isNew =
                         moment(order.createdAt).format('DDMMYY') ===
                         moment().format('DDMMYY');
+                     console.log(index % 2);
 
                      return (
                         <div
                            className={twMerge(
                               'border-t hover:bg-[rgba(0,0,0,0.024)] duration-150',
                               order.status === 'cancel' &&
-                                 'opacity-50 line-through'
+                                 'opacity-50 line-through',
+                              index % 2 === 0 && 'mobile:bg-gray-200'
                            )}
                            key={index}
                         >
-                           <Row>
-                              <Col span={3}>
+                           <Row className='[&>div]:text-xs [&>div]:xl:text-sm'>
+                              <Col xl={3} md={4} xs={6}>
                                  <p className='relative p-4'>
                                     {'#' + order._id.slice(-6, -1)}
                                     {isNew && (
@@ -181,25 +185,25 @@ const Orders = () => {
                                     )}
                                  </p>
                               </Col>
-                              <Col span={5}>
+                              <Col xl={5} md={6} xs={10}>
                                  <p className='p-4'>
                                     {moment(order.createdAt).format(
                                        'DD/MM YYYY HH:mm'
                                     )}
                                  </p>
                               </Col>
-                              <Col span={1}></Col>
-                              <Col span={4}>
+                              <Col xl={1} md={0} xs={0}></Col>
+                              <Col xl={4} md={0} xs={8}>
                                  <p className='p-4 capitalize'>
                                     {order?.coupon?.code}
                                  </p>
                               </Col>
-                              <Col span={4}>
+                              <Col xl={4} md={6} xs={8}>
                                  <p className='p-4 font-semibold capitalize'>
                                     {priceFormat(order.total, isVnLang)}
                                  </p>
                               </Col>
-                              <Col span={4}>
+                              <Col xl={4} md={4} xs={8}>
                                  <p className='p-4 capitalize'>
                                     {t(`status.${order.status as Status}`, {
                                        ns: 'mutual',
@@ -207,7 +211,7 @@ const Orders = () => {
                                  </p>
                               </Col>
 
-                              <Col span={3}>
+                              <Col xl={3} md={4} xs={8}>
                                  <div className='flex items-center justify-center h-full text-[#45a9f0]'>
                                     <Link to={order._id}>
                                        {t('viewDetail')}

@@ -52,14 +52,13 @@ const Sort: React.FC<Props> = ({ sort, setSort }) => {
    return (
       <div className='relative flex gap-5'>
          <span
-            className='flex items-center gap-1 font-medium cursor-pointer'
+            className='flex items-center gap-1 font-medium cursor-pointer text-13 md:text-sm'
             onClick={() => setShow(!show)}
          >
-            {t('sort.sortBy')}:{' '}
-            <span className='mx-1 text-sm opacity-75'>{text}</span>{' '}
-            <BsChevronDown />
+            {!sort && <span>{t('sort.sortBy')}: </span>}
+            <span className='mx-1 opacity-75'>{text}</span> <BsChevronDown />
          </span>
-         <div className='absolute right-0 z-[100] overflow-hidden top-full w-44 '>
+         <div className='absolute right-0 z-[100] overflow-hidden top-full md:w-44 w-36'>
             <div
                className={`relative p-2 flex-column items-end rounded-md border border-gray-100 bg-white duration-500 ${
                   show ? '-top-[4px]' : ' -top-[150px]'
@@ -67,7 +66,7 @@ const Sort: React.FC<Props> = ({ sort, setSort }) => {
             >
                {sort && (
                   <button
-                     className='w-full py-1 text-sm cursor-pointer hover:opacity-75 text-end'
+                     className='w-full py-1 text-xs cursor-pointer md:text-sm hover:opacity-75 text-end'
                      value='createdAt:-1'
                      onClick={handleSort}
                   >
@@ -77,7 +76,7 @@ const Sort: React.FC<Props> = ({ sort, setSort }) => {
                {label.map((item, index) => (
                   <button
                      key={index}
-                     className='w-full py-1 text-sm cursor-pointer hover:opacity-75 disabled:opacity-100 text-end'
+                     className='w-full py-1 text-xs cursor-pointer md:text-sm hover:opacity-75 disabled:opacity-100 text-end'
                      value={item.value}
                      onClick={handleSort}
                      disabled={item.value === sort}

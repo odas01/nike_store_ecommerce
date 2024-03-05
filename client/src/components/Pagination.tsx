@@ -33,7 +33,7 @@ const Pagination: React.FC<Props> = ({
             className
          )}
       >
-         <div className='text-xs uppercase'>
+         <div className='uppercase xl:text-xs text-10'>
             {t('pagination.showing')}{' '}
             <span>
                {skip + 1} - {skip + currentTotal}
@@ -41,7 +41,7 @@ const Pagination: React.FC<Props> = ({
             {t('pagination.of')}
             <span> {total}</span>
          </div>
-         <ul className='flex justify-between items-center text-[#9e9e9e] mt-0 text-xs'>
+         <ul className='flex justify-between items-center text-[#9e9e9e] mt-0 xl:text-xs text-10'>
             <li className='px-3 py-1'>
                <button
                   className={twMerge(

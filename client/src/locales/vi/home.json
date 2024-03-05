@@ -41,7 +41,8 @@
       "proceedCheckOut": "Tiến hành thanh toán",
       "cartEmpty": "Giỏ hàng của bạn đang trống",
       "findAndAdd": "Tìm kiếm sản phẩm và thêm vào giỏ hàng",
-      "startShopping": "Bắt đầu mua sắm"
+      "startShopping": "Bắt đầu mua sắm",
+      "wantDelete?": "Bạn có muốn xóa {{quantity}} {{text}}?"
    },
    "filter": {
       "under": "Dưới",
@@ -69,6 +70,7 @@
    "saved": "Tiết kiệm",
    "items": "sản phẩm",
    "item": "sản phẩm",
+   "allItems": "Tất cả sản phẩm",
    "checkout": {
       "checkout": "Thanh toán",
       "personalDetails": "Thông tin cá nhân",
@@ -124,5 +126,7 @@
    "abus": "Về chúng tôi",
    "contact": "Liên hệ",
    "company": "Công ty",
-   "introduce": "Giới thiệu"
+   "introduce": "Giới thiệu",
+   "personal": "Cá nhân",
+   "language": "Ngôn ngữ"
 }

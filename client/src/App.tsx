@@ -18,7 +18,7 @@ import Shop from '@/pages/home/Shop';
 import Cart from '@/pages/home/Cart';
 import Detail from '@/pages/home/productDetail/ProductDetail';
 import Search from '@/pages/home/Search';
-import CheckOut from '@/pages/home/CheckOut';
+import CheckOut from '@/pages/home/checkout/CheckOut';
 import Profile from '@/pages/home/user/Profile';
 import MyOrders from '@/pages/home/user/Orders';
 import Account from '@/pages/home/user/Account';

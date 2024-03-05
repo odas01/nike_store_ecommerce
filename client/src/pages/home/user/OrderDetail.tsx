@@ -39,7 +39,7 @@ const OrderDetail = () => {
       <>
          <PageTitle title='Order Detail' />
          <div className='space-y-2'>
-            <h2 className='text-xl font-semibold '>
+            <h2 className='pb-2 text-lg font-semibold text-center uppercase xl:normal-case xl:pb-4 xl:text-start md:text-xl'>
                {t('orderDetail', { ns: 'mutual' })}
             </h2>
 
@@ -50,8 +50,8 @@ const OrderDetail = () => {
             ) : data ? (
                <>
                   <div className='overflow-hidden font-medium border rounded-lg'>
-                     <div className='bg-[#dedfe3]'>
-                        <Row>
+                     <div className='bg-[#dedfe3] mobile:hidden'>
+                        <Row className='[&>div]:xl:text-sm [&>div]:text-13'>
                            <Col span={14}>
                               <p className='px-4 py-3'>
                                  {t('product', { ns: 'mutual' })}
@@ -69,29 +69,36 @@ const OrderDetail = () => {
                      {data.products.map((product, index) => (
                         <div key={index}>
                            <Row>
-                              <Col span={14}>
+                              <Col xl={14} md={14} xs={18}>
                                  <Link
                                     to={`/d/${product.product.slug}`}
-                                    className='flex items-center px-4 py-3 space-x-5'
+                                    className='flex items-center p-2 space-x-5 md:px-4 md:py-3'
                                  >
                                     <img
                                        src={product.thumbnail}
-                                       className='w-20 aspect-square'
+                                       className='w-12 xl:w-20 md:w-16 aspect-square'
                                        alt=''
                                     />
                                     <div className='flex flex-col'>
-                                       <span className='text-lg'>
+                                       <span className='text-sm xl:text-lg md:text-base'>
                                           {product.name}
                                        </span>
-                                       <span className='italic font-normal capitalize'>
+                                       <span className='italic font-normal capitalize xl:text-sm md:text-13 text-11'>
                                           {product.variant.color.name} -{' '}
                                           {product.size}
                                        </span>
                                     </div>
                                  </Link>
                               </Col>
-                              <Col span={6}>
-                                 <div className='flex items-center w-full h-full'>
+                              <Col
+                                 xl={6}
+                                 md={6}
+                                 xs={{
+                                    span: 24,
+                                    order: 1,
+                                 }}
+                              >
+                                 <div className='flex items-center w-full h-full mobile:justify-center mobile:py-2'>
                                     {product?.isRating ? (
                                        <div className='flex flex-col flex-1 space-y-2'>
                                           <span className='flex items-center spax'>
@@ -111,12 +118,18 @@ const OrderDetail = () => {
                                     )}
                                  </div>
                               </Col>
-                              <Col span={4}>
+                              <Col
+                                 xl={4}
+                                 md={4}
+                                 xs={{
+                                    span: 6,
+                                 }}
+                              >
                                  {!product?.isRating &&
                                     data.status === 'delivered' && (
                                        <div className='flex items-center justify-center h-full'>
                                           <Button
-                                             className='px-3 py-0.5 text-xs rounded'
+                                             className='px-3 py-0.5 rounded'
                                              onClick={() =>
                                                 setProductActive(product)
                                              }
@@ -130,64 +143,84 @@ const OrderDetail = () => {
                         </div>
                      ))}
                   </div>
-                  <div className='flex flex-col items-end space-y-2'>
-                     <div className='flex justify-between w-1/2 px-5 py-3 text-base bg-gray-200 rounded'>
-                        <div className='space-y-1'>
-                           <p>{t('label.name', { ns: 'mutual' })}: </p>
-                           <p>{t('label.phone', { ns: 'mutual' })}: </p>
-                           <p>{t('label.address', { ns: 'mutual' })}: : </p>
-                           <p>{t('label.method', { ns: 'mutual' })}: </p>
-                           <p>{t('label.message', { ns: 'mutual' })}: </p>
-                        </div>
-                        <div className='space-y-1 [&>p]:text-end'>
-                           <p>{data.user.name}</p>
-                           <p>{data.user.phone}</p>
-                           <p>{data.address}</p>
-                           <p>
-                              {data.paymentMethod === 'cash'
-                                 ? t('cash', { ns: 'mutual' })
-                                 : data.paymentMethod}
-                           </p>
-                           <p>{data.message}</p>
-                        </div>
-                     </div>
-                     <div className='flex justify-between w-[40%] py-3 px-5 text-base bg-gray-200 rounded'>
-                        <div className='space-y-1'>
-                           <p>{t('checkout.subTotal')}: </p>
-                           <p>
-                              {t('order.shippingCost', {
-                                 ns: 'mutual',
-                              })}
-                              :{' '}
-                           </p>
-                           <p>
-                              {t('label.discount', {
-                                 ns: 'mutual',
-                              })}
-                              :{' '}
-                           </p>
-                           <p className='pt-4 text-lg font-semibold'>
-                              {t('total')}:{' '}
-                           </p>
-                        </div>
-                        <div className='space-y-1 [&>p]:text-end'>
-                           <p>{priceFormat(data.subTotal, isVnLang)}</p>
-                           <p>
-                              +{priceFormat(data.shippingCost || 0, isVnLang)}
-                           </p>
-                           <p>-{priceFormat(data.discount || 0, isVnLang)}</p>
-                           <p className='pt-4 text-xl font-semibold'>
-                              {priceFormat(data.total || 0, isVnLang)}
-                           </p>
-                        </div>
-                     </div>
-                     {data.status === 'pending' && (
-                        <Button onClick={() => setOpenModel(true)}>
-                           {' '}
-                           {t('mutual:cancelOrder')}
-                        </Button>
-                     )}
-                  </div>
+                  <Row gutter={[12, 6]}>
+                     <Col xl={12} md={14} xs={24}>
+                        <Row className='h-full px-4 py-2 text-base bg-gray-200 rounded xl:px-5 xl:py-3 md:px-4 md:py-2'>
+                           <Col xl={14} md={14} xs={12}>
+                              <div className='space-y-1 text-xs xl:text-base md:text-sm'>
+                                 <p>{t('label.name', { ns: 'mutual' })}: </p>
+                                 <p>{t('label.phone', { ns: 'mutual' })}: </p>
+                                 <p>
+                                    {t('label.address', { ns: 'mutual' })}: :{' '}
+                                 </p>
+                                 <p>{t('label.method', { ns: 'mutual' })}: </p>
+                                 <p>{t('label.message', { ns: 'mutual' })}: </p>
+                              </div>
+                           </Col>
+                           <Col xl={10} md={10} xs={12}>
+                              <div className='space-y-1 [&>p]:text-end'>
+                                 <p>{data.user.name}</p>
+                                 <p>{data.user.phone}</p>
+                                 <p>{data.address}</p>
+                                 <p>
+                                    {data.paymentMethod === 'cash'
+                                       ? t('cash', { ns: 'mutual' })
+                                       : data.paymentMethod}
+                                 </p>
+                                 <p>{data.message}</p>
+                              </div>
+                           </Col>
+                        </Row>
+                     </Col>
+                     <Col xl={12} md={10} xs={24}>
+                        <Row className='h-full px-4 py-2 bg-gray-200 rounded xl:px-5 xl:py-3 md:px-4 md:py-2'>
+                           <Col xl={14} md={14} xs={12}>
+                              <div className='space-y-1 text-xs xl:text-base md:text-sm'>
+                                 <p>{t('checkout.subTotal')}: </p>
+                                 <p>
+                                    {t('order.shippingCost', {
+                                       ns: 'mutual',
+                                    })}
+                                    :{' '}
+                                 </p>
+                                 <p>
+                                    {t('label.discount', {
+                                       ns: 'mutual',
+                                    })}
+                                    :{' '}
+                                 </p>
+                                 <p className='text-sm font-semibold xl:pt-4 md:pt-2 xl:text-lg md:text-base'>
+                                    {t('total')}:{' '}
+                                 </p>
+                              </div>
+                           </Col>
+                           <Col xl={10} md={10} xs={12}>
+                              <div className='space-y-1 [&>p]:text-end text-xs xl:text-base md:text-sm'>
+                                 <p>{priceFormat(data.subTotal, isVnLang)}</p>
+                                 <p>
+                                    +
+                                    {priceFormat(
+                                       data.shippingCost || 0,
+                                       isVnLang
+                                    )}
+                                 </p>
+                                 <p>
+                                    -{priceFormat(data.discount || 0, isVnLang)}
+                                 </p>
+                                 <p className='text-base font-semibold md:text-lg xl:text-xl xl:pt-4'>
+                                    {priceFormat(data.total || 0, isVnLang)}
+                                 </p>
+                              </div>
+                           </Col>
+                        </Row>
+                     </Col>
+                  </Row>
+                  {data.status === 'pending' && (
+                     <Button onClick={() => setOpenModel(true)}>
+                        {' '}
+                        {t('mutual:cancelOrder')}
+                     </Button>
+                  )}
                </>
             ) : (
                <p className='flex justify-center py-8 text-base'>

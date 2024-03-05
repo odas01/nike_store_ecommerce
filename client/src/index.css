@@ -20,6 +20,7 @@ html {
    padding: 0;
    box-sizing: border-box;
    font-family: 'Inter', sans-serif;
+   line-height: 1.5  !important; 
 }
 
 body {
@@ -219,5 +220,9 @@ ul {
 
    .skeleton {
       @apply bg-gray-300 rounded animate-pulse;
+   }
+
+   .flex-center{
+      @apply flex items-center justify-center
    }
 }

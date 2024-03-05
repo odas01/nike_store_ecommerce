@@ -102,7 +102,7 @@ const Detail: React.FC<IDetailProps> = ({ detail, avgRating, num, setNum }) => {
             <span className='capitalize md:text-sm text-13'>
                {isVnLang ? detail.category.vnName : detail.category.name}
             </span>
-            <div className='flex items-center py-2 space-x-2 font-medium md:mt-1 text-13 xl:text-sm'>
+            <div className='items-center hidden mt-1 space-x-2 text-sm font-medium xl:py-2 xl:text-15 md:flex'>
                <div className='flex items-center md:space-x-1 space-x-0.5'>
                   <span className='text-yellow-500'>{avgRating}</span>
                   <AiFillStar color='#F8DE22' size={20} />
@@ -112,7 +112,7 @@ const Detail: React.FC<IDetailProps> = ({ detail, avgRating, num, setNum }) => {
                </div>
             </div>
             <div className='flex items-center mt-2 space-x-2'>
-               <span className='text-lg font-medium text-red-500 xl:text-2xl'>
+               <span className='text-lg text-red-500 md:font-medium xl:text-2xl'>
                   {priceFormat(detail.prices.price, isVnLang)}
                </span>
                {detail.discount !== 0 && (
@@ -153,7 +153,7 @@ const Detail: React.FC<IDetailProps> = ({ detail, avgRating, num, setNum }) => {
                {detail.desc}
             </p>
             <div className='flex flex-col w-1/2 mt-4 space-y-1'>
-               <span className='text-sm font-medium xl:text-base'>
+               <span className='text-xs font-medium xl:text-base'>
                   {t('label.color', { ns: 'mutual' })}
                </span>
                <Row gutter={[18, 6]}>
@@ -164,13 +164,13 @@ const Detail: React.FC<IDetailProps> = ({ detail, avgRating, num, setNum }) => {
                         className='flex flex-col items-center space-y-1'
                      >
                         <div
-                           className='w-8 border border-gray-400 rounded-full cursor-pointer aspect-square'
+                           className='w-8 border-[0.5px] border-gray-400 rounded-full cursor-pointer aspect-square'
                            style={{
                               backgroundColor: item.color.value,
                            }}
                            onClick={() => handleChangeColor(index)}
                         />
-                        <span className='font-semibold uppercase text-10 line-clamp-1'>
+                        <span className='uppercase md:font-semibold text-10 line-clamp-1'>
                            {isVnLang ? item.color.vnName : item.color.name}
                         </span>
                      </Col>
@@ -178,22 +178,22 @@ const Detail: React.FC<IDetailProps> = ({ detail, avgRating, num, setNum }) => {
                </Row>
             </div>
             <div className='flex flex-col mt-4 space-y-1'>
-               <span className='text-sm font-medium xl:text-base'>
+               <span className='text-xs font-medium xl:text-base'>
                   {t('label.size', { ns: 'mutual' })}
                </span>
                <div className='flex-1 space-x-2'>
                   <div className='mb-2'>
                      <Row gutter={[6, 6]}>
                         {detail.variants[num].sizes.map((item, index) => (
-                           <Col span={4} key={index}>
+                           <Col xl={4} md={4} xs={6} key={index}>
                               <div
                                  className={twMerge(
-                                    'w-full py-2 flex justify-center items-center shadow-db text-xs text-center rounded-md cursor-pointer uppercase',
+                                    'py-2 flex-center shadow-db md:text-xs text-10 text-center rounded-md cursor-pointer uppercase',
                                     item.size === size &&
                                        ' bg-[#FC6E20] text-white border-[#FC6E20]',
                                     item.stock === 0
                                        ? 'text-[#ddd] bg-[#f7f7f7] cursor-default'
-                                       : 'duration-150 hover:bg-[#FC6E20] hover:text-white hover:border-[#FC6E20]'
+                                       : 'duration-150 hover:bg-[#FC6E20] hover:text-white mobile:text-10 hover:border-[#FC6E20]'
                                  )}
                                  onClick={() =>
                                     item.stock !== 0 && choseSize(item)
@@ -218,7 +218,7 @@ const Detail: React.FC<IDetailProps> = ({ detail, avgRating, num, setNum }) => {
                </div>
             </div>
             <div className='mt-2 space-y-1'>
-               <span className='text-sm font-medium xl:text-base'>
+               <span className='text-xs font-medium xl:text-base'>
                   {t('label.quantity', { ns: 'mutual' })}
                </span>
                <div className='flex items-center space-x-6'>

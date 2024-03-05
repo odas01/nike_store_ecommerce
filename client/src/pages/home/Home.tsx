@@ -16,6 +16,7 @@ import ProductCard from '@/components/ProductCard';
 
 import { productApi } from '@/api';
 import images from '@/assets/images';
+import Banner from './home/Banner';
 
 const Home = () => {
    const [isTop, setIsTop] = useState<boolean>(true);
@@ -49,37 +50,10 @@ const Home = () => {
    return (
       <>
          <PageTitle title='Nike Store' />
-         <div className='relative xl:h-screen md:h-[75vh] h-[42vh] bg-banner bg-repeat bg-fixed'>
-            <img
-               src={images.bannerr}
-               alt=''
-               className='xl:w-[580px] md:w-64 w-40 absolute xl:right-28 right-2 object-contain'
-            />
+         <Banner />
 
-            <div className='absolute text-white w-min md:w-fit flex-column bottom-4 left-4 xl:top-1/3 xl:left-28'>
-               <span className='font-nikeFutura tracking-[8px] md:text-8xl text-3xl overflow-hidden whitespace-nowrap animate-typing'>
-                  JUST DO IT
-               </span>
-               <span className='mt-2 text-2xl italic md:text-3xl font-nikeFutura'>
-                  Play With Electric Nike Shoes
-               </span>
-               <Link
-                  to='/shop'
-                  className='relative px-3 py-2 mt-16 text-black bg-white rounded-full cursor-pointer md:mt-24 md:px-5 md:py-3 flex-center w-fit group'
-               >
-                  <span className='z-10 mr-4 font-medium duration-300 text-13 md:text-lg group-hover:text-white'>
-                     {t('cart.startShopping')}
-                  </span>
-                  <div className='z-10 p-1 rounded-full md:p-2 flex-center'>
-                     <BsArrowRight color='#fff' />
-                  </div>
-                  <div className='absolute right-[10px] md:w-10 w-8 aspect-square bg-[#181823] rounded-full duration-300 group-hover:w-[102%] group-hover:h-[102%] group-hover:right-[-1px]' />
-               </Link>
-            </div>
-         </div>
-
-         <div className='container py-4 space-y-6 xl:py-10 md:space-y-16'>
-            <div className='space-y-3'>
+         <div className='py-4 space-y-6 xl:py-10 md:space-y-16'>
+            <div className='space-y-3 mobile:px-2'>
                <h2 className='text-lg font-medium xl:text-2xl md:text-xl'>
                   {t('home.bestSeller')}
                </h2>
@@ -127,11 +101,11 @@ const Home = () => {
                   <img src={images.banner.kids} alt='' className='scale-125' />
                </div>
             </div>
-            <div className='relative border-t pt-7'>
+            <div className='relative pt-5 border-t md:pt-7 mobile:px-2'>
                <h2 className='xl:text-5xl md:text-3xl w-max text-xl font-semibold text-center text-[#383838] absolute md:-top-5 -top-3.5 bg-white px-4 italic left-1/2 -translate-x-1/2'>
                   {t('home.trenyP')}
                </h2>
-               <div className='flex justify-center xl:mt-3 xl:mb-12 mb-8 space-x-12 xl:text-lg font-medium text-[#383838]'>
+               <div className='flex justify-center md:mt-2 xl:mt-7 mb-4 space-x-12 md:text-lg text-13 font-medium text-[#383838]'>
                   <span
                      className={twMerge(
                         'cursor-pointer',

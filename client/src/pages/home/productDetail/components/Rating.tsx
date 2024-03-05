@@ -54,15 +54,15 @@ const Rating: FC<RatingProps> = ({ productId }) => {
                      <Row gutter={12}>
                         <Col xl={9} md={24} xs={24}>
                            <div className='flex flex-col items-center h-full py-2'>
-                              <h2 className='text-lg font-semibold xl:text-xl'>
+                              <h2 className='text-base font-semibold xl:text-xl'>
                                  {t('rating.productRatings')}
                               </h2>
-                              <span className='mt-2 text-2xl font-semibold text-red-500 xl:text-3xl'>
+                              <span className='text-2xl font-semibold text-red-500 md:mt-2 xl:text-3xl'>
                                  {data.total > 0
                                     ? avgRatings + '/5.0'
                                     : t('rating.noRatings')}
                               </span>
-                              <span className='text-13 xl:text-sm'>
+                              <span className='text-xs md:text-sm'>
                                  ({data?.total}{' '}
                                  {data?.total! > 1
                                     ? t('rating.ratings')

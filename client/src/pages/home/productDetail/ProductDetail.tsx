@@ -3,7 +3,7 @@ import { Col, Row, Skeleton, Spin } from 'antd';
 import { productApi, ratingApi } from '@/api';
 import { useTranslation } from 'react-i18next';
 import { useQueries, useQuery } from '@tanstack/react-query';
-import { Link, Navigate, useParams } from 'react-router-dom';
+import { Navigate, useParams } from 'react-router-dom';
 import { Swiper, SwiperClass, SwiperSlide } from 'swiper/react';
 import {
    Autoplay,
@@ -16,7 +16,7 @@ import {
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 
-import { PageTitle, ProductCard } from '@/components';
+import { BreadCrumb, PageTitle, ProductCard } from '@/components';
 import Rating from './components/Rating';
 import Detail from './components/Detail';
 
@@ -68,21 +68,26 @@ const ProductDetail = () => {
    return (
       <>
          {!loading1 && <PageTitle title={detail.name} />}
-         <div className='bg-[#f5f5f5] py-2 text-13'>
-            <div className='container space-x-2'>
-               <Link to='/'>{t('home.home')}</Link>
-               <span className='text-[#ccc]'>/</span>
-               <span className='capitalize text-[#777]'>{detail?.name}</span>
-            </div>
-         </div>
-         <div className='container space-y-20'>
-            <div className='-mx-2 md:px-0'>
+         {detail && (
+            <BreadCrumb
+               items={[
+                  {
+                     title: t('home.home'),
+                     href: '/',
+                  },
+                  {
+                     title: detail?.name,
+                  },
+               ]}
+            />
+         )}
+         <div className='space-y-20'>
+            <div className='mobile:pt-4'>
                <Row
                   gutter={[
                      { xs: 0, xl: 24 },
                      { xs: 0, xl: 24 },
                   ]}
-                  className='pt-4 xl:pt-0'
                >
                   <Col xl={16} md={12} xs={0}>
                      <Row gutter={[12, 16]} justify='center'>

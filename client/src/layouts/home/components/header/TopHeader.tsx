@@ -24,8 +24,8 @@ const TopHeader = () => {
    const { pathname } = useLocation();
 
    return (
-      <div className='text-xs border-b border-[rgba(239,231,235,1)] md:block hidden'>
-         <div className='container'>
+      <div className='border-b border-[rgba(239,231,235,1)] mobile:hidden'>
+         <div className='container text-xs'>
             <div className='flex items-center justify-end space-x-5 h-9'>
                <Dropdown
                   arrow={true}
@@ -82,7 +82,7 @@ const TopHeader = () => {
                            label: (
                               <Link
                                  to='/account/profile'
-                                 className='inline-block px-3 py-2 space-x-2 text-sm font-medium cursor-pointer pr-7'
+                                 className='inline-block px-3 xl:py-2 py-1.5 space-x-2 text-xs font-medium cursor-pointer xl:text-sm pr-7'
                               >
                                  {t('myAccount', { ns: 'home' })}
                               </Link>
@@ -92,7 +92,7 @@ const TopHeader = () => {
                            label: (
                               <Link
                                  to='/account/my-orders'
-                                 className='inline-block px-3 py-2 space-x-2 text-sm font-medium cursor-pointer pr-7'
+                                 className='inline-block px-3 xl:py-2 py-1.5 space-x-2 text-xs font-medium cursor-pointer xl:text-sm pr-7'
                               >
                                  {t('orders', { ns: 'home' })}
                               </Link>
@@ -101,7 +101,7 @@ const TopHeader = () => {
                         {
                            label: (
                               <span
-                                 className='inline-block px-3 py-2 space-x-2 text-sm font-medium cursor-pointer pr-7'
+                                 className='inline-block px-3 xl:py-2 py-1.5 space-x-2 text-xs font-medium cursor-pointer xl:text-sm pr-7'
                                  onClick={() => {
                                     logOut();
                                     deleteCart();
@@ -147,9 +147,5 @@ const TopHeader = () => {
       </div>
    );
 };
-
-// const AuthMainForm = () => {
-
-// };
 
 export default TopHeader;

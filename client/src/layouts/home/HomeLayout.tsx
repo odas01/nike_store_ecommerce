@@ -1,9 +1,9 @@
 import { useEffect } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 
-import Header from './components/Header';
-import Footer from './components/Footer';
-import TopHeader from './components/TopHeader';
+import Header from './components/header/Header';
+import Footer from './components/header/Footer';
+import TopHeader from './components/header/TopHeader';
 
 import cartStore from '@/stores/cartStore';
 
@@ -28,7 +28,7 @@ const HomeLayout = () => {
       <div className='flex flex-col min-h-screen overflow-hidden'>
          <TopHeader />
          <Header />
-         <main className='min-h-[80vh] pb-20 flex flex-col'>
+         <main className='min-h-[80vh] xl:pb-20 md:pb-12 pb-8 xl:pt-0 md:pt-4 flex flex-col container'>
             <Outlet />
          </main>
 

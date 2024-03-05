@@ -55,7 +55,9 @@ const ChangePw = () => {
          <PageTitle title='Change password' />
          <div>
             {changePassMutation.isLoading && <LoadingOverlay />}
-            <h2 className='mb-4 text-xl font-semibold'>{t('changePass')}</h2>
+            <h2 className='pb-2 text-lg font-semibold text-center uppercase xl:normal-case md:pb-4 xl:text-start md:text-xl'>
+               {t('changePass')}
+            </h2>
             <div className='space-y-2'>
                <div className='flex flex-col space-y-1'>
                   <span className='text-13'>{t('currentPass')}</span>

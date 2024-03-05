@@ -9,7 +9,7 @@ import { CheckboxChangeEvent } from 'antd/es/checkbox';
 import { RiDeleteBin5Line } from 'react-icons/ri';
 import { AiOutlineMinus, AiOutlinePlus } from 'react-icons/ai';
 
-import { Button, PageTitle } from '@/components';
+import { BreadCrumb, Button, PageTitle } from '@/components';
 
 import { cartApi } from '@/api';
 import images from '@/assets/images';
@@ -103,56 +103,60 @@ const Cart = () => {
    return (
       <>
          <PageTitle title='Cart' />
-         <div className='bg-[#f5f5f5] py-2 text-13'>
-            <div className='container space-x-2'>
-               <Link to='/'>{t('home.home')}</Link>
-               <span className='text-[#ccc]'>/</span>
-               <span className='capitalize text-[#777]'>{t('cart.cart')}</span>
-            </div>
-         </div>
-         <div className='container mt-6 space-y-4'>
+         <BreadCrumb
+            className='mobile:hidden'
+            items={[
+               {
+                  title: t('home.home'),
+               },
+               {
+                  title: t('cart.cart'),
+               },
+            ]}
+         />
+         <div className='space-y-6 mobile:pt-4 mobile:px-2'>
             <div>
-               <h2 className='text-3xl font-medium text-center'>
+               <h2 className='text-lg font-medium text-center md:text-xl xl:text-3xl mobile:uppercase'>
                   {t('cart.yourCart')}
                </h2>
-               <div className='w-16 h-1 mx-auto mt-6 bg-black' />
+               <div className='w-16 h-1 mx-auto mt-2 bg-black xl:mt-6' />
                {qty > 0 ? (
                   <>
-                     <div className='pb-2 mt-8 border-b border-gray-400'>
+                     <div className='hidden pb-2 mt-8 border-b border-gray-400 md:block'>
                         <Row className='font-semibold'>
-                           <Col span={1}>
+                           <Col xl={1} md={0}>
                               <Checkbox
                                  onChange={handleCheckAll}
                                  checked={isCheckAll}
                               />
                            </Col>
-                           <Col span={8}>
+                           <Col xl={8} md={11}>
                               <span>{t('cart.productName')}</span>
                            </Col>
-                           <Col span={3} className='text-center'>
+                           <Col xl={3} md={0} className='text-center'>
                               <span>{t('cart.variations')}</span>
                            </Col>
-                           <Col span={4} className='text-center'>
+                           <Col xl={4} md={4} className='text-center'>
                               <span>{t('cart.unitPrice')}</span>
                            </Col>
-                           <Col span={3} className='text-center'>
+                           <Col xl={3} md={4} className='text-center'>
                               <span>
                                  {t('label.quantity', { ns: 'mutual' })}
                               </span>
                            </Col>
-                           <Col span={4} className='text-center'>
+                           <Col xl={4} md={4} className='text-center'>
                               <span>{t('cart.totalPrice')}</span>
                            </Col>
                         </Row>
                      </div>
 
-                     <div>
+                     <div className='mobile:mt-2'>
                         {cart
                            .filter((item) => item.product)
                            .map((item, index) => (
                               <div
                                  className={twMerge(
-                                    'py-4 border-b border-gray-300',
+                                    'py-4 border-b border-gray-300 mobile:px-2',
                                     deleteItemMutation.isLoading &&
                                        deleteItemMutation.variables?.includes(
                                           item._id
@@ -161,50 +165,74 @@ const Cart = () => {
                                  )}
                                  key={index}
                               >
-                                 <Row>
-                                    <Col span={1} className='flex items-center'>
-                                       <Checkbox
-                                          onChange={(e) =>
-                                             handleCheck(e, item._id)
-                                          }
-                                          checked={isCheck.includes(item._id)}
-                                       />
+                                 <Row gutter={[0, { xs: 8 }]}>
+                                    <Col xl={1} xs={0}>
+                                       <div className='flex items-center'>
+                                          <Checkbox
+                                             onChange={(e) =>
+                                                handleCheck(e, item._id)
+                                             }
+                                             checked={isCheck.includes(
+                                                item._id
+                                             )}
+                                          />
+                                       </div>
                                     </Col>
-                                    <Col span={8}>
+                                    <Col xl={8} md={11} xs={24}>
                                        <Link
                                           to={'/d/' + item.product.slug}
-                                          className='flex pr-6 hover:text-inherit'
+                                          className='flex pr-2 xl:pr-6 hover:text-inherit'
                                        >
-                                          <div className='w-20 overflow-hidden rounded aspect-square'>
+                                          <div className='overflow-hidden rounded w-14 xl:w-20 md:w-12 aspect-square'>
                                              <img
                                                 src={item.variant.thumbnail.url}
                                                 className=''
                                                 alt={item.product.name}
                                              />
                                           </div>
-                                          <div className='flex-1 pt-2 pl-4'>
-                                             <span className='text-base font-medium '>
+                                          <div className='flex-1 pl-4 xl:pt-2 mobile:pr-4 mobile:flex mobile:flex-col mobile:justify-center'>
+                                             <span className='font-medium text-13 xl:text-base md:text-15 line-clamp-1'>
                                                 {item.product.name}
                                              </span>
+                                             <div className='flex items-center text-xs xl:text-base'>
+                                                <span className='capitalize'>
+                                                   {item.variant.color.name}
+                                                </span>
+                                                <span className='mx-2'>/</span>
+                                                <span className='uppercase'>
+                                                   {item.size}
+                                                </span>
+                                             </div>
                                           </div>
+                                          <button
+                                             className='cursor-pointer flex-center md:hidden'
+                                             onClick={() =>
+                                                deleteItemMutation.mutate([
+                                                   item._id,
+                                                ])
+                                             }
+                                          >
+                                             <RiDeleteBin5Line size={18} />
+                                          </button>
                                        </Link>
                                     </Col>
-                                    <Col span={3}>
-                                       <div className='flex flex-col items-center justify-center h-full'>
-                                          <div className='flex items-center font-medium'>
+                                    <Col xl={3} md={0} xs={0}>
+                                       <div className='flex flex-col items-center justify-center h-full text-13'>
+                                          <div className='flex items-center'>
                                              <span className='capitalize'>
                                                 {item.variant.color.name}
                                              </span>
-                                             {'  - Size'}
-                                             <span className='ml-1 mr-2 uppercase'>
+                                             <span className='mx-2'>/</span>
+                                             <span className='uppercase '>
                                                 {item.size}
                                              </span>
-                                             {/* <AiFillCaretDown /> */}
                                           </div>
                                        </div>
                                     </Col>
                                     <Col
-                                       span={4}
+                                       xl={4}
+                                       md={4}
+                                       xs={8}
                                        className='flex flex-col items-center justify-center'
                                     >
                                        {item.product.discount !== 0 && (
@@ -216,7 +244,7 @@ const Cart = () => {
                                              )}
                                           </p>
                                        )}
-                                       <p className='text-base font-semibold'>
+                                       <p className='text-sm xl:text-base'>
                                           {priceFormat(
                                              item.product.prices.price,
                                              isVnLang
@@ -224,7 +252,9 @@ const Cart = () => {
                                        </p>
                                     </Col>
                                     <Col
-                                       span={3}
+                                       xl={3}
+                                       md={4}
+                                       xs={8}
                                        className='flex items-center justify-center'
                                     >
                                        <div
@@ -238,7 +268,7 @@ const Cart = () => {
                                        >
                                           <button
                                              className={twMerge(
-                                                'flex items-center justify-center w-10 text-sm rounded-full aspect-square shadow-db',
+                                                'flex items-center justify-center xl:w-10 w-8 text-sm rounded-full aspect-square shadow-db',
                                                 item.qty === 1 &&
                                                    'opacity-60 pointer-events-none cursor-not-allowed'
                                              )}
@@ -252,11 +282,11 @@ const Cart = () => {
                                           <input
                                              type='number'
                                              value={item.qty}
-                                             className='text-base font-medium text-center w-14'
+                                             className='w-12 font-medium text-center xl:text-base text-15 xl:w-14'
                                              readOnly
                                           />
                                           <button
-                                             className='flex items-center justify-center w-10 text-sm rounded-full aspect-square shadow-db'
+                                             className='flex items-center justify-center w-8 text-sm rounded-full xl:w-10 aspect-square shadow-db'
                                              onClick={() =>
                                                 changeQty(item, 'plus')
                                              }
@@ -265,8 +295,13 @@ const Cart = () => {
                                           </button>
                                        </div>
                                     </Col>
-                                    <Col span={4} className='flex justify-end'>
-                                       <span className='m-auto text-base font-semibold text-red-500'>
+                                    <Col
+                                       xl={4}
+                                       md={4}
+                                       xs={8}
+                                       className='flex justify-end'
+                                    >
+                                       <span className='m-auto text-sm font-semibold text-red-500 xl:text-base'>
                                           {priceFormat(
                                              item.product.prices.price *
                                                 item.qty,
@@ -274,27 +309,29 @@ const Cart = () => {
                                           )}
                                        </span>
                                     </Col>
-                                    <Col span={1} className='flex justify-end'>
-                                       <button
-                                          className='cursor-pointer flex-center'
-                                          onClick={() =>
-                                             deleteItemMutation.mutate([
-                                                item._id,
-                                             ])
-                                          }
-                                       >
-                                          <RiDeleteBin5Line size={18} />
-                                       </button>
+                                    <Col xl={1} md={1} xs={0}>
+                                       <div className='flex items-center justify-end h-full'>
+                                          <button
+                                             className='cursor-pointer flex-center'
+                                             onClick={() =>
+                                                deleteItemMutation.mutate([
+                                                   item._id,
+                                                ])
+                                             }
+                                          >
+                                             <RiDeleteBin5Line size={18} />
+                                          </button>
+                                       </div>
                                     </Col>
                                  </Row>
                               </div>
                            ))}
                      </div>
 
-                     <div className='flex justify-between mt-12'>
+                     <div className='flex justify-between mt-8 xl:mt-12 md:mt-10'>
                         <Button
                            className={twMerge(
-                              'mt-1 bg-gray-600 hover:bg-gray-700',
+                              'mt-1 bg-gray-600 hover:bg-gray-700 xl:block hidden',
                               isCheck.length === 0 &&
                                  'opacity-75 pointer-events-none'
                            )}
@@ -316,18 +353,18 @@ const Cart = () => {
                               t('action.delete', { ns: 'mutual' })
                            )}
                         </Button>
-                        <div className='flex justify-end space-x-4'>
+                        <div className='flex justify-end flex-1 mobile:flex-col'>
                            <div className='flex flex-col items-end'>
                               <div className='space-x-2'>
                                  <span>
                                     {t('total')} ({qty}
                                     {qty > 1 ? t('items') : t('item')}):
                                  </span>
-                                 <span className='text-lg font-semibold text-red-500'>
+                                 <span className='text-sm font-semibold text-red-500 xl:text-lg md:text-base'>
                                     {priceFormat(subTotal, isVnLang)}
                                  </span>
                               </div>
-                              <div className='space-x-2 text-sm'>
+                              <div className='space-x-2 text-xs xl:text-sm'>
                                  <span>{t('saved')}:</span>
                                  <span className='font-semibold text-red-500'>
                                     {priceFormat(
@@ -337,13 +374,14 @@ const Cart = () => {
                                  </span>
                               </div>
                            </div>
-                           <div className='h-14 w-60 rounded flex-center bg-[#3085C3] text-white duration-150 hover:-translate-y-[2px] hover:shadow-[0_8px_8px_-6px_#3085C3]'>
-                              <Link to='/checkout'>
-                                 <button className='w-full h-full text-base font-bold cursor-pointer text-inherit'>
-                                    {t('cart.proceedCheckOut')}
-                                 </button>
-                              </Link>
-                           </div>
+                           <Link
+                              to='/checkout'
+                              className='xl:h-14 xl:w-60 h-11 w-44 rounded xl:flex-center bg-[#3085C3] xl:text-sm text-xs text-white duration-150 hover:-translate-y-[2px] hover:shadow-[0_8px_8px_-6px_#3085C3] ml-auto md:ml-4 mobile:mt-2'
+                           >
+                              <button className='w-full h-full font-bold cursor-pointer mobile:text-13 text-inherit'>
+                                 {t('cart.proceedCheckOut')}
+                              </button>
+                           </Link>
                         </div>
                      </div>
                   </>
@@ -369,7 +407,7 @@ const Cart = () => {
             </div>
             <Modal
                open={openModal}
-               className='!rounded bg-white'
+               className='!rounded bg-white pb-0'
                onCancel={() => setOpenModal(false)}
                footer={
                   <div className='flex justify-end mb-2 space-x-2'>
@@ -377,7 +415,7 @@ const Cart = () => {
                         className='px-4 py-1 rounded h-9 bg-[#3085C3] hover:bg-[#3086c3de]'
                         onClick={() => setOpenModal(false)}
                      >
-                        Cancel
+                        {t('action.cancel', { ns: 'mutual' })}
                      </Button>
                      <Button
                         className='px-4 py-1 text-black bg-gray-100 rounded h-9 hover:bg-gray-200'
@@ -386,23 +424,22 @@ const Cart = () => {
                            setOpenModal(false);
                         }}
                      >
-                        Delete
+                        {t('action.delete', { ns: 'mutual' })}
                      </Button>
                   </div>
                }
             >
                <div className='pt-4 pb-2 text-lg'>
-                  Do you want delete{' '}
-                  {isCheck.length > 0 && (
-                     <span>
-                        {isCheck.length === cart.length
-                           ? ' all items'
+                  {t('cart.wantDelete?', {
+                     quantity:
+                        isCheck.length === cart.length ? '' : isCheck.length,
+                     text:
+                        isCheck.length === cart.length
+                           ? t('allItems')
                            : isCheck.length === 1
-                           ? ` ${isCheck.length} item`
-                           : ` ${isCheck.length} items`}
-                     </span>
-                  )}
-                  ?
+                           ? t('item')
+                           : t('items'),
+                  })}
                </div>
             </Modal>
          </div>

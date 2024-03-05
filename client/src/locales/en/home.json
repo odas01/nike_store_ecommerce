@@ -40,7 +40,8 @@
       "proceedCheckOut": "Proceed to checkout",
       "cartEmpty": "Your shopping cart is empty",
       "findAndAdd": "Search for items to start addding them to your cart",
-      "startShopping": "Start shopping"
+      "startShopping": "Start shopping",
+      "wantDelete?": "Do you want delete {{quantity}} {{text}}?"
    },
    "filter": {
       "under": "Under",
@@ -68,6 +69,7 @@
    "saved": "Saved",
    "items": "items",
    "item": "item",
+   "allItems": "all items",
    "checkout": {
       "checkout": "Check out",
       "personalDetails": "Personal details",
@@ -122,5 +124,7 @@
    "abus": "About us",
    "contact": "Contact",
    "company": "Company",
-   "introduce": "Introduce"
+   "introduce": "Introduce",
+   "personal": "Personal",
+   "language": "Language"
 }

@@ -20,9 +20,16 @@ const Account = () => {
    const { t } = useTranslation(['home', 'dashboard', 'mutual']);
 
    return (
-      <div className='container py-5'>
-         <Row gutter={36}>
-            <Col span={6}>
+      <div className='space-y-6 mobile:pt-4 mobile:px-2'>
+         <Row
+            gutter={[
+               0,
+               {
+                  xs: 12,
+               },
+            ]}
+         >
+            <Col xl={6} xs={0}>
                <div className='p-7 pb-12 space-y-6 bg-[#F9FAFB] rounded'>
                   <div className='flex items-center space-x-2'>
                      <div className='w-8 overflow-hidden rounded-full aspect-square'>
@@ -80,8 +87,8 @@ const Account = () => {
                   </div>
                </div>
             </Col>
-            <Col span={18}>
-               <div className='p-5 bg-[#F9FAFB] rounded min-h-full'>
+            <Col xl={18} xs={24}>
+               <div className='xl:p-5 md:p-2 md:bg-[#F9FAFB] rounded min-h-full'>
                   <Outlet />
                </div>
             </Col>

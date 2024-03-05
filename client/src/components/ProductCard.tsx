@@ -26,7 +26,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ data }) => {
          onClick={() => navigate('/d/' + data.slug)}
       >
          {isSale && (
-            <span className='absolute z-50 px-2 py-1 text-white bg-orange-500 rounded-sm md:px-3 xl:text-xs text-10 top-2 right-2 w-fit'>
+            <span className='absolute z-50 px-1.5 py-0.5 text-white bg-orange-500 rounded-sm md:px-3 xl:text-xs text-[8px] top-2 right-2 w-fit'>
                -{saleValue}
             </span>
          )}
@@ -43,19 +43,19 @@ const ProductCard: React.FC<ProductCardProps> = ({ data }) => {
             </Swiper>
          </div>
          <div className='flex flex-col flex-1 p-1 rounded-bl rounded-br md:p-3'>
-            <span className='flex-1 text-sm font-medium md:text-15 line-clamp-1'>
+            <span className='flex-1 text-xs font-medium md:text-15 line-clamp-1'>
                {data.name}
             </span>
 
-            <span className='flex-1 capitalize md:text-xs text-11 line-clamp-1'>
+            <span className='flex-1 capitalize md:text-xs text-10 line-clamp-1'>
                {data.category.name} {data.category.store}
             </span>
             <div className='relative flex items-center mt-1 space-x-2 md:mt-2'>
-               <span className='text-sm font-semibold text-red-500 xl:text-base'>
+               <span className='text-xs text-red-500 md:font-semibold xl:text-base'>
                   {priceFormat(data.prices.price, isVnLang)}
                </span>
                {isSale && (
-                  <span className='line-through italic text-[#707072] opacity-80 xl:text-15 text-13'>
+                  <span className='line-through italic text-[#707072] opacity-80 md:text-sm text-10'>
                      {priceFormat(data.prices.originalPrice, isVnLang)}
                   </span>
                )}

@@ -10,7 +10,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
             ref={ref}
             {...props}
             className={twMerge(
-               'rounded-md h-10 py-1 px-4 bg-[#1890ff] hover:bg-[#40a9ff] duration-150 text-white text-sm',
+               'rounded-md xl:h-10 h-9 py-1 px-4 bg-[#1890ff] hover:bg-[#40a9ff] duration-150 text-white xl:text-sm md:text-xs text-[10px]',
                className
             )}
          >
