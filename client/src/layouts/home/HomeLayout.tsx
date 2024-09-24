@@ -28,7 +28,7 @@ const HomeLayout = () => {
       <div className='flex flex-col min-h-screen overflow-hidden'>
          <TopHeader />
          <Header />
-         <main className='min-h-[80vh] xl:pb-20 md:pb-12 pb-8 xl:pt-0 md:pt-4 flex flex-col container'>
+         <main className='min-h-[80vh] xl:pb-20 md:pb-12 pb-8 xl:pt-2 md:pt-4 flex flex-col container'>
             <Outlet />
          </main>
 

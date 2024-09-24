@@ -102,7 +102,7 @@ const Home = () => {
                </div>
             </div>
             <div className='relative pt-5 border-t md:pt-7 mobile:px-2'>
-               <h2 className='xl:text-5xl md:text-3xl w-max text-xl font-semibold text-center text-[#383838] absolute md:-top-5 -top-3.5 bg-white px-4 italic left-1/2 -translate-x-1/2'>
+               <h2 className='xl:text-4xl md:text-3xl w-max text-xl font-semibold text-center text-[#383838] absolute md:-top-8 -top-3.5 bg-white px-4 italic left-1/2 -translate-x-1/2'>
                   {t('home.trenyP')}
                </h2>
                <div className='flex justify-center md:mt-2 xl:mt-7 mb-4 space-x-12 md:text-lg text-13 font-medium text-[#383838]'>

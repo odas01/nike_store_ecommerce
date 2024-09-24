@@ -85,11 +85,11 @@ const SignUp = () => {
    });
 
    return (
-      <div className='space-y-10'>
-         <h3 className='text-2xl text-center'>
+      <div className='space-y-3 xl:space-y-10 md:space-y-5'>
+         <h3 className='text-lg text-center xl:text-2xl'>
             {t('action.signup', { ns: 'mutual' })}
          </h3>
-         <div className='w-full py-8 bg-white rounded-md shadow-lg px-7'>
+         <div className='w-full py-4 bg-white rounded-md shadow-lg md:py-8 px-7'>
             <div className='space-y-3'>
                <div className='flex flex-col'>
                   <span className='text-13'>
@@ -143,7 +143,7 @@ const SignUp = () => {
             </div>
             <Button
                className={twMerge(
-                  'w-full h-12 mt-6 bg-[#03C7EF] hover:bg-[#51b5c9] rounded flex justify-center items-center space-x-2',
+                  'w-full md:h-12 h-9 md:mt-6 mt-1 bg-[#03C7EF] hover:bg-[#51b5c9] rounded flex justify-center items-center space-x-2',
                   signupMutation.isLoading &&
                      'cursor-not-allowed bg-[#316e9c] select-none'
                )}
@@ -166,7 +166,7 @@ const SignUp = () => {
                   <BsGoogle color='#fff' />
                </div>
             </div>
-            <div className='mt-8 space-x-1 text-xs text-center'>
+            <div className='mt-3 space-x-1 text-xs text-center md:mt-8'>
                <span className='text-[#7e7e7e]'> {t('haveAccount?')}</span>
                <span
                   className='text-[#4f4f4f] font-semibold duration-150 hover:text-[#3c3c3c] cursor-pointer'

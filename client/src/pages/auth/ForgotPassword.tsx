@@ -48,7 +48,9 @@ const ForgotPassword = () => {
 
    return (
       <div className='space-y-10'>
-         <h3 className='text-2xl text-center'>{t('auth.forgotPass')}</h3>
+         <h3 className='text-lg text-center xl:text-2xl'>
+            {t('auth.forgotPass')}
+         </h3>
          <div className='w-full py-8 bg-white rounded-md shadow-lg px-7'>
             <div className='space-y-3'>
                <div className='flex flex-col'>
@@ -64,7 +66,7 @@ const ForgotPassword = () => {
             </div>
             <Button
                className={twMerge(
-                  'w-full h-12 mt-6 bg-[#03C7EF] hover:bg-[#51b5c9] rounded flex justify-center items-center space-x-2',
+                  'w-full md:h-12 h-9 mt-6 bg-[#03C7EF] hover:bg-[#51b5c9] rounded flex justify-center items-center space-x-2',
                   forgotPasswordMutation.isLoading &&
                      'cursor-not-allowed bg-[#316e9c] select-none'
                )}

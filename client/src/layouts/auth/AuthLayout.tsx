@@ -22,11 +22,11 @@ function AuthLayout() {
 
    return (
       <div
-         className='relative flex flex-col items-center min-h-screen py-12 bg-top bg-no-repeat bg-cover'
+         className='relative flex flex-col items-center min-h-screen px-6 py-12 bg-top bg-no-repeat bg-cover'
          style={{ backgroundImage: `url(${images.auth_bg})` }}
       >
-         <h2 className='text-5xl font-nikeFutura'>Welcome</h2>
-         <div className='w-1/3'>
+         <h2 className='hidden text-2xl md:block font-nikeFutura'>Welcome</h2>
+         <div className='w-full pt-2 xl:w-1/3 xl:pt-0'>
             <Outlet />
          </div>
          <Link to='/' className='fixed h-8 top-4 left-4 w-36'>

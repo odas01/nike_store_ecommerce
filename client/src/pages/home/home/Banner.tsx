@@ -7,7 +7,7 @@ const Banner = () => {
    const { t } = useTranslation('home');
 
    return (
-      <div className='relative xl:h-screen md:h-[75vh] h-[42vh] bg-banner bg-repeat bg-fixed md:rounded-br md:rounded-bl'>
+      <div className='relative xl:h-screen md:h-[75vh] h-[42vh] bg-banner bg-repeat bg-fixed md:md:rounded'>
          <img
             src={images.bannerr}
             alt=''
