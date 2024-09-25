@@ -2,7 +2,7 @@ import authStore from '@/stores/authStore';
 import cartStore from '@/stores/cartStore';
 import { Drawer } from 'antd';
 import { Dispatch, FC, SetStateAction, useEffect } from 'react';
-import { PiSneaker, PiSneakerMove } from 'react-icons/pi';
+import { PiSneakerMove } from 'react-icons/pi';
 import { useTranslation } from 'react-i18next';
 import { NavLink, Link, useLocation, useNavigate } from 'react-router-dom';
 import { MdOutlineShoppingBag, MdPassword } from 'react-icons/md';
@@ -191,25 +191,27 @@ const MobileMenu: FC<IMobileMenuProps> = ({ open, setOpen }) => {
                      </button>
                   </div>
                ) : (
-                  <div className='flex items-center justify-center space-x-2'>
-                     <img
-                        src={currentUser.avatar.url}
-                        className='rounded-full w-9 aspect-square'
-                        alt=''
-                     />
-                     <span className='font-semibold text-13'>
-                        {currentUser.name}
-                     </span>
-                  </div>
-                  // <button
-                  //    className='w-full py-2'
-                  //    onClick={() => {
-                  //       logOut();
-                  //       deleteCart();
-                  //    }}
-                  // >
-                  //    {t('action.logOut', { ns: 'mutual' })}
-                  // </button>
+                  <>
+                     <div className='flex items-center justify-center space-x-2'>
+                        <img
+                           src={currentUser.avatar?.url}
+                           className='rounded-full w-9 aspect-square'
+                           alt=''
+                        />
+                        <span className='font-semibold text-13'>
+                           {currentUser.name}
+                        </span>
+                     </div>
+                     <button
+                        className='w-full py-2'
+                        onClick={() => {
+                           logOut();
+                           deleteCart();
+                        }}
+                     >
+                        {t('action.logOut', { ns: 'mutual' })}
+                     </button>
+                  </>
                )}
             </div>
          </div>

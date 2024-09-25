@@ -64,6 +64,7 @@ export const login = async (req: Request, res: Response) => {
          email: req.body.email,
          role: 'customer',
       }).lean();
+
       // check account exists
       if (!user)
          return responseHandler.badrequest(res, {
@@ -82,6 +83,7 @@ export const login = async (req: Request, res: Response) => {
          req.body.password,
          user.password!
       );
+
       if (!passwordValid)
          return responseHandler.badrequest(res, {
             vi: 'Sai mật khẩu',
@@ -289,6 +291,7 @@ export const forgotPassword = async (req: Request, res: Response) => {
          en: "'Missing email'",
       });
    }
+
    const foundUser = await User.findOne({ email }).lean();
    if (!foundUser) {
       return responseHandler.badrequest(res, {
@@ -296,6 +299,7 @@ export const forgotPassword = async (req: Request, res: Response) => {
          en: 'Email does not exist',
       });
    }
+
    const token = jwt.sign(
       { id: foundUser._id },
       process.env.JWT_FORGOT_KEY || 'key',

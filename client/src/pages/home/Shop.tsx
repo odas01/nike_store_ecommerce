@@ -2,7 +2,7 @@ import { Col, Row, Spin } from 'antd';
 import { twMerge } from 'tailwind-merge';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 

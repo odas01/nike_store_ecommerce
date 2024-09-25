@@ -1,6 +1,6 @@
 import { Col, Row } from 'antd';
 import { useTranslation } from 'react-i18next';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import { BsSearch } from 'react-icons/bs';
 import { RiMenu2Line } from 'react-icons/ri';
@@ -10,7 +10,7 @@ import Navbar from './Navbar';
 import { Input, Logo } from '@/components';
 
 import cartStore from '@/stores/cartStore';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import MobileMenu from './MobileMenu';
 
 const Header = () => {

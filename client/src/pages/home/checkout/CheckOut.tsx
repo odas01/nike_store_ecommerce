@@ -1,10 +1,10 @@
 import * as z from 'zod';
 import { Row, Col } from 'antd';
-import { Dispatch, FC, SetStateAction, useState } from 'react';
+import { useState } from 'react';
 import { twMerge } from 'tailwind-merge';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useMutation } from '@tanstack/react-query';
 import { zodResolver } from '@hookform/resolvers/zod';
 
@@ -38,7 +38,7 @@ const infoSchema = z.object({
 
 const CheckOut = () => {
    const navigate = useNavigate();
-   const { currentUser, updateUser } = authStore();
+   const { currentUser } = authStore();
    const { cart, subTotal } = cartStore();
 
    const [coupon, setCoupon] = useState<string>('');

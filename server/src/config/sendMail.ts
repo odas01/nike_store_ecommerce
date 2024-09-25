@@ -1,6 +1,8 @@
 import moment from 'moment';
 import nodemailer from 'nodemailer';
 
+console.log(process.env.EMAIL_NAME, process.env.EMAIL_APP_PASSWORD);
+
 let transporter = nodemailer.createTransport({
    service: 'gmail',
    auth: {
