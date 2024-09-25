@@ -127,7 +127,7 @@ const Orders = () => {
                />
             </div>
             {isLoading && currentUser ? (
-               <div className='absolute top-0 right-0 z-10 flex items-center justify-center w-full h-full'>
+               <div className='absolute flex justify-center translate-x-1/2 right-1/2 top-1/3'>
                   <Spin size='large' />
                </div>
             ) : data && data.orders.length > 0 ? (

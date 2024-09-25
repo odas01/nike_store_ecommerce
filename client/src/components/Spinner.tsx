@@ -7,11 +7,11 @@ interface SpinnerProps {
 
 const Spinner: React.FC<SpinnerProps> = ({ width = 32, color }) => {
    return (
-      <div role='status' className='inline-block '>
+      <div role='status' className='inline-block'>
          <svg
             aria-hidden='true'
             role='status'
-            className='inline aspect-square text-gray-200 animate-spin dark:text-gray-600'
+            className='inline text-gray-200 aspect-square animate-spin dark:text-gray-600'
             style={{
                width,
                color,

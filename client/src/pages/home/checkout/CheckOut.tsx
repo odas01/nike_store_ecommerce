@@ -38,7 +38,7 @@ const infoSchema = z.object({
 
 const CheckOut = () => {
    const navigate = useNavigate();
-   const { currentUser } = authStore();
+   const { currentUser, updateUser } = authStore();
    const { cart, subTotal } = cartStore();
 
    const [coupon, setCoupon] = useState<string>('');
@@ -129,6 +129,8 @@ const CheckOut = () => {
    });
 
    const handleSaveOrder = async () => {
+      console.log(456);
+
       const newCart = cart.map((item) => ({
          product: item.product._id,
          variant: item.variant._id,
@@ -155,12 +157,12 @@ const CheckOut = () => {
          orderPayload.coupon = coupon;
       }
 
-      // if (paymentMethod === 'vnpay') {
-      //    createPaymentVnPayMutation.mutate({ ...orderPayload, paid: true });
-      // } else {
-      //    createOrderMutation.mutate(orderPayload);
-      // }
-      // await updateUser(currentUser?._id!, getValues());
+      if (paymentMethod === 'vnpay') {
+         createPaymentVnPayMutation.mutate({ ...orderPayload, paid: true });
+      } else {
+         createOrderMutation.mutate(orderPayload);
+      }
+      await updateUser(currentUser?._id!, getValues());
    };
 
    return (
@@ -594,10 +596,14 @@ const CheckOut = () => {
                                     // paymentMethod === 'paypal' &&
                                     //    'pointer-events-none'
                                  )}
-                                 onClick={async () =>
+                                 onClick={async () => {
+                                    console.log(
+                                       await trigger(['address', 'phone'])
+                                    );
+
                                     (await trigger(['address', 'phone'])) &&
-                                    handleSaveOrder()
-                                 }
+                                       handleSaveOrder();
+                                 }}
                               >
                                  {t('checkout.pay')}
                               </Button>

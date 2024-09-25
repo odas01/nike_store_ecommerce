@@ -10,10 +10,10 @@ const Footer = () => {
    const { t } = useTranslation('home');
    return (
       <footer className='bg-[#f1f1f1] mt-auto'>
-         <div className='container px-2 py-2'>
-            <div className='mt-4 mb-10'>
+         <div className='container'>
+            <div className='px-6 mt-4 mb-10 md:px-0'>
                <Row gutter={[24, 12]}>
-                  <Col xl={6} md={0}>
+                  <Col xl={6} md={0} xs={0}>
                      <h2 className='text-lg font-medium'>Follow our Socials</h2>
                      <div className='flex pt-4'>
                         <div
@@ -48,15 +48,19 @@ const Footer = () => {
                         </div>
                      </div>
                   </Col>
-                  <Col xl={6} md={8}>
-                     <h2 className='text-lg font-medium'>{t('company')}</h2>
+                  <Col xl={6} md={8} xs={24}>
+                     <h2 className='text-base font-medium xl:text-lg'>
+                        {t('company')}
+                     </h2>
                      <div className='pt-2 space-y-1 font-normal'>
                         <p>{t('abus')}</p>
                         <p>{t('contact')}</p>
                      </div>
                   </Col>
-                  <Col xl={6} md={8}>
-                     <h2 className='text-lg font-medium'>{t('introduce')}</h2>
+                  <Col xl={6} md={8} xs={24}>
+                     <h2 className='text-base font-medium xl:text-lg'>
+                        {t('introduce')}
+                     </h2>
                      <div className='pt-2 pr-6 space-y-1 font-normal'>
                         <p className='flex items-center '>
                            <AiOutlinePhone className='mr-2' /> 0123789456
@@ -72,8 +76,10 @@ const Footer = () => {
                         </p>
                      </div>
                   </Col>
-                  <Col xl={6} md={8}>
-                     <h2 className='text-lg font-medium'>{t('support')}</h2>
+                  <Col xl={6} md={8} xs={24}>
+                     <h2 className='text-base font-medium xl:text-lg'>
+                        {t('support')}
+                     </h2>
                      <div className='pt-2 space-y-1 font-normal'>
                         <p>{t('abc')}</p>
                         <p>{t('abc1')}</p>
@@ -87,7 +93,7 @@ const Footer = () => {
                   </Col>
                </Row>
             </div>
-            <span className='pt-2 text-xs border-t border-gray-500'>
+            <span className='pt-2 mx-6 text-xs border-t border-gray-500 md:mx-0'>
                © Copyright 2023 By lntthanh3317
             </span>
          </div>

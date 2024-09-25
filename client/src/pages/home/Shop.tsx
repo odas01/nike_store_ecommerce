@@ -104,7 +104,7 @@ const Shop = () => {
             ]}
          />
          {isLoading ? (
-            <div className='flex justify-center'>
+            <div className='absolute flex justify-center translate-x-1/2 right-1/2 top-1/3'>
                <Spin size='large' />
             </div>
          ) : (
